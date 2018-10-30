@@ -35,6 +35,8 @@ RUN apt-get install --no-install-recommends -y software-properties-common \
     make \
     zlib1g-dev \
     apt-transport-https \
+    dirmngr \
+    gpg \
     wget
 
 # Install cmake -- newer version than with apt
