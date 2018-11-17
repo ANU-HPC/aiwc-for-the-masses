@@ -145,7 +145,7 @@ RUN make
 
 CMD ["/bin/bash"]
 
-WORKDIR /guiding-optimisation-with-aiwc
+WORKDIR /workspace
 ENV LD_LIBRARY_PATH "${OCLGRIND}/lib:${LSB}/lib:./lib:${LD_LIBRARYPATH}"
 ENV PATH "${PATH}:${OCLGRIND}/bin}"
 

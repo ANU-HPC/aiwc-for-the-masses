@@ -1,6 +1,6 @@
 ---
-title: "Performance and code portable vectorization with OpenCL"
-subtitle: "Accelerating computer vision with single implementation codes"
+title: "AIWC for the masses"
+subtitle: "Supporting Architecture-Independent Workload Characterization on OpenMP, OpenACC, Cuda and OpenCL"
 abstract: "
 
 
@@ -20,7 +20,24 @@ vectorization, portability, OpenCL
 
 # Introduction
 
+* AIWC already architecture independent
+* LLVM common IR of all kernel codes 
+
 # Methodology
+
+## AIWC
+
+* Brief about how AIWC currently operates LLVM OpenCL device simulator
+
+## CUDA
+
+## OpenMP 
+
+* Steps taken to perform code translation from openmp to opencl kernel and wrapper
+
+## OpenACC
+
+* Steps taken to perform code translation from openacc to opencl kernel and wrapper
 
 # Results
 

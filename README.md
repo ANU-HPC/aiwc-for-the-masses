@@ -1,6 +1,6 @@
 
-Performance and code portable vectorization with OpenCL
----------------------------------------------------------------------------
+Architecture-Independent Workload Characterization for OpenMP, OpenACC and OpenCL
+---------------------------------------------------------------------------------
 
 This artefact uses binder -- automatic cloud hosting of Jupyter workbooks with support for docker. So if you want to avoid all the steps mentioned below, simply click the binder badge.
 
@@ -17,15 +17,15 @@ This project uses Docker to facilitate reproducibility. As such, it has the foll
 
 # Build
 
-To generate a docker image named guiding-optimisation, run:
+To generate a docker image named artefact, run:
 
-`docker build -t guiding-optimisation .`
+`docker build -t artefact .`
 
 # Run
 
 To start the docker image run:
 
-`docker run --runtime=nvidia -it --mount src=`pwd`,target=/study,type=bind -p 8888:8888 --net=host guiding-optimisation`
+`docker run --runtime=nvidia -it --mount src=`pwd`,target=/study,type=bind -p 8888:8888 --net=host artefact`
 
 And run the codes with:
 `cd /study/codes`
