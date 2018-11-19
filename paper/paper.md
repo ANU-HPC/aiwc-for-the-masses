@@ -1,6 +1,6 @@
 ---
 title: "AIWC for the masses"
-subtitle: "Supporting Architecture-Independent Workload Characterization on OpenMP, OpenACC, Cuda and OpenCL"
+subtitle: "Supporting HPC Architecture-Independent Workload Characterization on OpenMP, OpenACC, Cuda and OpenCL"
 abstract: "
 
 
@@ -31,6 +31,11 @@ vectorization, portability, OpenCL
 
 ## CUDA
 
+Source-to-source translation tools:
+cu2cl progress on CUDA rodinia bfs `/rodinia/cuda/bfs`:
+`/cu2cl-build/cu2cl-build/cu2cl-tool bfs.cu ./kernel.cu  -- -I./ `
+Results in `<command line>:7:10: fatal error: 'cuda_runtime.h' file not found`
+
 ## OpenMP 
 
 * Steps taken to perform code translation from openmp to opencl kernel and wrapper
@@ -38,6 +43,13 @@ vectorization, portability, OpenCL
 ## OpenACC
 
 * Steps taken to perform code translation from openacc to opencl kernel and wrapper
+
+# Evaluation
+
+* Comparison in feature-spaces over Rodinia Benchmark Suite OpenCL vs
+    + OpenACC
+    + OpenMP
+    + CUDA
 
 # Results
 

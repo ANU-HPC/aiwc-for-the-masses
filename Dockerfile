@@ -1,5 +1,6 @@
 # An Ubuntu environment configured for building the phd repo.
-FROM nvidia/opencl
+FROM nvidia/cuda:9.1-devel-ubuntu16.04
+#FROM nvidia/opencl
 #FROM ubuntu:16.04
 
 MAINTAINER Beau Johnston <beau.johnston@anu.edu.au>
@@ -36,7 +37,8 @@ RUN apt-get install --no-install-recommends -y software-properties-common \
     zlib1g-dev \
     apt-transport-https \
     dirmngr \
-    gpg \
+    gnupg-curl \
+    gnupg2 \
     wget
 
 # Install cmake -- newer version than with apt
@@ -75,10 +77,11 @@ RUN make
 RUN make install
 
 # Install R and model dependencies
-RUN apt-key adv --keyserver hpk://keyserver.ubuntu.com:80 --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+RUN apt-get install --no-install-recommends -y libcurl4-openssl-dev libssl-dev
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
 RUN add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/'
 RUN apt-get update
-RUN apt-get install --no-install-recommends -y r-base libcurl4-openssl-dev libssl-dev r-cran-rcppeigen
+RUN apt-get install --no-install-recommends -y r-base libcurl4-openssl-dev libssl-dev r-cran-rcppeigen liblapack-dev libblas-dev libgfortran-5-dev
 RUN Rscript -e "install.packages('devtools',repos = 'http://cran.us.r-project.org');"
 RUN Rscript -e "devtools::install_github('imbs-hl/ranger')"
 # Install the git-lsf module
@@ -143,6 +146,47 @@ WORKDIR $EOD/build
 RUN ../configure --with-libscibench=$LSB
 RUN make
 
+#Install PGI community edition compiler
+RUN apt-get install --no-install-recommends -y curl
+WORKDIR /downloads
+RUN curl --user-agent "aiwc" \
+    --referer "http://www.pgroup.com/products/community.htm" --location  \
+    "https://www.pgroup.com/support/downloader.php?file=pgi-community-linux-x64" > pgi.tar.gz 
+RUN tar -xvf pgi.tar.gz \
+    && export PGI_SILENT=true \
+    && export PGI_ACCEPT_EULA=accept \
+    && export PGI_INSTALL_DIR="${HOME}/pgi" \
+    && export PGI_INSTALL_NVIDIA=false \
+    && export PGI_INSTALL_AMD=false \
+    && export PGI_INSTALL_JAVA=false \
+    && export PGI_INSTALL_MPI=false \
+    && export PGI_MPI_GPU_SUPPORT=false \
+    && export PGI_INSTALL_MANAGED=false \
+    && /downloads/install_components/install
+ENV PATH "${PATH}:$/root/pgi/linux86-64-llvm/2018/bin"
+
+#Install CU2CL
+RUN git clone https://github.com/vtsynergy/CU2CL.git /cu2cl-build
+WORKDIR /cu2cl-build
+COPY ./codes/cu2cl_build.patch .
+RUN patch < ./cu2cl_build.patch
+RUN export CC=/usr/bin/gcc && export CXX=/usr/bin/g++ && ./install.sh && unset CC && unset CXX
+RUN alias cu2cl-tool=/cu2cl-build/cu2cl-build/cu2cl-tool
+
+#Install Rodinia Benchmark Suite
+RUN git clone https://github.com/BeauJoh/rodinia.git /rodinia
+
+#Install rocm
+RUN wget -qO - http://repo.radeon.com/rocm/apt/debian/rocm.gpg.key | apt-key add -
+RUN echo 'deb [arch=amd64] http://repo.radeon.com/rocm/apt/debian/ xenial main' | tee /etc/apt/sources.list.d/rocm.list
+RUN apt-get update
+RUN apt-get install --no-install-recommends -y libnuma-dev libunwind-dev rocm-dev
+
+#Install hcc2
+WORKDIR /downloads
+RUN wget https://github.com/ROCm-Developer-Tools/hcc2/releases/download/rel_0.5-4/hcc2_0.5-4_amd64.deb 
+RUN dpkg -i hcc2_0.5-4_amd64.deb
+
 CMD ["/bin/bash"]
 
 WORKDIR /workspace
@@ -150,4 +194,4 @@ ENV LD_LIBRARY_PATH "${OCLGRIND}/lib:${LSB}/lib:./lib:${LD_LIBRARYPATH}"
 ENV PATH "${PATH}:${OCLGRIND}/bin}"
 
 #start beakerx/jupyter by default
-CMD ["beakerx", "--allow-root"]
+#CMD ["beakerx", "--allow-root"]

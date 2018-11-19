@@ -1,0 +1,11 @@
+--- cu2cl_libTooling.cpp	2018-11-17 20:27:12.495759733 +0000
++++ cu2cl_libTooling.cpp	2018-11-17 20:35:22.277710545 +0000
+@@ -16,7 +16,7 @@
+ */
+ 
+ #define CU2CL_LICENSE \
+-	"/* (C) 2010-2017 Virginia Polytechnic Institute & State University (also known as "Virginia Tech"). All Rights Reserved.\n" \
++	"/* (C) 2010-2017 Virginia Polytechnic Institute & State University (also known as \"Virginia Tech\"). All Rights Reserved.\n" \
+ 	"/* This software is provided as-is.  Neither the authors, Virginia Tech nor Virginia Tech Intellectual Properties, Inc. assert, warrant, or guarantee that the software is fit for any purpose whatsoever, nor do they collectively or individually accept any responsibility or liability for any action or activity that results from the use of this software.  The entire risk as to the quality and performance of the software rests with the user, and no remedies shall be provided by the authors, Virginia Tech or Virginia Tech Intellectual Properties, Inc.\n" \
+ 	"*\n" \
+ 	"*    This library is free software; you can redistribute it and/or modify it under the terms of the attached GNU Lesser General Public License v2.1 as published by the Free Software Foundation.\n" \
