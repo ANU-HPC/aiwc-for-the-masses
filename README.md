@@ -1,5 +1,5 @@
 
-Architecture-Independent Workload Characterization for OpenMP, OpenACC and OpenCL
+Architecture-Independent Workload Characterization for OpenMP, OpenACC, Cuda and OpenCL
 ---------------------------------------------------------------------------------
 
 This artefact uses binder -- automatic cloud hosting of Jupyter workbooks with support for docker. So if you want to avoid all the steps mentioned below, simply click the binder badge.
@@ -25,7 +25,7 @@ To generate a docker image named artefact, run:
 
 To start the docker image run:
 
-`docker run --runtime=nvidia -it --mount src=`pwd`,target=/study,type=bind -p 8888:8888 --net=host artefact`
+`docker run --runtime=nvidia -it --mount src=`pwd`,target=/workspace,type=bind -p 8888:8888 --net=host artefact`
 
 And run the codes with:
 `cd /study/codes`
