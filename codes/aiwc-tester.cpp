@@ -91,6 +91,20 @@ int main(int argc, char** argv){
     char* sk_source = new char[sk_size];
     sk_buf->sgetn(sk_source,sk_size);
 
+    // read synthetic kernel file from SPIR
+    std::string synthetic_spir_path =  synthetic_kernel_path;
+    synthetic_spir_path.replace(synthetic_spir_path.end()-2,synthetic_spir_path.end(),"bc");
+    std::cout << "spir name is:" << synthetic_spir_path << std::endl;
+    std::ifstream spir_handle(synthetic_spir_path, std::ios::in);
+    except(spir_handle.is_open(), "synthetic spir doesn\'t exist");
+    std::cout << "Attempting SPIR kernel: " << synthetic_spir_path << std::endl;
+    std::filebuf* spir_buf = spir_handle.rdbuf();
+    int spir_size = spir_buf->pubseekoff(0,spir_handle.end,spir_handle.in);
+    spir_buf->pubseekpos(0,spir_handle.in);
+    char* spir_bitcode = new char[spir_size];
+    spir_buf->sgetn(spir_bitcode,spir_size);
+    std::cout << "success at populating buffer" << std::endl;
+
     //set-up open compute language
     int sbd_err;
     cl_uint num_platforms = 0;
@@ -170,6 +184,23 @@ int main(int argc, char** argv){
     cl_kernel doubleRead_kernel = clCreateKernel(sbd_program, "doubleRead", &sbd_err);
     except(sbd_err == CL_SUCCESS, "can't create kernel");
 
+    //link program from SPIR -- to create duplicate but equivalent kernels
+    cl_program spir_program = clCreateProgramWithBinary(sbd_context, 1, &sbd_devices[device_id], (const size_t*) &spir_size, (const unsigned char**) &spir_bitcode, NULL, &sbd_err);
+    except(sbd_err == CL_SUCCESS, "can't create program from SPIR");
+    sbd_err = clCompileProgram(spir_program, 1, &sbd_devices[device_id], "-x spir", 0, NULL, NULL, NULL, NULL);
+    except(sbd_err == CL_SUCCESS, "can't compile program from SPIR");
+    spir_program = clLinkProgram(sbd_context, 0, 0, 0, 1, &spir_program, NULL, NULL, &sbd_err);
+    except(sbd_err == CL_SUCCESS, "can't compile program from SPIR");
+    cl_kernel dummyStore_kernel_from_spir = clCreateKernel(spir_program, "dummyStore", &sbd_err);
+    except(sbd_err == CL_SUCCESS, "can't create kernel");
+    cl_kernel simpleStore_kernel_from_spir = clCreateKernel(spir_program, "simpleStore", &sbd_err);
+    except(sbd_err == CL_SUCCESS, "can't create kernel");
+    cl_kernel doubleStore_kernel_from_spir = clCreateKernel(spir_program, "doubleStore", &sbd_err);
+    except(sbd_err == CL_SUCCESS, "can't create kernel");
+    cl_kernel doubleRead_kernel_from_spir = clCreateKernel(spir_program, "doubleRead", &sbd_err);
+    except(sbd_err == CL_SUCCESS, "can't create kernel");
+
+
     LSB_Rec(0);
 
     //memory setup
@@ -182,9 +213,18 @@ int main(int argc, char** argv){
     cl_mem sbd_c = clCreateBuffer(sbd_context,CL_MEM_READ_WRITE,bytes_per_buffer,NULL,&sbd_err);
     except(sbd_err == CL_SUCCESS, "can't create device memory c");
 
-    float* a  = new float[elements]; 
-    float* b  = new float[elements];
-    float* c  = new float[elements];
+    float* a_in  = new float[elements]; 
+    float* b_in  = new float[elements];
+    float* c_in  = new float[elements];
+
+    float* a0_out  = new float[elements]; 
+    float* b0_out  = new float[elements];
+    float* c0_out  = new float[elements];
+
+    float* a1_out  = new float[elements]; 
+    float* b1_out  = new float[elements];
+    float* c1_out  = new float[elements];
+
     LSB_Rec(0);
 
     int sample_size = 100;
@@ -194,17 +234,18 @@ int main(int argc, char** argv){
     //dummy store
     LSB_Set_Rparam_string("kernel","dummyStore");
     for(int i = 0; i < sample_size; i++){
+        std::cout << "Running kernel: dummyStore, from source..." << std::endl;
         LSB_Set_Rparam_string("region", "host_side_initialise_buffers");
-        randomise_payload(a,elements);
-        randomise_payload(b,elements);
-        randomise_payload(c,elements);
+        randomise_payload(a_in,elements);
+        randomise_payload(b_in,elements);
+        randomise_payload(c_in,elements);
         LSB_Rec(i);
 
         LSB_Set_Rparam_string("region","device_side_h2d_copy");
         LSB_Res();
-        sbd_err  = clEnqueueWriteBuffer(sbd_queue,sbd_a,CL_TRUE,0,bytes_per_buffer,a,0,NULL,NULL);
-        sbd_err |= clEnqueueWriteBuffer(sbd_queue,sbd_b,CL_TRUE,0,bytes_per_buffer,b,0,NULL,NULL);
-        sbd_err |= clEnqueueWriteBuffer(sbd_queue,sbd_c,CL_TRUE,0,bytes_per_buffer,c,0,NULL,NULL);
+        sbd_err  = clEnqueueWriteBuffer(sbd_queue,sbd_a,CL_TRUE,0,bytes_per_buffer,a_in,0,NULL,NULL);
+        sbd_err |= clEnqueueWriteBuffer(sbd_queue,sbd_b,CL_TRUE,0,bytes_per_buffer,b_in,0,NULL,NULL);
+        sbd_err |= clEnqueueWriteBuffer(sbd_queue,sbd_c,CL_TRUE,0,bytes_per_buffer,c_in,0,NULL,NULL);
         except(sbd_err == CL_SUCCESS, "can't write to device memory!");
         LSB_Rec(i);
 
@@ -212,6 +253,7 @@ int main(int argc, char** argv){
         size_t global_work[2] = {static_cast<size_t>(M),1};
         size_t local_work[2] = {static_cast<size_t>(w),1}; 
 
+        //from source
         LSB_Set_Rparam_string("region","dummyStore_kernel");
         LSB_Res();
         sbd_err = clSetKernelArg(dummyStore_kernel, 0, sizeof(cl_mem), &sbd_a);
@@ -225,15 +267,61 @@ int main(int argc, char** argv){
 
         clFinish(sbd_queue);
         LSB_Rec(i);
-        
+
+        //store result to check same answer
         LSB_Set_Rparam_string("region","device_side_d2h_copy");
         LSB_Res();
-        sbd_err  = clEnqueueReadBuffer(sbd_queue,sbd_a,CL_TRUE,0,bytes_per_buffer,a,0,NULL,NULL);
-        sbd_err |= clEnqueueReadBuffer(sbd_queue,sbd_b,CL_TRUE,0,bytes_per_buffer,b,0,NULL,NULL);
-        sbd_err |= clEnqueueReadBuffer(sbd_queue,sbd_c,CL_TRUE,0,bytes_per_buffer,c,0,NULL,NULL);
+        sbd_err  = clEnqueueReadBuffer(sbd_queue,sbd_a,CL_TRUE,0,bytes_per_buffer,a0_out,0,NULL,NULL);
+        sbd_err |= clEnqueueReadBuffer(sbd_queue,sbd_b,CL_TRUE,0,bytes_per_buffer,b0_out,0,NULL,NULL);
+        sbd_err |= clEnqueueReadBuffer(sbd_queue,sbd_c,CL_TRUE,0,bytes_per_buffer,c0_out,0,NULL,NULL);
         except(sbd_err == CL_SUCCESS, "can't read from device memory");
         LSB_Rec(i);
+       
+        std::cout << "Running kernel: dummyStore, from spir..." << std::endl;
+
+        LSB_Set_Rparam_string("region","device_side_h2d_copy");
+        LSB_Res();
+        sbd_err  = clEnqueueWriteBuffer(sbd_queue,sbd_a,CL_TRUE,0,bytes_per_buffer,a_in,0,NULL,NULL);
+        sbd_err |= clEnqueueWriteBuffer(sbd_queue,sbd_b,CL_TRUE,0,bytes_per_buffer,b_in,0,NULL,NULL);
+        sbd_err |= clEnqueueWriteBuffer(sbd_queue,sbd_c,CL_TRUE,0,bytes_per_buffer,c_in,0,NULL,NULL);
+        except(sbd_err == CL_SUCCESS, "can't write to device memory!");
+        LSB_Rec(i);
+
+        //from spir
+        LSB_Set_Rparam_string("region","dummyStore_kernel_from_spir");
+        LSB_Res();
+        sbd_err = clSetKernelArg(dummyStore_kernel_from_spir, 0, sizeof(cl_mem), &sbd_a);
+        sbd_err = clSetKernelArg(dummyStore_kernel_from_spir, 1, sizeof(cl_mem), &sbd_b);
+        sbd_err = clSetKernelArg(dummyStore_kernel_from_spir, 2, sizeof(cl_mem), &sbd_c);
+        sbd_err = clSetKernelArg(dummyStore_kernel_from_spir, 3, sizeof(cl_int), &M);
+        except(sbd_err == CL_SUCCESS, "failed to set kernel arguments");
+
+        sbd_err = clEnqueueNDRangeKernel(sbd_queue, dummyStore_kernel_from_spir, 2, NULL, global_work,local_work,0,NULL,NULL);
+        except(sbd_err == CL_SUCCESS, "failed to execute kernel");
+
+        clFinish(sbd_queue);
+        LSB_Rec(i);
+
+        LSB_Set_Rparam_string("region","device_side_d2h_copy");
+        LSB_Res();
+        sbd_err  = clEnqueueReadBuffer(sbd_queue,sbd_a,CL_TRUE,0,bytes_per_buffer,a1_out,0,NULL,NULL);
+        sbd_err |= clEnqueueReadBuffer(sbd_queue,sbd_b,CL_TRUE,0,bytes_per_buffer,b1_out,0,NULL,NULL);
+        sbd_err |= clEnqueueReadBuffer(sbd_queue,sbd_c,CL_TRUE,0,bytes_per_buffer,c1_out,0,NULL,NULL);
+        except(sbd_err == CL_SUCCESS, "can't read from device memory");
+        LSB_Rec(i);
+
+        //ensure the outputs of spir and source kernel outputs are the same
+        assert(same_payload(a0_out,a1_out,elements));
+        assert(same_payload(b0_out,b1_out,elements));
+        assert(same_payload(c0_out,c1_out,elements));
+        std::cout << "Success! Kernel: dummyStore, had the same result from source and spir." << std::endl;
     }
+    delete a0_out,a1_out,b0_out,b1_out,c0_out,c1_out;
+
+    float* a = new float[elements]; 
+    float* b = new float[elements];
+    float* c = new float[elements];
+
     //simple store
     LSB_Set_Rparam_string("kernel","simpleStore");
     for(int i = 0; i < sample_size; i++){

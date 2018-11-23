@@ -25,6 +25,8 @@ ENV PREDICTIONS /opencl-predictions-with-aiwc
 ENV EOD /OpenDwarfs
 ENV OCL_INC /opt/khronos/opencl/include
 ENV OCL_LIB /opt/intel/opencl-1.2-6.4.0.25/lib64
+ENV LLVM_SRC_ROOT /downloads/llvm
+ENV LLVM_BUILD_ROOT /downloads/llvm-build
 
 # Install essential packages.
 RUN apt-get update
@@ -186,6 +188,20 @@ RUN apt-get install --no-install-recommends -y libnuma-dev libunwind-dev rocm-de
 WORKDIR /downloads
 RUN wget https://github.com/ROCm-Developer-Tools/hcc2/releases/download/rel_0.5-4/hcc2_0.5-4_amd64.deb 
 RUN dpkg -i hcc2_0.5-4_amd64.deb
+
+#Install SPIR generator
+RUN apt-get install --no-install-recommends -y subversion libxml2-dev
+WORKDIR /downloads
+RUN git clone http://llvm.org/git/llvm.git llvm
+WORKDIR /downloads/llvm
+RUN git checkout --track -b release_32 remotes/origin/release_32
+WORKDIR $LLVM_SRC_ROOT/tools
+RUN git clone https://github.com/KhronosGroup/SPIR clang
+WORKDIR $LLVM_SRC_ROOT/tools/clang
+RUN git checkout spir_12
+WORKDIR $LLVM_BUILD_ROOT
+RUN cmake $LLVM_SRC_ROOT && make
+RUN make install
 
 CMD ["/bin/bash"]
 
