@@ -164,6 +164,7 @@ int main(int argc, char** argv){
     std::string compiler_flags = "-DTILE_DIM=" + std::to_string(w); 
     cl_program sbd_program = clCreateProgramWithSource(sbd_context, 1, (const char **) &sk_source, NULL, &sbd_err);
     except(sbd_err == CL_SUCCESS, "can't build kernel");
+    std::cout << "Compiling kernel with flags: " << compiler_flags << std::endl;
     sbd_err = clBuildProgram(sbd_program, 1, &sbd_devices[device_id], compiler_flags.c_str(), NULL, NULL);
     if(sbd_err != CL_SUCCESS){//print error during kernel compilation
         size_t log_size;
@@ -235,6 +236,7 @@ int main(int argc, char** argv){
     LSB_Set_Rparam_string("kernel","dummyStore");
     for(int i = 0; i < sample_size; i++){
         std::cout << "Running kernel: dummyStore, from source..." << std::endl;
+        LSB_Set_Rparam_string("kernel","dummyStore_from_source");
         LSB_Set_Rparam_string("region", "host_side_initialise_buffers");
         randomise_payload(a_in,elements);
         randomise_payload(b_in,elements);
@@ -277,8 +279,9 @@ int main(int argc, char** argv){
         except(sbd_err == CL_SUCCESS, "can't read from device memory");
         LSB_Rec(i);
        
+        //from spir
         std::cout << "Running kernel: dummyStore, from spir..." << std::endl;
-
+        LSB_Set_Rparam_string("kernel","dummyStore_from_spir");
         LSB_Set_Rparam_string("region","device_side_h2d_copy");
         LSB_Res();
         sbd_err  = clEnqueueWriteBuffer(sbd_queue,sbd_a,CL_TRUE,0,bytes_per_buffer,a_in,0,NULL,NULL);
@@ -287,7 +290,6 @@ int main(int argc, char** argv){
         except(sbd_err == CL_SUCCESS, "can't write to device memory!");
         LSB_Rec(i);
 
-        //from spir
         LSB_Set_Rparam_string("region","dummyStore_kernel_from_spir");
         LSB_Res();
         sbd_err = clSetKernelArg(dummyStore_kernel_from_spir, 0, sizeof(cl_mem), &sbd_a);
