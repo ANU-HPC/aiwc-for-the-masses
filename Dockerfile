@@ -203,7 +203,43 @@ WORKDIR $LLVM_BUILD_ROOT
 RUN cmake $LLVM_SRC_ROOT && make
 RUN make install
 
-CMD ["/bin/bash"]
+#Install cuda-on-cl
+ARG GIT_BRANCH=master
+WORKDIR /coriander
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    cmake cmake-curses-gui git gcc g++ libc6-dev zlib1g-dev \
+    libtinfo-dev \
+    curl ca-certificates build-essential wget xz-utils \
+    clinfo apt-utils\
+    bash-completion
+#RUN mkdir /usr/lib/nvidia
+#RUN apt-get install -y --no-install-recommends nvidia-opencl-icd-367
+RUN git clone --recursive https://github.com/hughperkins/coriander -b ${GIT_BRANCH}
+RUN cd coriander && \
+    mkdir soft && \
+    cd soft && \
+    wget --progress=dot:giga http://releases.llvm.org/4.0.0/clang+llvm-4.0.0-x86_64-linux-gnu-ubuntu-16.04.tar.xz
+RUN cd coriander/soft && \
+    tar -xf clang+llvm-4.0.0-x86_64-linux-gnu-ubuntu-16.04.tar.xz && \
+    mv clang+llvm-4.0.0-x86_64-linux-gnu-ubuntu-16.04 llvm-4.0
+RUN cd coriander && \
+    mkdir build && \
+    cd build && \
+    cmake .. -DCMAKE_BUILD_TYPE=Debug -DCLANG_HOME=$PWD/../soft/llvm-4.0 && \
+    make -j 4
+RUN cd coriander/build && \
+    make -j 4 tests
+RUN cd coriander/build && \
+    make install
+
+#Install clblas
+RUN git clone https://github.com/CNugteren/CLBlast.git /downloads/clblast
+WORKDIR /downloads/clblast/build
+RUN cmake .. && make -j 8 && make install
+
+#container environment setup
+SHELL ["/bin/bash", "-c"]
+CMD source ~/coriander/activate && bash
 
 WORKDIR /workspace
 ENV LD_LIBRARY_PATH "${OCLGRIND}/lib:${LSB}/lib:./lib:${LD_LIBRARYPATH}"
