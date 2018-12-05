@@ -134,6 +134,7 @@ RUN export RUNTIME_URL="http://registrationcenter-download.intel.com/akdlm/irc_n
 
 RUN mkdir -p /etc/OpenCL/vendors/ \
     && echo "$OCL_LIB/libintelocl.so" > /etc/OpenCL/vendors/intel.icd
+RUN echo /usr/lib/x86_64-linux-gnu/libnvidia-opencl.so.1 > /etc/OpenCL/vendors/nvidia.icd
 
 # Let the system know where the OpenCL library can be found at load time.
 ENV LD_LIBRARY_PATH $OCL_LIB:$LD_LIBRARY_PATH
