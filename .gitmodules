@@ -1,0 +1,3 @@
+[submodule "codes/coriander:cuda-to-opencl"]
+	path = codes/coriander:cuda-to-opencl
+	url = git@github.com:BeauJoh/coriander-and-oclgrind.git
