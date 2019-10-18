@@ -401,5 +401,5 @@ ENV OPENARC_ARCH 1
 ENV ACC_DEVICE_TYPE RADEON
 
 #Test by default
-WORKDIR /workspace/codes/coriander:cuda-to-opencl
+WORKDIR /workspace/codes
 CMD make test && make clean
