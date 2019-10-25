@@ -19,7 +19,7 @@ gaussian_opencl: ./gaussian_cuda_version/gaussian.cu
 #Uses OpenARC to perform source-to-source translation from OpenACC -> OpenCL
 OPENARC_ARGS = OPENARCRT=/workspace/codes/OpenARC/openarcrt OPENARC_ARCH=1 ACC_DEVICE_TYPE=RADEON
 gaussian_openacc: ./gaussian_openacc_version/gaussian.c
-	cd ./gaussian_openacc_version; ${OPENARC_ARGS} ./O2Build.script; ${OPENARC_ARGS} make
+	cd ./gaussian_openacc_version; ${OPENARC_ARGS} ./O2GBuild.script; ${OPENARC_ARGS} make
 
 gaussian_hand_opencl: gaussian_opencl_version/*.cpp
 	cp gaussian_opencl_version/gaussianElim_kernels.cl .
@@ -32,6 +32,12 @@ test_gaussian: gaussian_cuda gaussian_opencl gaussian_hand_opencl gaussian_opena
 	${OCLGRIND_BIN} --aiwc ./gaussian_opencl ./data/gaussian_matrix4.txt; mv aiwc_* gaussian_results/cuda && \
 	${OCLGRIND_BIN} --aiwc ./gaussian_hand_opencl ./data/gaussian_matrix4.txt -p 0 -d 0; mv aiwc_* gaussian_results/opencl && \
 	cd gaussian_openacc_version/bin; ${OCLGRIND_BIN} --aiwc ./gaussian_ACC ../../data/gaussian_matrix4.txt ; mv aiwc_* ../../gaussian_results/openacc
+
+test_gaussian_openacc: gaussian_openacc
+	rm -rf gaussian_results; mkdir -p gaussian_results; mkdir -p gaussian_results/cuda; mkdir -p gaussian_results/opencl; mkdir -p gaussian_results/openacc && \
+	cd gaussian_openacc_version/bin; ${OCLGRIND_BIN} --aiwc ./gaussian_ACC ../../data/gaussian_matrix4.txt ; mv aiwc_* ../../gaussian_results/openacc
+
+
 
 #######
 # BFS #
@@ -166,5 +172,5 @@ test_heartwall: heartwall_cuda heartwall_hand_opencl
 	${OCLGRIND_BIN} --aiwc ./heartwall_hand_opencl 5
 
 clean:
-	rm -f *.ll *.o gaussian_cuda gaussian_opencl gaussian_hand_opencl myocyte_hand_opencl *.cl aiwc_* heartwall_cuda heartwall_opencl heartwall_hand_opencl backprop_opencl bfs_cuda bfs_opencl bfs_hand_opencl
+	rm -f *.ll *.o gaussian_cuda gaussian_opencl gaussian_hand_opencl myocyte_hand_opencl *.cl aiwc_* heartwall_cuda heartwall_opencl heartwall_hand_opencl backprop_opencl bfs_cuda bfs_opencl bfs_hand_opencl -r gaussian_openacc_version/cetus_output gaussian_openacc_version/bin
 

@@ -1,6 +1,7 @@
 #ifndef __GAUSSIAN_ELIMINATION__
 #define __GAUSSIAN_ELIMINATION__
 
+#define MAXGROUPSIZE 512
 #include "gaussianElim.h"
 
 cl_context context=NULL;
@@ -162,11 +163,15 @@ void ForwardSub(cl_context context, float *a, float *b, float *m, int size,int t
     // 3. Determine block sizes
     size_t globalWorksizeFan1[1];
     size_t globalWorksizeFan2[2];
-    
+    size_t localWorksizeFan1[1];
+
 	globalWorksizeFan1[0] = size;
 	globalWorksizeFan2[0] = size;
 	globalWorksizeFan2[1] = size;
-	
+    localWorksizeFan1[0] = (size % MAXGROUPSIZE == 0) ? MAXGROUPSIZE : size;
+    globalWorksizeFan1[0] = size;
+	printf("sizing info: fan1 %d global workitems in %d sized workgroups, fan2 %dx%d workitems \n",globalWorksizeFan1[0], localWorksizeFan1[0],globalWorksizeFan2[0],globalWorksizeFan2[1]);
+
 	int t;
 	// 4. Setup and Run kernels
 	for (t=0; t<(size-1); t++) {
@@ -183,7 +188,7 @@ void ForwardSub(cl_context context, float *a, float *b, float *m, int size,int t
         // launch kernel
         error = clEnqueueNDRangeKernel(
                   command_queue,  fan1_kernel, 1, 0,
-                  globalWorksizeFan1,NULL,
+                  globalWorksizeFan1,localWorksizeFan1,
                   0, NULL, &kernelEvent);
 
         cl_errChk(error,"ERROR in Executing Fan1 Kernel",true);

@@ -260,8 +260,8 @@ void ForwardSub()
 	cudaMemcpy(b_cuda, b, Size * sizeof(float),cudaMemcpyHostToDevice );
 	
 	int block_size,grid_size;
-	
-	block_size = MAXBLOCKSIZE;
+	//if we have smaller work to do than the max block size, just run 1 block of that size
+	block_size = (Size % MAXBLOCKSIZE == 0) ? MAXBLOCKSIZE : Size;
 	grid_size = (Size/block_size) + (!(Size%block_size)? 0:1);
 	//printf("1d grid size: %d\n",grid_size);
 
@@ -276,7 +276,7 @@ void ForwardSub()
 	
 	dim3 dimBlockXY(blockSize2d,blockSize2d);
 	dim3 dimGridXY(gridSize2d,gridSize2d);
-
+    printf("sizing info: %dx%d blocks, in a %dx%d grid\n",blockSize2d,blockSize2d,gridSize2d,gridSize2d);
     // begin timing kernels
     struct timeval time_start;
     gettimeofday(&time_start, NULL);

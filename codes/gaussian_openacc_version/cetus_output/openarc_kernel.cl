@@ -24,46 +24,41 @@
 #endif
 
 
-__kernel void __attribute__((reqd_work_group_size(64, 1, 1))) Fan1_kernel0(int lfpriv__Size, int lfpriv__t, __global float * a, __global float * m)
+__kernel void  Fan1_kernel0(__global float * a, __global float * m, int Size, int gangs, int t, int workers)
 {
+int _ti_100_501;
 int lwpriv__i;
-lwpriv__i=get_global_id(0);
-#pragma acc  parallel loop num_workers(64) gang worker independent present(a[0:(Size*Size)], m[0:(Size*Size)]) private(i) firstprivate(Size, t) num_gangs(((int)ceil((((float)((-1+Size)+(-1*t)))/64.0F))))
-if (lwpriv__i<((lfpriv__Size-1)-lfpriv__t))
+_ti_100_501=get_global_id(0);
+#pragma acc  kernels loop gang(gangs) worker(workers) independent copyin(Size, t) present(a[0:(Size*Size)], m[0:(Size*Size)]) private(i)
+if (_ti_100_501<(get_num_groups(0)*workers))
 {
-m[((lfpriv__Size*((lwpriv__i+lfpriv__t)+1))+lfpriv__t)]=(a[((lfpriv__Size*((lwpriv__i+lfpriv__t)+1))+lfpriv__t)]/a[((lfpriv__Size*lfpriv__t)+lfpriv__t)]);
+for (lwpriv__i=(_ti_100_501+0); lwpriv__i<((Size-1)-t); (lwpriv__i+=(get_num_groups(0)*workers)))
+{
+m[((Size*((lwpriv__i+t)+1))+t)]=(a[((Size*((lwpriv__i+t)+1))+t)]/a[((Size*t)+t)]);
 }
-return ;
+}
 }
 
-__kernel void __attribute__((reqd_work_group_size(64, 1, 1))) Fan2_kernel0(int lfpriv__Size, int lfpriv__t, __global float * a, __global float * m)
+__kernel void  Fan2_kernel0(__global float * a, __global float * b, __global float * m, int Size, int gangs, int t, int workers)
 {
-int lgpriv__i;
-int _ti_100_201;
-lgpriv__i=get_group_id(0);
-#pragma acc  parallel loop num_workers(64) gang independent present(a[0:(Size*Size)], m[0:(Size*Size)]) private(i, j) firstprivate(Size, t) num_gangs(((-1+Size)+(-1*t)))
-if (lgpriv__i<((lfpriv__Size-1)-lfpriv__t))
-{
-_ti_100_201=get_local_id(0);
-#pragma acc  loop worker independent private(j)
-{
+int _ti_100_501;
+int lwpriv__i;
 int lwpriv__j;
-for (lwpriv__j=(_ti_100_201+0); lwpriv__j<(lfpriv__Size-lfpriv__t); (lwpriv__j+=64))
+_ti_100_501=get_global_id(0);
+#pragma acc  kernels loop gang(gangs) worker(workers) independent copyin(Size, t) present(a[0:(Size*Size)], b[0:Size], m[0:(Size*Size)]) private(i, j)
+if (_ti_100_501<(get_num_groups(0)*workers))
 {
-a[((lfpriv__Size*((lgpriv__i+1)+lfpriv__t))+(lwpriv__j+lfpriv__t))]-=(m[((lfpriv__Size*((lgpriv__i+1)+lfpriv__t))+lfpriv__t)]*a[((lfpriv__Size*lfpriv__t)+(lwpriv__j+lfpriv__t))]);
-}
-}
-}
-}
-
-__kernel void __attribute__((reqd_work_group_size(64, 1, 1))) Fan2_kernel1(int lfpriv__Size, int lfpriv__t, __global float * b, __global float * m)
+for (lwpriv__i=(_ti_100_501+0); lwpriv__i<((Size-1)-t); (lwpriv__i+=(get_num_groups(0)*workers)))
 {
-int lwpriv__i;
-lwpriv__i=get_global_id(0);
-#pragma acc  parallel loop num_workers(64) gang worker independent present(b[0:Size], m[0:(Size*Size)]) private(i) firstprivate(Size, t) num_gangs(((int)ceil((((float)((-1+Size)+(-1*t)))/64.0F))))
-if (lwpriv__i<((lfpriv__Size-1)-lfpriv__t))
+float m_0;
+m_0=m[((Size*((lwpriv__i+1)+t))+t)];
+#pragma acc  loop private(j)
+for (lwpriv__j=0; lwpriv__j<(Size-t); lwpriv__j ++ )
 {
-b[((lwpriv__i+1)+lfpriv__t)]-=(m[((lfpriv__Size*((lwpriv__i+1)+lfpriv__t))+lfpriv__t)]*b[lfpriv__t]);
+a[((Size*((lwpriv__i+1)+t))+(lwpriv__j+t))]-=(m_0*a[((Size*t)+(lwpriv__j+t))]);
+}
+b[((lwpriv__i+1)+t)]-=(m_0*b[t]);
+}
 }
 }
 

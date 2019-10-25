@@ -19,9 +19,10 @@
 #include <string.h>
 
 int Size;
+int workers,gangs;
 float *a, *b, *finalVec;
 float *m;
-
+#define MAXBLOCKSIZE 512
 FILE *fp;
 
 void InitProblemOnce(char *filename);
@@ -78,7 +79,6 @@ int main(int argc, char *argv[])
     InitPerRun(m);
     //begin timing
     gettimeofday(&time_start, NULL);	
-    
     // run kernels
     ForwardSub();
     
@@ -139,7 +139,8 @@ void InitProblemOnce(char *filename)
 	//printf("The input matrix a is:\n");
 	//PrintMat(a, Size, Size);
 	b = (float *) malloc(Size * sizeof(float));
-	
+    gangs = (Size % MAXBLOCKSIZE == 0) ? MAXBLOCKSIZE : Size;
+    workers = (Size/gangs) + (!(Size%gangs)? 0:1);
 	InitAry(b, Size);
 	//printf("The input array b is:\n");
 	//PrintAry(b, Size);
@@ -171,7 +172,7 @@ void InitPerRun(float *m)
 void Fan1(float *m, float *a, int Size, int t)
 {   
 	int i;
-	#pragma acc parallel loop present(m,a)
+	#pragma acc kernels loop independent gang(gangs) worker(workers) //parallel loop present(m,a)
 	for (i=0; i<Size-1-t; i++)
 		m[Size*(i+t+1)+t] = a[Size*(i+t+1)+t] / a[Size*t+t];
 }
@@ -184,15 +185,13 @@ void Fan1(float *m, float *a, int Size, int t)
 void Fan2(float *m, float *a, float *b,int Size, int j1, int t)
 {
 	int i,j;
-	#pragma acc parallel loop present(m,a)
+	#pragma acc kernels loop independent gang(gangs) worker(workers) //#pragma acc parallel loop present(m,a)
 	for (i=0; i<Size-1-t; i++) {
 	    #pragma acc loop
 		for (j=0; j<Size-t; j++)
 			a[Size*(i+1+t)+(j+t)] -= m[Size*(i+1+t)+t] * a[Size*t+(j+t)];
-	}
-	#pragma acc parallel loop present(m,b)
-	for (i=0; i<Size-1-t; i++)
 		b[i+1+t] -= m[Size*(i+1+t)+t] * b[t];
+	}
 }
 
 /*------------------------------------------------------
@@ -203,7 +202,7 @@ void Fan2(float *m, float *a, float *b,int Size, int j1, int t)
 void ForwardSub()
 {
 	int t;
-
+    printf("sizing info: %d gangs %d workers\n",gangs,workers);
 #pragma acc data copy(m[0:Size*Size],a[0:Size*Size],b[0:Size])
 {
     // begin timing kernels
