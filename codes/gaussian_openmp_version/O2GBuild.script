@@ -10,8 +10,8 @@ else
 	verLevel=0
 fi
 
-openarcrt="/workspace/codes/OpenARC/openarcrt"
-openarclib="/workspace/codes/OpenARC/lib"
+openarcrt="${openarc}/openarcrt"
+openarclib="${openarc}/lib"
 
 if [ ! -f "openarcConf.txt" ]; then
     cp "openarcConf_NORMAL.txt" "openarcConf.txt"

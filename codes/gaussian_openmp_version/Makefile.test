@@ -1,0 +1,48 @@
+########################
+# Set the program name #
+########################
+BENCHMARK = gaussian
+
+########################################
+# Set the input C source files (CSRCS) #
+########################################
+#CSRCS = cetus_output/jacobi.c
+CSRCS = gaussian.c
+
+#########################################################
+# Use the following macros to give program-specific     #
+# compiler flags and libraries                          #
+# - CFLAGS1 and CLIBS1 to compile the input C program   #
+# - CFLAGS2 and CLIBS2 to compile the OpenARC-generated #
+#   output C++ program                                  # 
+#########################################################
+CXX=clang
+#CFLAGS1 = -Wall -O3 -I. -fopenmp -fopenmp-targets=x86_64 -lm
+CFLAGS1 = -Wall -O3 -I. -fopenmp -fopenmp-targets=nvptx64 -lm
+
+#CXX=pgcc
+#CFLAGS1 = -I. -Minfo=mp,acc -V19.4 -Mllvm -fast -acc -mp -Mnouniform -ta=multicore
+#CFLAGS1 = -I. -Minfo=mp,acc -V19.4 -Mllvm -fast -acc -mp -Mnouniform -ta=tesla:cc60
+#CFLAGS1 = -I. -Minfo=mp,acc -V19.4 -Mllvm -fast -acc -mp -Mnouniform -ta=tesla:cc70
+
+#CXX=icc
+#CFLAGS1= -Wall -I. -O2 -xAVX -qopenmp -qopenmp-offload=host
+#CFLAGS1= -Wall -I. -O2 -xAVX -qno-openmp -parallel
+
+#CXX=xlc
+#CFLAGS1= -I. -Wall -O2 -qarch=pwr9 -qsmp=omp -qnooffload #host power9
+#CFLAGS1= -I. -Wall -O2 -qsmp=omp -qoffload #device V100#
+
+################################################
+# TARGET is where the output binary is stored. #
+################################################
+TARGET = .
+
+$(TARGET)/$(BENCHMARK): $(CSRCS)
+	$(CXX) $(CFLAGS1) $(CSRCS) -o $(TARGET)/$(BENCHMARK)
+
+clean:
+	rm -f $(TARGET)/$(BENCHMARK)
+
+purge:
+	rm -rf bin cetus_output openarcConf.txt $(TARGET)/$(BENCHMARK) *.o
