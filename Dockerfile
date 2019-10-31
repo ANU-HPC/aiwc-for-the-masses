@@ -142,7 +142,9 @@ RUN Rscript -e "devtools::install_github('IRkernel/IRkernel')"\
     && Rscript -e "devtools::install_github('cran/Metrics')"\
     && Rscript -e "devtools::install_github('cran/latex2exp')"\
     && Rscript -e "devtools::install_github('cran/akima')" \
-    && Rscript -e "devtools::install_github('cran/pander')"
+    && Rscript -e "devtools::install_github('cran/pander')"\
+    && Rscript -e "devtools::install_github('cran/broman')"\
+    && Rscript -e "devtools::install_github('cran/gtools')"
 RUN beakerx install
 
 # Setup OpenARC

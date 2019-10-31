@@ -31,13 +31,18 @@ test_gaussian: gaussian_cuda gaussian_opencl gaussian_hand_opencl gaussian_opena
 	./gaussian_cuda ./data/gaussian_matrix4.txt && \
 	${OCLGRIND_BIN} --aiwc ./gaussian_opencl ./data/gaussian_matrix4.txt; mv aiwc_* gaussian_results/cuda && \
 	${OCLGRIND_BIN} --aiwc ./gaussian_hand_opencl ./data/gaussian_matrix4.txt -p 0 -d 0; mv aiwc_* gaussian_results/opencl && \
-	cd gaussian_openacc_version/bin; ${OCLGRIND_BIN} --aiwc ./gaussian_ACC ../../data/gaussian_matrix4.txt ; mv aiwc_* ../../gaussian_results/openacc
+	cd gaussian_openacc_version/bin; ${OCLGRIND_BIN} --aiwc ./gaussian_ACC ../../data/gaussian_matrix4.txt ; mv aiwc_* ../../gaussian_results/openacc && \
+	cd ../.. && make rename_aiwc_features
 
 test_gaussian_openacc: gaussian_openacc
 	rm -rf gaussian_results; mkdir -p gaussian_results; mkdir -p gaussian_results/cuda; mkdir -p gaussian_results/opencl; mkdir -p gaussian_results/openacc && \
 	cd gaussian_openacc_version/bin; ${OCLGRIND_BIN} --aiwc ./gaussian_ACC ../../data/gaussian_matrix4.txt ; mv aiwc_* ../../gaussian_results/openacc
 
 
+rename_aiwc_features:
+	for file in ./gaussian_results/*/*.csv; do \
+		python3 ./oclgrind-feature-rename.py $${file}; \
+	done
 
 #######
 # BFS #
