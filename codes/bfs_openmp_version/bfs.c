@@ -51,7 +51,7 @@ void BFSGraph( int argc, char** argv)
   bool *h_graph_visited;
 
   int start, edgeno;   
-  int i,k;
+  int i,k, tid;
   bool stop;
   int id,cost;
   FILE *fpo;
@@ -114,11 +114,11 @@ void BFSGraph( int argc, char** argv)
 
 #pragma omp target data map(alloc:h_updating_graph_mask[0:no_of_nodes]) \
   map(alloc:h_graph_mask[0:no_of_nodes],h_graph_visited[0:no_of_nodes]) \
-  map(alloc:h_graph_nodes[0:no_of_nodes], h_graph_edges[0:edge_list_size]) \
+  map(to:h_graph_nodes[0:no_of_nodes], h_graph_edges[0:edge_list_size]) \
   map(from:h_cost[0:no_of_nodes]) map(to:source)
   {
 
-    #pragma omp target data map(to:h_graph_nodes[0:no_of_nodes]) // nowait
+    //#pragma omp target data map(to:h_graph_nodes[0:no_of_nodes]) // nowait
     #pragma omp target teams distribute parallel for private(i)
     for( i = 0; i < no_of_nodes; i++)
     {
@@ -127,7 +127,7 @@ void BFSGraph( int argc, char** argv)
       h_graph_visited[i]=false;
     }
 
-    #pragma omp target 
+    #pragma omp target private(source)
     {
       //set the source node as true in the mask
       h_graph_mask[source]=true;
@@ -135,14 +135,14 @@ void BFSGraph( int argc, char** argv)
     }
 
     // allocate mem for the result on host side
-    #pragma omp target teams distribute parallel for 
+    #pragma omp target teams distribute parallel for private(source)
     for(i=0;i<no_of_nodes;i++) {
       h_cost[i]=-1;
       if(i == source) h_cost[source]=0;
     }
 
-    // finish transfer node and edge to target
-    #pragma omp target map(to:h_graph_edges[0:edge_list_size])
+    // finish transfer node and edge to target 
+    //#pragma omp target map(to:h_graph_edges[0:edge_list_size])
     //#pragma omp target depend(...) 
 
     printf("Start traversing the tree\n");
@@ -154,7 +154,7 @@ void BFSGraph( int argc, char** argv)
       //if no thread changes this value then the loop stops
       stop=false;
       #pragma omp target teams distribute parallel for
-      for(int tid = 0; tid < no_of_nodes; tid++ )
+      for(tid = 0; tid < no_of_nodes; tid++ )
       {
         if (h_graph_mask[tid] == true){ 
           h_graph_mask[tid]=false;
@@ -170,9 +170,9 @@ void BFSGraph( int argc, char** argv)
         }
       }
 
-      #pragma omp target data map(tofrom:stop)
+      //#pragma omp target data map(tofrom:stop)
       #pragma omp target teams distribute parallel for reduction(||:stop)
-      for(int tid=0; tid< no_of_nodes ; tid++ )
+      for(tid=0; tid< no_of_nodes ; tid++ )
       {
         if (h_updating_graph_mask[tid] == true){
           h_graph_mask[tid]=true;

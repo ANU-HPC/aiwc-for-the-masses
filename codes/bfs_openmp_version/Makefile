@@ -64,7 +64,6 @@ MODE ?= normal
 # - CFLAGS2 and CLIBS2 to compile the OpenARC-generated #
 #   output C++ program                                  # 
 #########################################################
-OPENARCLIB  = $(OPENARCRT)
 #CFLAGS1 =  
 #CFLAGS2 =  
 CLIBS1 = -lm
