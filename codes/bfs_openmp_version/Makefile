@@ -1,4 +1,4 @@
-include /workspace/codes/OpenARC/make.header
+include $(openarc)/make.header
 
 ########################
 # Set the program name #
@@ -64,7 +64,6 @@ MODE ?= normal
 # - CFLAGS2 and CLIBS2 to compile the OpenARC-generated #
 #   output C++ program                                  # 
 #########################################################
-OPENARCLIB  = $(OPENARCRT)
 #CFLAGS1 =  
 #CFLAGS2 =  
 CLIBS1 = -lm
@@ -75,4 +74,4 @@ CLIBS1 = -lm
 ################################################
 #TARGET ?= ./bin
 
-include /workspace/codes/OpenARC/make.template
+include $(openarc)/make.template

@@ -1,4 +1,4 @@
-include /workspace/codes/OpenARC/make.header
+include $(openarc)/make.header
 
 ########################
 # Set the program name #
@@ -74,4 +74,4 @@ CLIBS1 = -lm
 ################################################
 #TARGET ?= ./bin
 
-include /workspace/codes/OpenARC/make.template
+include $(openarc)/make.template

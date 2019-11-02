@@ -171,7 +171,7 @@ void InitPerRun(float *m)
 void Fan1(float *m, float *a, int Size, int t)
 {   
 	int i;
-	#pragma omp parallel for shared(m,a)
+        #pragma omp target teams distribute parallel for 
 	for (i=0; i<Size-1-t; i++)
 		m[Size*(i+t+1)+t] = a[Size*(i+t+1)+t] / a[Size*t+t];
 }
@@ -184,13 +184,14 @@ void Fan1(float *m, float *a, int Size, int t)
 void Fan2(float *m, float *a, float *b,int Size, int j1, int t)
 {
 	int i,j;
-	//#pragma omp parallel loop present(m,a)
+        #pragma omp target teams distribute parallel for collapse(2)
+        //#pragma omp target teams distribute
 	for (i=0; i<Size-1-t; i++) {
-	    //#pragma omp loop
+                //#pragma omp parallel for private(i)
 		for (j=0; j<Size-t; j++)
 			a[Size*(i+1+t)+(j+t)] -= m[Size*(i+1+t)+t] * a[Size*t+(j+t)];
 	}
-	//#pragma omp parallel loop present(m,b)
+        #pragma omp target teams distribute parallel for
 	for (i=0; i<Size-1-t; i++)
 		b[i+1+t] -= m[Size*(i+1+t)+t] * b[t];
 }
@@ -204,7 +205,7 @@ void ForwardSub()
 {
 	int t;
 
-//#pragma omp data copy(m[0:Size*Size],a[0:Size*Size],b[0:Size])
+#pragma omp target data map(tofrom:m[0:Size*Size], a[0:Size*Size], b[0:Size])
 {
     // begin timing kernels
     struct timeval time_start;
