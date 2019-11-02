@@ -28,11 +28,20 @@ gaussian_hand_opencl: gaussian_opencl_version/*.cpp
 #run each of the implementations of the gaussian elimination benchmark and store the AIWC features in the local directory called "gaussian_results"
 test_gaussian: gaussian_cuda gaussian_opencl gaussian_hand_opencl gaussian_openacc
 	rm -rf gaussian_results; mkdir -p gaussian_results; mkdir -p gaussian_results/cuda; mkdir -p gaussian_results/opencl; mkdir -p gaussian_results/openacc && \
+	echo "Running CUDA version..." && \
 	./gaussian_cuda ./data/gaussian_matrix4.txt && \
+	echo "Done." && \
+	echo "Running Coriander/CUDA version..." && \
 	${OCLGRIND_BIN} --aiwc ./gaussian_opencl ./data/gaussian_matrix4.txt; mv aiwc_* gaussian_results/cuda && \
+	echo "Done." && \
+	echo "Running OpenCL version..." && \
 	${OCLGRIND_BIN} --aiwc ./gaussian_hand_opencl ./data/gaussian_matrix4.txt -p 0 -d 0; mv aiwc_* gaussian_results/opencl && \
+	echo "Done." && \
+	echo "Running OpenACC version..." && \
 	cd gaussian_openacc_version/bin; ${OCLGRIND_BIN} --aiwc ./gaussian_ACC ../../data/gaussian_matrix4.txt ; mv aiwc_* ../../gaussian_results/openacc && \
-	cd ../.. && make rename_aiwc_features
+	cd ../.. && \
+	echo "Done." && \
+       	make rename_aiwc_features
 
 test_gaussian_openacc: gaussian_openacc
 	rm -rf gaussian_results; mkdir -p gaussian_results; mkdir -p gaussian_results/cuda; mkdir -p gaussian_results/opencl; mkdir -p gaussian_results/openacc && \
@@ -106,13 +115,6 @@ hotspot_opencl: hotspot_cuda_version/hotspot.cu
 hotspot_hand_opencl: bfs_opencl_version/bfs.cpp bfs_opencl_version/CLHelper.h
 	cp bfs_opencl_version/Kernels.cl ./bfs_kernels.cl
 	g++ bfs_opencl_version/bfs.cpp -I./bfs_opencl_version/ -lOpenCL -o bfs_hand_opencl
-
-test_bfs: bfs_cuda bfs_opencl bfs_hand_opencl
-	./hotspot_cuda 512 2 2 ./data/hotspot_temp_512 ./data/hotspot_power_512 output.out
-	${OCLGRIND_BIN} --aiwc ./bfs_opencl ./data/bfs_graph1MW_6.txt;
-	${OCLGRIND_BIN} --aiwc ./bfs_hand_opencl ./data/bfs_graph1MW_6.txt;
-
-
 
 #######
 # CFD #

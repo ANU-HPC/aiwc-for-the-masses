@@ -146,6 +146,7 @@ RUN Rscript -e "devtools::install_github('IRkernel/IRkernel')"\
     && Rscript -e "devtools::install_github('cran/broman')"\
     && Rscript -e "devtools::install_github('cran/gtools')"
 RUN beakerx install
+RUN apt-get update && apt-get install --no-install-recommends -y colordiff
 
 # Setup OpenARC
 RUN apt-get update && apt-get install -yyq openjdk-8-jre openjdk-8-jdk

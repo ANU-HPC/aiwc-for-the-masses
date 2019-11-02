@@ -263,6 +263,8 @@ void ForwardSub()
 	//if we have smaller work to do than the max block size, just run 1 block of that size
 	block_size = (Size % MAXBLOCKSIZE == 0) ? MAXBLOCKSIZE : Size;
 	grid_size = (Size/block_size) + (!(Size%block_size)? 0:1);
+    //block_size = 1;
+    //grid_size = 1;
 	//printf("1d grid size: %d\n",grid_size);
 
 

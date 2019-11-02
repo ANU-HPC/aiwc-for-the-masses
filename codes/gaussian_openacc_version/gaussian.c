@@ -19,7 +19,7 @@
 #include <string.h>
 
 int Size;
-int workers,gangs;
+int fan1_workers,fan1_gangs,fan2_workers,fan2_gangs;
 float *a, *b, *finalVec;
 float *m;
 #define MAXBLOCKSIZE 512
@@ -139,8 +139,10 @@ void InitProblemOnce(char *filename)
 	//printf("The input matrix a is:\n");
 	//PrintMat(a, Size, Size);
 	b = (float *) malloc(Size * sizeof(float));
-    gangs = (Size % MAXBLOCKSIZE == 0) ? MAXBLOCKSIZE : Size;
-    workers = (Size/gangs) + (!(Size%gangs)? 0:1);
+    fan1_gangs = (Size % MAXBLOCKSIZE == 0) ? MAXBLOCKSIZE : Size;
+    fan1_workers = (Size/fan1_gangs) + (!(Size%fan1_gangs)? 0:1);
+    fan2_gangs = fan1_gangs*fan1_gangs;
+    fan2_workers = fan1_workers*fan1_workers;
 	InitAry(b, Size);
 	//printf("The input array b is:\n");
 	//PrintAry(b, Size);
@@ -172,7 +174,7 @@ void InitPerRun(float *m)
 void Fan1(float *m, float *a, int Size, int t)
 {   
 	int i;
-	#pragma acc kernels loop independent gang(gangs) worker(workers) //parallel loop present(m,a)
+	#pragma acc kernels loop independent gang(fan1_gangs) worker(fan1_workers) //parallel loop present(m,a)
 	for (i=0; i<Size-1-t; i++)
 		m[Size*(i+t+1)+t] = a[Size*(i+t+1)+t] / a[Size*t+t];
 }
@@ -185,10 +187,10 @@ void Fan1(float *m, float *a, int Size, int t)
 void Fan2(float *m, float *a, float *b,int Size, int j1, int t)
 {
 	int i,j;
-	#pragma acc kernels loop independent gang(gangs) worker(workers) //#pragma acc parallel loop present(m,a)
+	#pragma acc kernels loop independent gang(fan2_gangs) worker(fan2_workers) //#pragma acc parallel loop present(m,a)
 	for (i=0; i<Size-1-t; i++) {
-	    #pragma acc loop
-		for (j=0; j<Size-t; j++)
+        #pragma acc loop
+        for (j=0; j<Size-t; j++)
 			a[Size*(i+1+t)+(j+t)] -= m[Size*(i+1+t)+t] * a[Size*t+(j+t)];
 		b[i+1+t] -= m[Size*(i+1+t)+t] * b[t];
 	}
@@ -202,7 +204,8 @@ void Fan2(float *m, float *a, float *b,int Size, int j1, int t)
 void ForwardSub()
 {
 	int t;
-    printf("sizing info: %d gangs %d workers\n",gangs,workers);
+    printf("fan1 sizing info: %d gangs %d workers\n",fan1_gangs,fan1_workers);
+    printf("fan2 sizing info: %d gangs %d workers\n",fan2_gangs,fan2_workers);
 #pragma acc data copy(m[0:Size*Size],a[0:Size*Size],b[0:Size])
 {
     // begin timing kernels

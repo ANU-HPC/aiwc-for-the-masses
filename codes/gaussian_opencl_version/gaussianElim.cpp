@@ -165,11 +165,13 @@ void ForwardSub(cl_context context, float *a, float *b, float *m, int size,int t
     size_t globalWorksizeFan2[2];
     size_t localWorksizeFan1[1];
 
-	globalWorksizeFan1[0] = size;
 	globalWorksizeFan2[0] = size;
 	globalWorksizeFan2[1] = size;
-    localWorksizeFan1[0] = (size % MAXGROUPSIZE == 0) ? MAXGROUPSIZE : size;
     globalWorksizeFan1[0] = size;
+    localWorksizeFan1[0] = (size % MAXGROUPSIZE == 0) ? MAXGROUPSIZE : size;
+    //TODO: delete the following (1 thread for debug mode):
+    //localWorksizeFan1[0] = 1;
+    //globalWorksizeFan1[0] = 1;
 	printf("sizing info: fan1 %d global workitems in %d sized workgroups, fan2 %dx%d workitems \n",globalWorksizeFan1[0], localWorksizeFan1[0],globalWorksizeFan2[0],globalWorksizeFan2[1]);
 
 	int t;
@@ -179,9 +181,8 @@ void ForwardSub(cl_context context, float *a, float *b, float *m, int size,int t
         cl_int argchk;
         argchk  = clSetKernelArg(fan1_kernel, 0, sizeof(cl_mem), (void *)&m_dev);
         argchk |= clSetKernelArg(fan1_kernel, 1, sizeof(cl_mem), (void *)&a_dev);
-        argchk |= clSetKernelArg(fan1_kernel, 2, sizeof(cl_mem), (void *)&b_dev);
-        argchk |= clSetKernelArg(fan1_kernel, 3, sizeof(int), (void *)&size);
-        argchk |= clSetKernelArg(fan1_kernel, 4, sizeof(int), (void *)&t);
+        argchk |= clSetKernelArg(fan1_kernel, 2, sizeof(int), (void *)&size);
+        argchk |= clSetKernelArg(fan1_kernel, 3, sizeof(int), (void *)&t);
     
         cl_errChk(argchk,"ERROR in Setting Fan1 kernel args",true);
         

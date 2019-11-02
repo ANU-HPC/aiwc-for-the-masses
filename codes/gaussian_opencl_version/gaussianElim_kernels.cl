@@ -8,7 +8,6 @@ typedef struct latLong
 
 __kernel void Fan1(__global float *m_dev,
                   __global float *a_dev,
-                  __global float *b_dev,
                   const int size,
                   const int t) {
     //threadIdx.x + blockIdx.x * blockDim.x

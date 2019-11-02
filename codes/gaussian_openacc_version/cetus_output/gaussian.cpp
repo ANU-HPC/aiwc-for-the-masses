@@ -138,8 +138,10 @@ float * gpu__m;
 #pragma omp threadprivate(gpu__a)
 #endif
 int Size;
-int workers;
-int gangs;
+int fan1_workers;
+int fan1_gangs;
+int fan2_workers;
+int fan2_gangs;
 float * a;
 float * b;
 float * finalVec;
@@ -266,8 +268,10 @@ InitMat(a, Size, Size);
 /* printf("The input matrix a is:\n"); */
 /* PrintMat(a, Size, Size); */
 b=((float *)malloc((Size*sizeof (float))));
-gangs=(((Size%512)==0) ? 512 : Size);
-workers=((Size/gangs)+(( ! (Size%gangs)) ? 0 : 1));
+fan1_gangs=(((Size%512)==0) ? 512 : Size);
+fan1_workers=((Size/fan1_gangs)+(( ! (Size%fan1_gangs)) ? 0 : 1));
+fan2_gangs=(fan1_gangs*fan1_gangs);
+fan2_workers=(fan1_workers*fan1_workers);
 InitAry(b, Size);
 /* printf("The input array b is:\n"); */
 /* PrintAry(b, Size); */
@@ -310,36 +314,36 @@ float * gpu__m;
 if (HI_get_device_address(a, ((void * *)( & gpu__a)), DEFAULT_QUEUE)!=HI_success)
 {
 printf("[ERROR] GPU memory for the host variable, a, does not exist. \n");
-printf("Enclosing annotation: \n#pragma acc  kernels loop gang(gangs) worker(workers) independent copyin(Size, t) present(a[0:(Size*Size)], m[0:(Size*Size)]) private(i) \n");
+printf("Enclosing annotation: \n#pragma acc  kernels loop gang(fan1_gangs) worker(fan1_workers) independent copyin(Size, t) present(a[0:(Size*Size)], m[0:(Size*Size)]) private(i) \n");
 exit(1);
 }
 if (HI_get_device_address(m, ((void * *)( & gpu__m)), DEFAULT_QUEUE)!=HI_success)
 {
 printf("[ERROR] GPU memory for the host variable, m, does not exist. \n");
-printf("Enclosing annotation: \n#pragma acc  kernels loop gang(gangs) worker(workers) independent copyin(Size, t) present(a[0:(Size*Size)], m[0:(Size*Size)]) private(i) \n");
+printf("Enclosing annotation: \n#pragma acc  kernels loop gang(fan1_gangs) worker(fan1_workers) independent copyin(Size, t) present(a[0:(Size*Size)], m[0:(Size*Size)]) private(i) \n");
 exit(1);
 }
 size_t dimGrid_Fan1_kernel0[3];
-dimGrid_Fan1_kernel0[0]=gangs;
+dimGrid_Fan1_kernel0[0]=fan1_gangs;
 dimGrid_Fan1_kernel0[1]=1;
 dimGrid_Fan1_kernel0[2]=1;
 size_t dimBlock_Fan1_kernel0[3];
-dimBlock_Fan1_kernel0[0]=workers;
+dimBlock_Fan1_kernel0[0]=fan1_workers;
 dimBlock_Fan1_kernel0[1]=1;
 dimBlock_Fan1_kernel0[2]=1;
-gpuNumBlocks=gangs;
-gpuNumThreads=workers;
-totalGpuNumThreads=(gangs*workers);
+gpuNumBlocks=fan1_gangs;
+gpuNumThreads=fan1_workers;
+totalGpuNumThreads=(fan1_gangs*fan1_workers);
 HI_register_kernel_numargs("Fan1_kernel0",6);
 HI_register_kernel_arg("Fan1_kernel0",0,sizeof(void*),( & gpu__a),1);
 HI_register_kernel_arg("Fan1_kernel0",1,sizeof(void*),( & gpu__m),1);
 HI_register_kernel_arg("Fan1_kernel0",2,sizeof (int),( & Size),0);
-HI_register_kernel_arg("Fan1_kernel0",3,sizeof (int),( & gangs),0);
-HI_register_kernel_arg("Fan1_kernel0",4,sizeof (int),( & t),0);
-HI_register_kernel_arg("Fan1_kernel0",5,sizeof (int),( & workers),0);
+HI_register_kernel_arg("Fan1_kernel0",3,sizeof (int),( & fan1_gangs),0);
+HI_register_kernel_arg("Fan1_kernel0",4,sizeof (int),( & fan1_workers),0);
+HI_register_kernel_arg("Fan1_kernel0",5,sizeof (int),( & t),0);
 HI_kernel_call("Fan1_kernel0",dimGrid_Fan1_kernel0,dimBlock_Fan1_kernel0,DEFAULT_QUEUE);
 HI_synchronize(0);
-gpuNumBlocks=gangs;
+gpuNumBlocks=fan1_gangs;
 return ;
 }
 
@@ -357,43 +361,43 @@ float * gpu__m;
 if (HI_get_device_address(a, ((void * *)( & gpu__a)), DEFAULT_QUEUE)!=HI_success)
 {
 printf("[ERROR] GPU memory for the host variable, a, does not exist. \n");
-printf("Enclosing annotation: \n#pragma acc  kernels loop gang(gangs) worker(workers) independent copyin(Size, t) present(a[0:(Size*Size)], b[0:Size], m[0:(Size*Size)]) private(i, j) \n");
+printf("Enclosing annotation: \n#pragma acc  kernels loop gang(fan2_gangs) worker(fan2_workers) independent copyin(Size, t) present(a[0:(Size*Size)], b[0:Size], m[0:(Size*Size)]) private(i, j) \n");
 exit(1);
 }
 if (HI_get_device_address(b, ((void * *)( & gpu__b)), DEFAULT_QUEUE)!=HI_success)
 {
 printf("[ERROR] GPU memory for the host variable, b, does not exist. \n");
-printf("Enclosing annotation: \n#pragma acc  kernels loop gang(gangs) worker(workers) independent copyin(Size, t) present(a[0:(Size*Size)], b[0:Size], m[0:(Size*Size)]) private(i, j) \n");
+printf("Enclosing annotation: \n#pragma acc  kernels loop gang(fan2_gangs) worker(fan2_workers) independent copyin(Size, t) present(a[0:(Size*Size)], b[0:Size], m[0:(Size*Size)]) private(i, j) \n");
 exit(1);
 }
 if (HI_get_device_address(m, ((void * *)( & gpu__m)), DEFAULT_QUEUE)!=HI_success)
 {
 printf("[ERROR] GPU memory for the host variable, m, does not exist. \n");
-printf("Enclosing annotation: \n#pragma acc  kernels loop gang(gangs) worker(workers) independent copyin(Size, t) present(a[0:(Size*Size)], b[0:Size], m[0:(Size*Size)]) private(i, j) \n");
+printf("Enclosing annotation: \n#pragma acc  kernels loop gang(fan2_gangs) worker(fan2_workers) independent copyin(Size, t) present(a[0:(Size*Size)], b[0:Size], m[0:(Size*Size)]) private(i, j) \n");
 exit(1);
 }
 size_t dimGrid_Fan2_kernel0[3];
-dimGrid_Fan2_kernel0[0]=gangs;
+dimGrid_Fan2_kernel0[0]=fan2_gangs;
 dimGrid_Fan2_kernel0[1]=1;
 dimGrid_Fan2_kernel0[2]=1;
 size_t dimBlock_Fan2_kernel0[3];
-dimBlock_Fan2_kernel0[0]=workers;
+dimBlock_Fan2_kernel0[0]=fan2_workers;
 dimBlock_Fan2_kernel0[1]=1;
 dimBlock_Fan2_kernel0[2]=1;
-gpuNumBlocks=gangs;
-gpuNumThreads=workers;
-totalGpuNumThreads=(gangs*workers);
+gpuNumBlocks=fan2_gangs;
+gpuNumThreads=fan2_workers;
+totalGpuNumThreads=(fan2_gangs*fan2_workers);
 HI_register_kernel_numargs("Fan2_kernel0",7);
 HI_register_kernel_arg("Fan2_kernel0",0,sizeof(void*),( & gpu__a),1);
 HI_register_kernel_arg("Fan2_kernel0",1,sizeof(void*),( & gpu__b),1);
 HI_register_kernel_arg("Fan2_kernel0",2,sizeof(void*),( & gpu__m),1);
 HI_register_kernel_arg("Fan2_kernel0",3,sizeof (int),( & Size),0);
-HI_register_kernel_arg("Fan2_kernel0",4,sizeof (int),( & gangs),0);
-HI_register_kernel_arg("Fan2_kernel0",5,sizeof (int),( & t),0);
-HI_register_kernel_arg("Fan2_kernel0",6,sizeof (int),( & workers),0);
+HI_register_kernel_arg("Fan2_kernel0",4,sizeof (int),( & fan2_gangs),0);
+HI_register_kernel_arg("Fan2_kernel0",5,sizeof (int),( & fan2_workers),0);
+HI_register_kernel_arg("Fan2_kernel0",6,sizeof (int),( & t),0);
 HI_kernel_call("Fan2_kernel0",dimGrid_Fan2_kernel0,dimBlock_Fan2_kernel0,DEFAULT_QUEUE);
 HI_synchronize(0);
-gpuNumBlocks=gangs;
+gpuNumBlocks=fan2_gangs;
 return ;
 }
 
@@ -407,7 +411,8 @@ return ;
 void ForwardSub()
 {
 int t;
-printf("sizing info: %d gangs %d workers\n", gangs, workers);
+printf("fan1 sizing info: %d gangs %d workers\n", fan1_gangs, fan1_workers);
+printf("fan2 sizing info: %d gangs %d workers\n", fan2_gangs, fan2_workers);
 gpuBytes=(sizeof (float)*(Size*Size));
 HI_malloc1D(a, ((void * *)( & gpu__a)), gpuBytes, DEFAULT_QUEUE, HI_MEM_READ_WRITE);
 HI_memcpy(gpu__a, a, gpuBytes, HI_MemcpyHostToDevice, 0);
