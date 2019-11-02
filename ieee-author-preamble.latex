@@ -1,12 +1,16 @@
 \author{\IEEEauthorblockN{Beau Johnston}
-\IEEEauthorblockA{\textit{Research School of Computer Science} \\
-\textit{Australian National University}\\
+\IEEEauthorblockA{\textit{Australian National University}\\
 Canberra, Australia \\
 beau.johnston@anu.edu.au}
 \and
-\IEEEauthorblockN{Peter Strazdins}
+\IEEEauthorblockN{Jacob Lambert}
+\IEEEauthorblockA{\textit{Unversity of Oregon}\\
+Eugene, Oregon, USA \\
+jlambert@cs.uoregon.edu}
+\and
+\IEEEauthorblockN{Josh Milthorpe}
 \IEEEauthorblockA{\textit{Research School of Computer Science} \\
 \textit{Australian National University}\\
 Canberra, Australia \\
-peter.strazdins@cs.anu.edu.au}
+josh.milthorpe@cs.anu.edu.au}
 }
