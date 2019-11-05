@@ -20,9 +20,10 @@
 #include <string.h>
 
 int Size;
+int fan1_threads,fan1_teams,fan2_threads,fan2_teams;
 float *a, *b, *finalVec;
 float *m;
-
+#define MAXBLOCKSIZE 512
 FILE *fp;
 
 void InitProblemOnce(char *filename);
@@ -140,7 +141,11 @@ void InitProblemOnce(char *filename)
 	//printf("The input matrix a is:\n");
 	//PrintMat(a, Size, Size);
 	b = (float *) malloc(Size * sizeof(float));
-	
+    fan1_teams = (Size % MAXBLOCKSIZE == 0) ? MAXBLOCKSIZE : Size;
+    fan1_threads = (Size/fan1_teams) + (!(Size%fan1_teams)? 0:1);
+    fan2_teams = fan1_teams*fan1_teams;
+    fan2_threads = fan1_threads*fan1_threads;
+
 	InitAry(b, Size);
 	//printf("The input array b is:\n");
 	//PrintAry(b, Size);
@@ -171,7 +176,7 @@ void InitPerRun(float *m)
 void Fan1(float *m, float *a, int Size, int t)
 {   
 	int i;
-        #pragma omp target teams distribute parallel for 
+        #pragma omp target teams distribute parallel for num_teams(fan1_teams) num_threads(fan1_threads)
 	for (i=0; i<Size-1-t; i++)
 		m[Size*(i+t+1)+t] = a[Size*(i+t+1)+t] / a[Size*t+t];
 }
@@ -184,16 +189,15 @@ void Fan1(float *m, float *a, int Size, int t)
 void Fan2(float *m, float *a, float *b,int Size, int j1, int t)
 {
 	int i,j;
-        #pragma omp target teams distribute parallel for collapse(2)
+        #pragma omp target teams distribute parallel for num_teams(fan2_teams) num_threads(fan2_threads)// collapse(2)
+        //#pragma omp target teams distribute parallel for collapse(2)
         //#pragma omp target teams distribute
 	for (i=0; i<Size-1-t; i++) {
                 //#pragma omp parallel for private(i)
 		for (j=0; j<Size-t; j++)
 			a[Size*(i+1+t)+(j+t)] -= m[Size*(i+1+t)+t] * a[Size*t+(j+t)];
-	}
-        #pragma omp target teams distribute parallel for
-	for (i=0; i<Size-1-t; i++)
 		b[i+1+t] -= m[Size*(i+1+t)+t] * b[t];
+	}
 }
 
 /*------------------------------------------------------

@@ -21,13 +21,17 @@ OPENARC_ARGS = OPENARCRT=/workspace/codes/OpenARC/openarcrt OPENARC_ARCH=1 ACC_D
 gaussian_openacc: ./gaussian_openacc_version/gaussian.c
 	cd ./gaussian_openacc_version; ${OPENARC_ARGS} ./O2GBuild.script; ${OPENARC_ARGS} make
 
+OPENARC_OMP_ARGS = OPENARCRT=/workspace/codes/openarc-openmp/openarcrt OPENARC_ARCH=1 ACC_DEVICE_TYPE=RADEON
+gaussian_openmp: ./gaussian_openmp_version/gaussian.c
+	cd ./gaussian_openmp_version; ${OPENARC_OMP_ARGS} ./O2GBuild.script; ${OPENARC_OMP_ARGS} make; mv bin/gaussian_ACC bin/gaussian_OMP
+
 gaussian_hand_opencl: gaussian_opencl_version/*.cpp
 	cp gaussian_opencl_version/gaussianElim_kernels.cl .
 	g++ gaussian_opencl_version/*.cpp -I./gaussian_opencl_version/ -lOpenCL -o gaussian_hand_opencl
 
 #run each of the implementations of the gaussian elimination benchmark and store the AIWC features in the local directory called "gaussian_results"
 test_gaussian: gaussian_cuda gaussian_opencl gaussian_hand_opencl gaussian_openacc
-	rm -rf gaussian_results; mkdir -p gaussian_results; mkdir -p gaussian_results/cuda; mkdir -p gaussian_results/opencl; mkdir -p gaussian_results/openacc && \
+	rm -rf gaussian_results; mkdir -p gaussian_results; mkdir -p gaussian_results/cuda; mkdir -p gaussian_results/opencl; mkdir -p gaussian_results/openacc; mkdir -p gaussian_results/openmp && \
 	echo "Running CUDA version..." && \
 	./gaussian_cuda ./data/gaussian_matrix4.txt && \
 	echo "Done." && \
@@ -39,6 +43,9 @@ test_gaussian: gaussian_cuda gaussian_opencl gaussian_hand_opencl gaussian_opena
 	echo "Done." && \
 	echo "Running OpenACC version..." && \
 	cd gaussian_openacc_version/bin; ${OCLGRIND_BIN} --aiwc ./gaussian_ACC ../../data/gaussian_matrix4.txt ; mv aiwc_* ../../gaussian_results/openacc && \
+	cd ../.. && \
+	echo "Running OpenMP version..." && \
+	cd gaussian_openmp_version/bin; OMP_NUM_THREADS=4 ${OCLGRIND_BIN} --aiwc ./gaussian_OMP ../../data/gaussian_matrix4.txt ; mv aiwc_* ../../gaussian_results/openmp && \
 	cd ../.. && \
 	echo "Done." && \
        	make rename_aiwc_features
