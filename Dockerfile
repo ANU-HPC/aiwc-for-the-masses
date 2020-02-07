@@ -122,6 +122,8 @@ RUN apt-get install -t bionic -y libssl-dev
 RUN apt-get install -y libxml2-dev libxslt-dev
 RUN Rscript -e "install.packages('devtools')"
 RUN Rscript -e "devtools::install_github('imbs-hl/ranger')"
+RUN apt-get update && apt-get install -y libmagick++-dev
+RUN Rscript -e "devtools::install_github('clauswilke/ggtextures')"
 
 # Install beakerx
 RUN apt-get update && apt-get install --no-install-recommends -y python3-pip python3-setuptools python3-dev libreadline-dev libpcre3-dev libbz2-dev liblzma-dev r-base
@@ -144,7 +146,9 @@ RUN Rscript -e "devtools::install_github('IRkernel/IRkernel')"\
     && Rscript -e "devtools::install_github('cran/akima')" \
     && Rscript -e "devtools::install_github('cran/pander')"\
     && Rscript -e "devtools::install_github('cran/broman')"\
-    && Rscript -e "devtools::install_github('cran/gtools')"
+    && Rscript -e "devtools::install_github('cran/gtools')"\
+    && Rscript -e "devtools::install_github('cran/viridis')"
+
 RUN beakerx install
 RUN apt-get update && apt-get install --no-install-recommends -y colordiff
 
@@ -152,6 +156,17 @@ RUN apt-get update && apt-get install --no-install-recommends -y colordiff
 RUN apt-get update && apt-get install -yyq openjdk-8-jre openjdk-8-jdk
 ENV OPENARC_ARCH 1
 ENV ACC_DEVICE_TYPE RADEON
+
+# Install Pandoc and Latex to build the paper
+RUN apt-get install --no-install-recommends -y lmodern texlive-latex-recommended texlive-fonts-recommended texlive-latex-extra texlive-generic-extra texlive-science texlive-fonts-extra python-pip python-dev
+RUN wget https://bootstrap.pypa.io/ez_setup.py -O - | python
+RUN pip2 install setuptools && pip2 install wheel && pip2 install pandocfilters pandoc-fignos
+WORKDIR /pandoc
+RUN wget https://github.com/jgm/pandoc/releases/download/1.19.2/pandoc-1.19.2-1-amd64.deb && apt-get install -y ./pandoc-1.19.2-1-amd64.deb
+RUN wget https://github.com/lierdakil/pandoc-crossref/releases/download/v0.3.0.0/linux-ghc8-pandoc-2-0.tar.gz
+RUN tar -xvf linux-ghc8-pandoc-2-0.tar.gz
+RUN mv pandoc-crossref /usr/bin/
+
 
 #Test by default
 WORKDIR /workspace/codes

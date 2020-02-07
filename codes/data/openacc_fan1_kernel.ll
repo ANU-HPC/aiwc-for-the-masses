@@ -1,3 +1,4 @@
+; Function Attrs: nounwind
 define void @Fan1_kernel0(float* nocapture readonly %a, float* nocapture %m, i32 %Size, i32 %fan1_gangs, i32 %fan1_workers, i32 %t) local_unnamed_addr #0 !kernel_arg_addr_space !1 !kernel_arg_access_qual !2 !kernel_arg_type !3 !kernel_arg_base_type !3 !kernel_arg_type_qual !4 {
     %call = tail call i32 (i32, ...) bitcast (i32 (...)* @get_global_id to i32 (i32, ...)*)(i32 0) #3
     %call1 = tail call i32 (i32, ...) bitcast (i32 (...)* @get_num_groups to i32 (i32, ...)*)(i32 0) #3

@@ -176,7 +176,8 @@ void InitPerRun(float *m)
 void Fan1(float *m, float *a, int Size, int t)
 {   
 	int i;
-        #pragma omp target teams distribute parallel for num_teams(fan1_teams) num_threads(fan1_threads)
+        //#pragma omp target teams distribute parallel for num_teams(fan1_teams) num_threads(fan1_threads)
+	#pragma omp target teams distribute parallel for num_teams(fan1_teams) num_threads(fan1_threads)
 	for (i=0; i<Size-1-t; i++)
 		m[Size*(i+t+1)+t] = a[Size*(i+t+1)+t] / a[Size*t+t];
 }

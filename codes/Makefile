@@ -54,6 +54,10 @@ test_gaussian_openacc: gaussian_openacc
 	rm -rf gaussian_results; mkdir -p gaussian_results; mkdir -p gaussian_results/cuda; mkdir -p gaussian_results/opencl; mkdir -p gaussian_results/openacc && \
 	cd gaussian_openacc_version/bin; ${OCLGRIND_BIN} --aiwc ./gaussian_ACC ../../data/gaussian_matrix4.txt ; mv aiwc_* ../../gaussian_results/openacc
 
+test_gaussian_openmp: gaussian_openmp
+	rm -rf gaussian_results; mkdir -p gaussian_results; mkdir -p gaussian_results/cuda; mkdir -p gaussian_results/opencl; mkdir -p gaussian_results/openacc && \
+	cd gaussian_openmp_version/bin; ${OCLGRIND_BIN} --aiwc ./gaussian_OMP ../../data/gaussian_matrix4.txt ; mv aiwc_* ../../gaussian_results/openmp
+
 
 rename_aiwc_features:
 	for file in ./gaussian_results/*/*.csv; do \

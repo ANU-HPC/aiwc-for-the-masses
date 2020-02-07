@@ -1,5 +1,7 @@
 \author{\IEEEauthorblockN{Beau Johnston}
-\IEEEauthorblockA{\textit{Australian National University}\\
+\IEEEauthorblockA{\textit{Oak Ridge National Laboratory}\\
+Oak Ridge, Tennessee, USA \\
+\textit{Australian National University}\\
 Canberra, Australia \\
 beau.johnston@anu.edu.au}
 \and
@@ -9,8 +11,14 @@ Eugene, Oregon, USA \\
 jlambert@cs.uoregon.edu}
 \and
 \IEEEauthorblockN{Josh Milthorpe}
-\IEEEauthorblockA{\textit{Research School of Computer Science} \\
-\textit{Australian National University}\\
+\IEEEauthorblockA{%\textit{Research School of Computer Science} \\
+		  \textit{Australian National University}\\
 Canberra, Australia \\
 josh.milthorpe@cs.anu.edu.au}
+\and
+\IEEEauthorblockN{Jeffrey Vetter}
+\IEEEauthorblockA{\textit{Oak Ridge National Laboratory}\\
+Oak Ridge, Tennessee, USA \\
+vetter@ornl.gov}
 }
+
