@@ -1,10 +1,10 @@
 ---
-title: "AIWC for the masses: Supporting Architecture-Independent Workload Characterization on OpenMP, OpenACC, CUDA and OpenCL"
+title: "AIWC for the Masses: Supporting Architecture-Independent Workload Characterization on OpenMP, OpenACC, CUDA and OpenCL"
 abstract: "
 
 The next-generation of supercomputers will feature a diverse mix of accelerator devices.
 These accelerators span an equally wide range of hardware properties.
-Unfortunately, achieving good performance on these devices has historically used multiple programming languages, but in the present day results in fragmentation of implementation -- where an increasing amount of a programmer's effort is expended to migrate codes between languages in order to examine performance of a new device when it hits the market.
+Unfortunately, achieving good performance on these devices has historically required multiple programming languages with a separate implementation for each device, in the present day this results in the fragmentation of implementation -- where an increasing amount of a programmer's effort is expended to migrate codes between languages in order to use a new device.
 We have previously shown that presenting the characteristics of a code in a architecture-independent fashion is useful to predict exection times.
 From examining these highly accurate predictions we propose that Architecture-Independent Workload Characterization (AIWC) metrics are also useful in determining the suitability of a code and potential accelerators.
 To this end, we extend the usability of AIWC by supporting additional programming languages common to accelerator-based High-Performance Computing (HPC).
@@ -132,21 +132,39 @@ At first glance we may be hopeful that AMD's HIP could be used for all CUDA to O
 It is unknown why this decision was made and by skipping SPIR we are unable to perform the analysis with AIWC over the output since it skips any potential abstract "ideal"/"uniform" device, useful to checking errors, validating memory accesses and performing workload characterization that AIWC and Oclgrind provides.
 <!--This seems to be partly to avoid the latency associated with standards-body working groups.-->
 <!--see https://github.com/ROCm-Developer-Tools/HIP/issues/90-->
-Instead, we chose Coriander for the functionality of CUDA to OpenCL source-level translation.
+Instead, we chose Coriander for the functionality of CUDA to OpenCL translation.
+Unlike OpenARC it skips source-to-source level translation and instead produces LLVM-IR/SPIR-V directly.
 
-**TODO, summarize Coriander**
+\todo[inline]{**TODO, summarize Coriander**}
 
 
 # Methodology
 
-* For each benchmark a comparison of the AIWC feature-spaces of the OpenCL vs
-    + OpenACC
-    + OpenMP
-    + CUDA
-is presented.
 The Rodinia Benchmark Suite was selected since they offer a number of scientific benchmarks each implemented in all the targeted programming frameworks we compare.
-
+We consider the gaussian elimination benchmark, which is composed of two kernels. 
 Coriander was used to convert a subset of the Rodinia Benchmark suite from CUDA to OpenCL translation while OpenARC was used for both OpenMP to OpenCL and OpenACC to OpenCL translation.
+
+Thus for each benchmarks kernel we present a comparison of the AIWC feature-spaces of the baseline OpenCL against CUDA, OpenACC and OpenMP.
+We also discuss the required changes made to each implemention to get the closest approximation of work between versions.
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=\textwidth,keepaspectratio]{static-figures/translation-workflow}
+    \caption{Workflow of using translators and compilers to interoperate with AIWC.}
+    \label{fig:translation-workflow}
+\end{figure*}
+
+Figure\ \ref{fig:translation-workflow} presents a summary of the workflow and the various representations generated to interoperate between translators, compilers and AIWC.
+This shows how different source implemenations of the same algorithm can generate equivilent workload characterization metrics.
+The entire workflow is composed of several stages and representations -- broadly progressing from source code written in various languages, computational intensive regions are translated into OpenCL kernels, compiler with Clang into SPIR, executed on the Oclgrind OpenCL device simulator with the AIWC plugin, AIWC then presents and stores these metrics as a set of features describing the characteristics of the code.
+OpenCL can skip the translation stage and kernel representation since the kernel is already presented in OpenCL-C.
+OpenARC is used to perform source-to-source translation from OpenACC and OpenMP to OpenCL-C kernels.
+Note, coriander does not perform source-to-source translation effectively skipping the kernel representation and compilation stages, it still uses the same version of Clang (from LLVM 3.9.0) to produce the SPIR however this is used from within the tool effectively using clang behind-the-scenes for the compilation stage however the details are hidden from the user and are thus omitted in the diagram.
+Our hypothesis is that these characteristics should be largely independent of language used to implement it, although it is expected that different compiler optimizations and translation stategies will subtly change the metrics.
+Part of the goal of this paper is to examine the magnitudes of change imposed by langage, compiler and translator.
+Ultimately, the similarities between metrics despite the original implementation can be used to evaluate the similarities in compiler and translator toolchains.
+
+# Manual Modifications
 
 <!-- ## Implementation Work / Source-Code changes -->
 <!-- OpenARC -->
@@ -211,6 +229,75 @@ To this end, we added these variables and the `MAXBLOCKSIZE` to be 512 to be equ
 `gangs = (Size % MAXBLOCKSIZE == 0) ? MAXBLOCKSIZE : Size;` is set to be analagous to `block_size` (`block_size = (Size % MAXBLOCKSIZE == 0) ? MAXBLOCKSIZE : Size;`) which we added to the CUDA version, similarly, `workers = (Size/gangs) + (!(Size%gangs)? 0:1);` is identical to the CUDA version of `grid_size` (`grid_size = (Size/block_size) + (!(Size%block_size)? 0:1);`).
 Finally, the OpenACC pragmas where modified to explicitly use the `workers` and `gangs` variables: from `#pragma acc parallel loop present(m,a)` to `#pragma acc kernels loop independent gang(gangs) worker(workers)`.
 
+The resulting source code of each of the four implementations is listed in Table \ref{lst:source-code}.
+
+<!-- %use a temporary counter for sublists -- so keep a backup of the old one then  change it's styling from arabic to roman -->
+\newcounter{mainlisting}
+\setcounter{mainlisting}{\value{lstlisting}}
+\setcounter{lstlisting}{0}
+
+\renewcommand{\thelstlisting}{\roman{lstlisting}}
+\renewcommand{\lstlistingname}{}
+\begin{figure*}[htp]
+\begin{minipage}[t]{\columnwidth}
+\centering
+\begin{lstlisting}[caption=OpenCL,frame=tlrb,language=c,label=lst:source-opencl]
+__kernel void Fan1(__global float *m, __global float *a, const int size, const int t){
+    int gid = get_local_id(0) + get_group_id(0) * get_local_size(0);
+    if (gid < size-1-t) {
+        m[size*(gid+t+1)+t] = a[size*(gid+t+1)+t] / a[size*t+t]; 
+    }
+}
+\end{lstlisting}
+\end{minipage}\hskip0.5em\relax
+\begin{minipage}[t]{\columnwidth}
+\centering
+\begin{lstlisting}[caption=CUDA,frame=tlrb,language=c,label=lst:source-cuda]
+__global__ void Fan1(float *m, float *a, int size, int t)
+{
+    int gid = threadIdx.x + blockIdx.x * blockDim.x;
+
+    if(gid < size-1-t){
+        m[size*(gid+t+1)+t] = a[size*(gid+t+1)+t] / a[size*t+t];
+    }
+}
+\end{lstlisting}
+\end{minipage}
+\vskip-1em\relax
+\begin{minipage}[t]{\columnwidth}
+\centering
+\begin{lstlisting}[caption=OpenACC,frame=tlrb,language=c,label=lst:source-openacc]
+void Fan1(float *m, float *a, int size, int t)
+{   
+    int i;
+    #pragma acc kernels loop independent gang(fan1_gangs) worker(fan1_workers)
+
+    for (i=0; i < size-1-t; i++)
+        m[size*(i+t+1)+t] = a[size*(i+t+1)+t] / a[size*t+t];
+}
+\end{lstlisting}
+\end{minipage}\hskip0.5em\relax
+\begin{minipage}[t]{\columnwidth}
+\centering
+\begin{lstlisting}[caption=OpenMP,frame=tlrb,language=c,label=lst:source-openmp]
+void Fan1(float *m, float *a, int size, int t)
+{   
+    int i;
+    #pragma omp target teams distribute parallel for num_teams(fan1_teams) num_threads(fan1_threads)
+    for (i=0; i < size-1-t; i++)
+        m[size*(i+t+1)+t] = a[size*(i+t+1)+t] / a[size*t+t];
+}
+\end{lstlisting}
+\end{minipage}
+\setcounter{lstlisting}{\value{mainlisting}}
+\renewcommand{\thelstlisting}{\arabic{lstlisting}}
+\renewcommand{\lstlistingname}{Listing}
+\captionof{lstlisting}{All source code implementations of the Fan1 kernel separated by language.}
+\label{lst:source-code}
+\end{figure*}
+
+The baseline OpenCL kernel code for Fan1 is presented in Listing \ref{lst:source-code}-\ref{lst:source-opencl}, CUDA in , OpenACC in , and OpenMP in.
+\todo[inline]{write summary}
 
 In summary, the OpenACC implementation went from `64` workitems being invoked (where only 4 of them did any meaningful work) to `4` workitems being run.
 
@@ -240,6 +327,9 @@ Thus, in a perfect translation all AIWC metric counts would be equal between all
 
 Figure~\ref{fig:fan1-relative-difference} shows Fan1's comparison between implementations but have been normalize to show the relative difference between each implementation against the baseline OpenCL counts; and presents the same results but allows us to zoom into the finer details of these raw counts.
 
+The "Total Unique Branch Instructions" and "90% Branch Instructions" are doubled in both the OpenACC and OpenMP versions compared to OpenCL and CUDA.
+This is due to the absolute number of branch instructions are doubled  --  \todo[inline]{reference SPIR code block}
+
 \begin{figure*}
     \centering
     \includegraphics[width=\textwidth,keepaspectratio]{codes/figures/fan1_relative}
@@ -255,6 +345,216 @@ Figure~\ref{fig:fan1-relative-difference} shows Fan1's comparison between implem
 \end{figure*}
 
 We see no causes where the compiler improves beyond the initial OpenCL baseline. \todo[inline]{what about low PSL?}
+
+### Trace Analysis
+
+To examine these differences in actual execution based on the LLVM-IR codes we added the printing of the name of each executed instruction thereby giving a trace of each implementation.
+This was achieved by adding:
+
+````
+if(workItem->getGlobalID()[0]==0){
+   printf("%s\n",opcode_name.c_str());
+}
+````
+
+to the function `instructionExecuted` to AIWC (in `src/plugins/WorkloadCharacterisation.cpp`) which is triggered as a callback when the Oclgrind simulator executes each instruction.
+Since oclgrind is a multithreaded program -- to the extent that each OpenCL workitem is run on a separate pthread -- we only print the log if it occurs on the first thread.
+The default Gaussian Elimination test data is run on 4 threads and calls the `Fan1` and `Fan2` kernels three (3) times.
+For this analysis we only store the traces of first execution of the `Fan1` kernel.
+
+These traces were then piped from each of the implementations.
+The differences between traces are shown below followed by the differences in llvm outputs of the source kerrnels, OpenCL is on the left and CUDA on the right:
+
+\setcounter{mainlisting}{\value{lstlisting}}
+\setcounter{lstlisting}{0}
+\renewcommand{\thelstlisting}{\roman{lstlisting}}
+\renewcommand{\lstlistingname}{}
+\begin{figure*}[htp]
+\centering
+\begin{minipage}[t]{0.4\columnwidth}
+\centering
+\begin{lstlisting}[caption=OpenCL,frame=tlrb,language=c,label=lst:trace-opencl]
+
+
+call
+
+call
+
+call
+
+mul
+add
+<@\textcolor{red}{trunc}@>
+add
+sub
+icmp
+br
+
+
+add
+add
+mul
+sext
+<@\textcolor{red}{getelementptr}@>
+sext
+
+getelementptr
+load
+mul
+sext
+getelementptr
+getelementptr
+load
+fdiv
+getelementptr
+getelementptr
+store
+br
+ret
+
+\end{lstlisting}
+\end{minipage}
+\begin{minipage}[t]{0.4\columnwidth}
+\centering
+\begin{lstlisting}[caption=CUDA,frame=tlrb,language=c,label=lst:trace-cuda]
+<@\textcolor{red}{getelementptr}@>
+<@\textcolor{red}{bitcast}@>
+call
+<@\textcolor{red}{trunc}@>
+call
+<@\textcolor{red}{trunc}@>
+call
+<@\textcolor{red}{trunc}@>
+mul
+add
+
+add
+sub
+icmp
+br
+getelementptr
+bitcast
+add
+add
+mul
+sext
+
+sext
+<@\textcolor{red}{getelementptr}@>
+getelementptr
+load
+mul
+sext
+getelementptr
+getelementptr
+load
+fdiv
+getelementptr
+getelementptr
+store
+br
+ret
+
+\end{lstlisting}
+\end{minipage}
+\begin{minipage}[t]{0.4\columnwidth}
+\centering
+\begin{lstlisting}[caption=OpenACC,frame=tlrb,language=c,label=lst:trace-openacc]
+
+call
+trunc
+sext
+call
+sext
+mul
+icmp
+br
+add
+sub
+add
+mul
+add
+sext
+getelementptr
+br
+phi
+icmp
+br
+add
+mul
+add
+sext
+getelementptr
+load
+load
+fdiv
+getelementptr
+store
+zext
+add
+trunc
+br
+phi
+icmp
+br
+br
+ret
+
+\end{lstlisting}
+\end{minipage}
+\begin{minipage}[t]{0.4\columnwidth}
+\centering
+\begin{lstlisting}[caption=OpenMP,frame=tlrb,language=c,label=lst:trace-openmp]
+
+call
+trunc
+sext
+call
+sext
+mul
+icmp
+br
+add
+sub
+add
+mul
+add
+sext
+getelementptr
+br
+phi
+icmp
+br
+add
+mul
+add
+sext
+getelementptr
+load
+load
+fdiv
+getelementptr
+store
+zext
+add
+trunc
+br
+phi
+icmp
+br
+br
+ret
+
+\end{lstlisting}
+\end{minipage}
+\setcounter{lstlisting}{\value{mainlisting}}
+\renewcommand{\thelstlisting}{\arabic{lstlisting}}
+\renewcommand{\lstlistingname}{Listing}
+\captionof{lstlisting}{Trace of instructions executed by thread 0 of Fan1 kernel for each of the language implementations.}
+\label{lst:trace}
+\end{figure*}
+
+
 
 ## Fan2
 
