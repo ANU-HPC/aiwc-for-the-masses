@@ -4,12 +4,12 @@ abstract: "
 
 The next-generation of supercomputers will feature a diverse mix of accelerator devices.
 These accelerators span an equally wide range of hardware properties.
-Unfortunately, achieving good performance on these devices has historically required multiple programming languages with a separate implementation for each device, in the present day this results in the fragmentation of implementation -- where an increasing amount of a programmer's effort is expended to migrate codes between languages in order to use a new device.
-We have previously shown that presenting the characteristics of a code in a architecture-independent fashion is useful to predict exection times.
-From examining these highly accurate predictions we propose that Architecture-Independent Workload Characterization (AIWC) metrics are also useful in determining the suitability of a code and potential accelerators.
+Unfortunately, achieving good performance on these devices has historically required multiple programming languages with a separate implementation for each device. In the present day this results in the fragmentation of implementation -- where an increasing amount of a programmer's effort is expended to migrate codes between languages in order to use a new device.
+We have previously shown that presenting the characteristics of a code in a architecture-independent fashion is useful to predict execution times.
+From examining these highly accurate predictions we propose that Architecture-Independent Workload Characterization (AIWC) metrics are also useful in determining the suitability of a code for potential accelerators.
 To this end, we extend the usability of AIWC by supporting additional programming languages common to accelerator-based High-Performance Computing (HPC).
-We use two compilers to perform source-to-source level translation between CUDA-to-OpenCL, OpenMP-to-OpenCL and OpenACC-to-OpenCL and extend the usefulness of the AIWC tool by evaluating the base execution behaviour on these outputs.
-Essentially, We examine how AIWC metrics change between OpenMP, OpenACC, CUDA and OpenCL implmentations of identical applications commonly used in scientific benchmarking.
+We use two compilers to perform source-to-source level translation from CUDA-to-OpenCL, OpenMP-to-OpenCL and OpenACC-to-OpenCL and extend the usefulness of the AIWC tool by evaluating the base execution behaviour on these outputs.
+Essentially, we examine how AIWC metrics change between OpenMP, OpenACC, CUDA and OpenCL implementations of identical applications commonly used in scientific benchmarking.
 
 "
 keywords: "architecture independent workload characterization, portability, OpenCL, CUDA, OpenACC, OpenMP"
@@ -28,29 +28,29 @@ architecture independent workload characterization, portability, OpenCL, CUDA
 # Introduction
 
 High-Performance Computing (HPC) today is dominated by closed, proprietary software models.
-Dispite OpenCL having existed for over a decade, it has generated little traction/adoption by the scientific programming community at large. 
+Despite OpenCL having existed for over a decade, it has generated little traction/adoption by the scientific programming community at large. 
 Fragmentation between implementations of scientific codes already exists. 
-Many lines of legacy code have already been reimplemented in accelerator directive-based languages such as OpenACC and OpenMP, some computationally intensive kernels have been implemented in CUDA.
-Unfortunately, many of these codes must target a new accelerator within a few years, as the supercomputer is rapidly updated, and the accelerators used on a node are just as quickly replaced -- often by different vendors and likely another class of accelerator (MIC, GPU or FPGA).
+Many lines of legacy code have already been reimplemented in accelerator directive-based languages such as OpenACC and OpenMP, while some computationally intensive kernels have been implemented in CUDA.
+Unfortunately, many of these codes must frequently target new accelerators, as supercomputers are rapidly updated, and the accelerators used on a node are just as quickly replaced -- often by different vendors and likely another class of accelerator (MIC, GPU or FPGA).
 We can easily imagine a world where developers at research laboratories will have full-time jobs rewriting the same codes on loop, taking years optimising and rewriting kernels for the upcoming system.
-This will only grow as the HPC center's dependence on heterogenous accelerator architectures increases, pushed by energy-efficiency requirements in the era of exascale computing, and is untenible.
+This demand will only grow as the HPC center's dependence on heterogeneous accelerator architectures increases, pushed by energy-efficiency requirements in the era of exascale computing, and is untenable.
 
-Workload characterization is an important tool to examine the essential behaviour of a code, its underlying structure, and identifying the performance limiting factors -- an understanding of the latter is critical when considering the portability between accelerators.
-These by examining the SPIR-V execution traces -- on an abstract OpenCL device.
-For instance, a code with regular memory accesses, predictible branching and is highly parallel (utilizing a large number of threads) is a suitable candidate for selection for a GPU type of accelerator, conversely, inherently serial tasks are more suited for CPU devices which commonly offer a higher clock-speed. 
-In the past we have used AIWC and Workload Characterization to perform accurate run-time predictions of OpenCL codes over multiple accelerators -- motivated to the automatic scheduling of kernels to the most appropriate accelerator on an HPC system based on these essential characteristics.
-We have also shown that these characteristics are useful in guiding a developers efforts to achieving good performance on accelerators by outlining the potential bottlenecks of the implementation of an algorithm (in the amount of parallelism available, memory access patterns and scaling over problem sizes, etc).
-Both motivations will be undone if we don't get industry adoption and communtity support for SPIR-V (and the OpenCL runtime).
+Workload characterization is an important tool to examine the essential behaviour of a code and its underlying structure, and identifying the performance-limiting factors -- an understanding of the latter is critical when considering the portability between accelerators.
+We perform these characterizations by examining the SPIR-V execution traces on an abstract OpenCL device.
+For instance, a code with regular memory accesses and predictable branching that is highly parallel (utilizing a large number of threads) is a suitable candidate for selection for a GPU type of accelerator. Conversely, inherently serial tasks are more suited for CPU devices which commonly offer a higher clock-speed. 
+In the past we have used AIWC and Workload Characterization to perform accurate run-time predictions of OpenCL codes over multiple accelerators -- motivated by the goal of automatically scheduling kernels to the most appropriate accelerator on an HPC system based on these essential characteristics.
+We have also shown that these characteristics are useful in guiding a developer's efforts in optimizing performance on accelerators by outlining the potential bottlenecks of the implementation of an algorithm (in the amount of parallelism available, memory access patterns and scaling over problem sizes, etc).
+Unfortunately both motivations will be undone without industry adoption and community support for SPIR-V (and the OpenCL runtime).
 
-Recent advances with SYCL, HIP/ROCM, and oneAPI may increase adoption of open-source models, however, why wait?
-We can leverage the backend of these frameworks, SPIR-V, which are based on, and support the OpenCL runtime and memory-model.
-Meanwhile, compilers are maturing and are increasingly able to provide source-to-source translations and code transformations, and are capable of generating low-level device-optimized code, allowing implementions in one language to be mapped to another.
-The goal of this paper is to extend AIWC support for all languages, and is achieved firstly by assessing the AIWC feature-space outputs of contemporary source-to-source compiler/translator tools, and secondly, highlights the differences against a native OpenCL implementation -- to identify any potential inefficiencies of the translation by these tools.
+However Recent advances with SYCL, HIP/ROCM, and oneAPI may increase adoption of open-source models and present an alternative to the OpenCL-only characterization approach.
+These frameworks are also based on the SPIR-V representation, and support the OpenCL runtime and memory model, and can be leveraged by the same AIWC and Workload Characterization tools.
+Meanwhile, compilers are maturing and are increasingly able to provide source-to-source translations and code transformations, to generate low-level device-optimized code, and to allow implementations in one language to be mapped to another.
+The goal of this paper is to extend AIWC support for all languages: (1) firstly by assessing the AIWC feature-space outputs of contemporary source-to-source compiler/translator tools, and (2) secondly by highlighting the differences against a native OpenCL implementation to identify any potential inefficiencies of the translation by these tools.
 
-In summary, in this paper we extend the use of AIWC to evaluate the current state-of-the-art in source-to-source translation to primarilily examine the feasibility of leveraging existing language implmentations of codes (as an example of those currently popular) to automatically map back to OpenCL.
-We summarize the common languages used on accelerators and survey the communities interest in each, this is done to motivate our interest in tooling and offering support for evaluating the back-end generation of SPIR-V codes.
-Related work is discussed, then we present our methodology highlighting our selection of source-to-source translation tools used in our experiments.
-We present results then close with a summary of our findings and the direction for future-work. 
+In summary, in this paper we extend the use of AIWC to evaluate the current state-of-the-art in source-to-source translation to primarily examine the feasibility of leveraging existing language implementations of codes (as an example of those currently popular) to automatically map back to OpenCL.
+We summarize the common languages used on accelerators and survey the community's interest in each. This is done to motivate our interest in tooling and offering support for evaluating the back-end generation of SPIR-V codes.
+Related work is discussed, followed by our methodology highlighting our selection of source-to-source translation tools used in our experiments.
+Finally we present results, close with a summary of our findings, and the explore directions for future-work. 
 
 # Accelerator Programming Frameworks and their Adoption <!--Adoption Survey-->
 
