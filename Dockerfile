@@ -170,5 +170,5 @@ RUN mv pandoc-crossref /usr/bin/
 
 #Test by default
 WORKDIR /workspace/codes
-CMD make test
+CMD /bin/bash
 #CMD make test && make clean
