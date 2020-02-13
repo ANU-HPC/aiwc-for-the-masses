@@ -378,6 +378,7 @@ The differences between traces are shown below followed by the differences in ll
 
 call
 
+
 call
 
 call
@@ -421,6 +422,7 @@ ret
 <@\textcolor{red}{bitcast}@>
 call
 <@\textcolor{red}{trunc}@>
+
 call
 <@\textcolor{red}{trunc}@>
 call
@@ -461,42 +463,48 @@ ret
 \centering
 \begin{lstlisting}[caption=OpenACC,frame=tlrb,language=c,label=lst:trace-openacc]
 
+
 call
-trunc
-sext
+<@\textcolor{red}{trunc}@>
+<@\textcolor{red}{sext}@>
 call
-sext
+<@\textcolor{blue}{sext}@>
 mul
+
+
+
+
 icmp
 br
 add
-sub
+<@\textcolor{red}{sub}@>
 add
 mul
-add
+<@\textcolor{red}{add}@>
 sext
 getelementptr
-br
-phi
-icmp
-br
-add
+<@\textcolor{blue}{br}@>
+<@\textcolor{blue}{phi}@>
+<@\textcolor{blue}{icmp}@>
+<@\textcolor{red}{br}@>
+<@\textcolor{red}{add}@>
 mul
-add
+<@\textcolor{red}{add}@>
 sext
 getelementptr
-load
+<@\textcolor{blue}{load}@>
 load
 fdiv
 getelementptr
+
 store
-zext
-add
-trunc
-br
-phi
-icmp
-br
+<@\textcolor{red}{zext}@>
+<@\textcolor{red}{add}@>
+<@\textcolor{red}{trunc}@>
+<@\textcolor{red}{br}@>
+<@\textcolor{red}{phi}@>
+<@\textcolor{red}{icmp}@>
+<@\textcolor{red}{br}@>
 br
 ret
 
