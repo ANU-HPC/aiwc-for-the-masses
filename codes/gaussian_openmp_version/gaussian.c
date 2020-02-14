@@ -141,8 +141,9 @@ void InitProblemOnce(char *filename)
 	//printf("The input matrix a is:\n");
 	//PrintMat(a, Size, Size);
 	b = (float *) malloc(Size * sizeof(float));
-    fan1_teams = (Size % MAXBLOCKSIZE == 0) ? MAXBLOCKSIZE : Size;
-    fan1_threads = (Size/fan1_teams) + (!(Size%fan1_teams)? 0:1);
+    fan1_threads = (Size % MAXBLOCKSIZE == 0) ? MAXBLOCKSIZE : Size;
+    fan1_teams = (Size/fan1_threads) + (!(Size%fan1_threads)? 0:1);
+    
     fan2_teams = fan1_teams*fan1_teams;
     fan2_threads = fan1_threads*fan1_threads;
 

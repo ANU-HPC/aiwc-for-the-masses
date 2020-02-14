@@ -268,8 +268,8 @@ InitMat(a, Size, Size);
 /* printf("The input matrix a is:\n"); */
 /* PrintMat(a, Size, Size); */
 b=((float *)malloc((Size*sizeof (float))));
-fan1_gangs=(((Size%512)==0) ? 512 : Size);
-fan1_workers=((Size/fan1_gangs)+(( ! (Size%fan1_gangs)) ? 0 : 1));
+fan1_workers=(((Size%512)==0) ? 512 : Size);
+fan1_gangs=((Size/fan1_workers)+(( ! (Size%fan1_workers)) ? 0 : 1));
 fan2_gangs=(fan1_gangs*fan1_gangs);
 fan2_workers=(fan1_workers*fan1_workers);
 InitAry(b, Size);
