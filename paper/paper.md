@@ -321,21 +321,25 @@ The bars have been coloured according to Implementation (as shown in the legend)
 Each metric has the four implementations grouped together, thus Figure~\ref{fig:fan1-absolute} gives a visual inspection of the feature-space comparison of each metric between all implementations.
 It's expected that OpenCL should be the lowest count -- or the lowest overhead -- of all the implemenations regardless of metric, since it serves as the baseline; a compiler doing source-to-source translations would have to be doing additional optimizations to result in lower counts than the OpenCL baseline.
 
-A flat-line at 100% is ideal, since it shows no discernable difference between metrics captured by AIWC.
+Figure~\ref{fig:fan1-relative-difference} shows the same comparison of Fan1 implementations but with normalization against the baseline OpenCL counts, and is done to show the relative difference between each implementation -- allowing a closer inspection of the differences.
+A flat-line at 0% is ideal since it shows no difference between metrics captured by AIWC, a perfect translation between implementations results in the same instructions being executed, operating on the same sequence of locations in memory, under the same degree of parallelism and identical AIWC metrics will ensue.
 In other words, if the applications workload characteristics are identical between languages the translator is doing an excellent job in preserving the structure (in terms of memory accesses, parallelism and compute work) of the code regardless of language.
-Thus, in a perfect translation all AIWC metric counts would be equal between all implementations.
-
-Figure~\ref{fig:fan1-relative-difference} shows Fan1's comparison between implementations but have been normalize to show the relative difference between each implementation against the baseline OpenCL counts; and presents the same results but allows us to zoom into the finer details of these raw counts.
+The implementations have been separated by colour and grouped into metrics for contrast.
+Firstly, the Opcode diversity metric is the same between all implementations however the number of instructions executed differ -- the CUDA translation has 24% more instructions than OpenCL, while OpenACC and OpenMP increase this count by 37%.
+To understand the reason, we must examine the generated SPIR and associated traces, presented in Listing \ref{lst:spir-opencl-vs-cuda} and \ref{lst:trace} respectively, and is discussed in Sections \ref{sec:} and \ref{sec:}.\todo{fix these references and add summary of the kernel representation subsection}
+We see all "Memory" (beige) metrics (on the x-axis) do not indicate any difference of any implementations against the OpenCL case -- this is good as it ensures that all the same frequency of memory accesses, the type (whether a read or write), the locations and order of memory accesses are preserved and are equivalent in all implementations, and shows an indistinguishable amount of work has occurred.
 
 The "Total Unique Branch Instructions" and "90% Branch Instructions" are doubled in both the OpenACC and OpenMP versions compared to OpenCL and CUDA.
 This is due to the absolute number of branch instructions are doubled  --  \todo[inline]{reference SPIR code block}
 
+<!--
 \begin{figure*}
     \centering
     \includegraphics[width=\textwidth,keepaspectratio]{codes/figures/fan1_relative}
     \caption{Relative AIWC metrics between each translated implementation of the Fan1 kernel against the baseline OpenCL.}
     \label{fig:fan1-relative}
 \end{figure*}
+-->
 
 \begin{figure*}
     \centering
@@ -344,9 +348,86 @@ This is due to the absolute number of branch instructions are doubled  --  \todo
     \label{fig:fan1-relative-difference}
 \end{figure*}
 
-We see no causes where the compiler improves beyond the initial OpenCL baseline. \todo[inline]{what about low PSL?}
+We see no causes where the compiler improves beyond the initial OpenCL baseline.
 
-### Trace Analysis
+## Kernel Representation
+
+\setcounter{mainlisting}{\value{lstlisting}}
+\setcounter{lstlisting}{0}
+\renewcommand{\thelstlisting}{\roman{lstlisting}}
+\renewcommand{\lstlistingname}{}
+\begin{figure*}[htp]
+\centering
+\begin{minipage}[t]{\columnwidth}
+\centering
+\lstinputlisting[language=c,caption=OpenCL,frame=tlrb,label=lst:kernel-opencl]{codes/data/fan1_kernel_opencl.cl}
+\end{minipage}
+\begin{minipage}[t]{\columnwidth}
+\centering
+\lstinputlisting[language=c,caption=OpenACC,frame=tlrb,label=lst:kernel-openacc]{codes/data/fan1_kernel_openacc.cl}
+\end{minipage}
+\begin{minipage}[t]{\columnwidth}
+\centering
+\lstinputlisting[language=c,caption=OpenMP,frame=tlrb,label=lst:kernel-openmp]{codes/data/fan1_kernel_openmp.cl}
+\end{minipage}\hskip1em\relax
+\setcounter{lstlisting}{\value{mainlisting}}
+\renewcommand{\thelstlisting}{\arabic{lstlisting}}
+\renewcommand{\lstlistingname}{Listing}
+\captionof{lstlisting}{OpenCL kernel representation comparison to translator generated OpenACC and OpenMP kernels of Fan1.}
+\label{lst:kernel-opencl-vs-openmp-and-openacc}
+\end{figure*}
+
+
+
+## Intermediate-Representation
+
+\setcounter{mainlisting}{\value{lstlisting}}
+\setcounter{lstlisting}{0}
+\renewcommand{\thelstlisting}{\roman{lstlisting}}
+\renewcommand{\lstlistingname}{}
+\begin{figure*}[htp]
+\centering
+\begin{minipage}[t]{\columnwidth}
+\centering
+\lstinputlisting[language=llvm,style=nasm,caption=OpenCL,frame=tlrb,label=lst:spir-opencl]{codes/data/opencl_fan1_kernel.ll}
+\end{minipage}\hskip1em\relax
+\begin{minipage}[t]{\columnwidth}
+\centering
+\lstinputlisting[language=llvm,style=nasm,caption=CUDA,frame=tlrb,label=lst:spir-cuda]{codes/data/cuda_fan1_kernel.ll}
+\end{minipage}
+\setcounter{lstlisting}{\value{mainlisting}}
+\renewcommand{\thelstlisting}{\arabic{lstlisting}}
+\renewcommand{\lstlistingname}{Listing}
+\captionof{lstlisting}{OpenCL compared to the CUDA implementations generated LLVM-IR/SPIR of the Fan1 kernel.}
+\label{lst:spir-opencl-vs-cuda}
+\end{figure*}
+
+\setcounter{mainlisting}{\value{lstlisting}}
+\setcounter{lstlisting}{0}
+\renewcommand{\thelstlisting}{\roman{lstlisting}}
+\renewcommand{\lstlistingname}{}
+\begin{figure*}[htp]
+\centering
+\begin{minipage}[t]{\columnwidth}
+\centering
+\lstinputlisting[language=llvm,style=nasm,caption=OpenCL,frame=tlrb,label=lst:spir-opencl]{codes/data/opencl_fan1_kernel.ll}
+\end{minipage}\hskip1em\relax
+\begin{minipage}[t]{\columnwidth}
+\centering
+\lstinputlisting[language=llvm,style=nasm,caption=OpenACC and OpenMP,frame=tlrb,label=lst:spir-openacc-and-openmp]{codes/data/openacc_fan1_kernel.ll}
+\end{minipage}
+\setcounter{lstlisting}{\value{mainlisting}}
+\renewcommand{\thelstlisting}{\arabic{lstlisting}}
+\renewcommand{\lstlistingname}{Listing}
+\captionof{lstlisting}{OpenCL compared to the OpenMP and OpenACC implementations generated LLVM-IR/SPIR of the Fan1 kernel.}
+\label{lst:spir-opencl-vs-openacc-and-openmp}
+\end{figure*}
+
+A comparison between generated LLVM/SPIR is presented in Listings \ref{lst:spir-opencl-vs-cuda} and \ref{lst:spir-opencl-vs-openacc-and-openmp}.
+Both identify differences in SPIR between Coriander (for CUDA implementations) and OpenARC (OpenACC and OpenMP) compiler outputs against the OpenCL based native version.
+The similarities between OpenMP and OpenACC implementations of the Fan1 kernel -- along with using the same compiler/translator toolchain -- means that the generated SPIR are identical and thus consolidated into a single Listing (\ref{lst:spir-opencl-vs-openacc-and-openmp}-\ref{lst:spir-openacc-and-openmp}).
+
+## Trace Analysis
 
 To examine these differences in actual execution based on the LLVM-IR codes we added the printing of the name of each executed instruction thereby giving a trace of each implementation.
 This was achieved by adding:
@@ -361,9 +442,7 @@ to the function `instructionExecuted` to AIWC (in `src/plugins/WorkloadCharacter
 Since oclgrind is a multithreaded program -- to the extent that each OpenCL workitem is run on a separate pthread -- we only print the log if it occurs on the first thread.
 The default Gaussian Elimination test data is run on 4 threads and calls the `Fan1` and `Fan2` kernels three (3) times.
 For this analysis we only store the traces of first execution of the `Fan1` kernel.
-
 These traces were then piped from each of the implementations.
-The differences between traces are shown below followed by the differences in llvm outputs of the source kerrnels, OpenCL is on the left and CUDA on the right:
 
 \setcounter{mainlisting}{\value{lstlisting}}
 \setcounter{lstlisting}{0}
@@ -385,7 +464,7 @@ call
 
 mul
 add
-<@\textcolor{red}{trunc}@>
+<@\textcolor{blue}{trunc}@>
 add
 sub
 icmp
@@ -393,15 +472,20 @@ br
 
 
 add
+
 add
 mul
+
 sext
-<@\textcolor{red}{getelementptr}@>
+<@\textcolor{blue}{getelementptr}@>
 sext
 
 getelementptr
 load
+
+
 mul
+
 sext
 getelementptr
 getelementptr
@@ -410,6 +494,13 @@ fdiv
 getelementptr
 getelementptr
 store
+
+
+
+
+
+
+
 br
 ret
 
@@ -426,7 +517,7 @@ call
 call
 <@\textcolor{red}{trunc}@>
 call
-<@\textcolor{red}{trunc}@>
+<@\textcolor{blue}{trunc}@>
 mul
 add
 
@@ -434,18 +525,23 @@ add
 sub
 icmp
 br
-getelementptr
-bitcast
+<@\textcolor{red}{getelementptr}@>
+<@\textcolor{red}{bitcast}@>
 add
+
 add
 mul
+
 sext
 
 sext
-<@\textcolor{red}{getelementptr}@>
+<@\textcolor{blue}{getelementptr}@>
 getelementptr
 load
+
+
 mul
+
 sext
 getelementptr
 getelementptr
@@ -454,6 +550,13 @@ fdiv
 getelementptr
 getelementptr
 store
+
+
+
+
+
+
+
 br
 ret
 
@@ -468,7 +571,9 @@ call
 <@\textcolor{red}{trunc}@>
 <@\textcolor{red}{sext}@>
 call
-<@\textcolor{blue}{sext}@>
+
+<@\textcolor{olive}{sext}@>
+
 mul
 
 
@@ -476,6 +581,8 @@ mul
 
 icmp
 br
+
+
 add
 <@\textcolor{red}{sub}@>
 add
@@ -483,16 +590,17 @@ mul
 <@\textcolor{red}{add}@>
 sext
 getelementptr
-<@\textcolor{blue}{br}@>
-<@\textcolor{blue}{phi}@>
-<@\textcolor{blue}{icmp}@>
+<@\textcolor{olive}{br}@>
+
+<@\textcolor{olive}{phi}@>
+<@\textcolor{olive}{icmp}@>
 <@\textcolor{red}{br}@>
 <@\textcolor{red}{add}@>
 mul
 <@\textcolor{red}{add}@>
 sext
 getelementptr
-<@\textcolor{blue}{load}@>
+<@\textcolor{olive}{load}@>
 load
 fdiv
 getelementptr
@@ -514,42 +622,53 @@ ret
 \centering
 \begin{lstlisting}[caption=OpenMP,frame=tlrb,language=c,label=lst:trace-openmp]
 
+
 call
-trunc
-sext
+<@\textcolor{red}{trunc}@>
+<@\textcolor{red}{sext}@>
 call
-sext
+
+<@\textcolor{olive}{sext}@>
+
 mul
+
+
+
+
 icmp
 br
+
+
 add
-sub
-add
-mul
-add
-sext
-getelementptr
-br
-phi
-icmp
-br
+<@\textcolor{red}{sub}@>
 add
 mul
-add
+<@\textcolor{red}{add}@>
 sext
 getelementptr
-load
+<@\textcolor{olive}{br}@>
+
+<@\textcolor{olive}{phi}@>
+<@\textcolor{olive}{icmp}@>
+<@\textcolor{red}{br}@>
+<@\textcolor{red}{add}@>
+mul
+<@\textcolor{red}{add}@>
+sext
+getelementptr
+<@\textcolor{olive}{load}@>
 load
 fdiv
 getelementptr
+
 store
-zext
-add
-trunc
-br
-phi
-icmp
-br
+<@\textcolor{red}{zext}@>
+<@\textcolor{red}{add}@>
+<@\textcolor{red}{trunc}@>
+<@\textcolor{red}{br}@>
+<@\textcolor{red}{phi}@>
+<@\textcolor{red}{icmp}@>
+<@\textcolor{red}{br}@>
 br
 ret
 
@@ -562,7 +681,14 @@ ret
 \label{lst:trace}
 \end{figure*}
 
-
+The differences between traces are shown in Listing \ref{lst:trace}.
+The OpenCL trace is shown in Listing \ref{lst:trace}-\ref{lst:trace-opencl} and presents the baseline progression of instructions expected, \ref{lst:trace-cuda} is the CUDA trace, OpenACC in \ref{lst:trace-openacc} and OpenMP in \ref{lst:trace-openmp}.
+Each trace should be read as the LLVM instruction executed over time as we proceed down the Listing.
+Blank lines have been inserted to align common instructions in the trace between implementations, this is to present the clearest difference between traces.
+Instructions of interest have also been coloured -- red indicates added instructions no apparent in the baseline OpenCL trace, blue instructions show a reordering of instructions between traces and olive shows substitution (or deviation) of instructions.
+The CUDA trace shows that each \todo[inline]{tie in instructions added with each memory lookup from the SPIR}.
+The OpenACC trace has no instruction reordering but has instructions added to componsate for the different control flow (looping) to support the workitems in a workgroup logic -- as was described in Section \ref{sec:spir}.
+There is no difference in traces between OpenMP and OpenACC traces because it uses the same OpenARC compiler toolchain.
 
 ## Fan2
 

@@ -24,6 +24,8 @@ header-includes:
     - \usepackage[binary-units=true]{siunitx}
     - \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
     - \lstset{escapeinside={<@}{@>}}
+    - \usepackage{./styles/llvm/lang}
+    - \usepackage{./styles/nasm/style}
 include-before:
     #ACM-BUILD LNCS-BUILD and IEEE-BUILD are set in ./templates/ieee-longtable-fix-preamble.latex
     - \makeatletter
