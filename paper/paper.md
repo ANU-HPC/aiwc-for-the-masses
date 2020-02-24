@@ -352,16 +352,28 @@ We see no causes where the compiler improves beyond the initial OpenCL baseline.
 
 ## Kernel Representation
 
+Listing \ref{lst:kernel-opencl-vs-openmp-and-openacc} presents the OpenCL kernels generated in the Kernel Representation stage. 
+The workflow from Figure \ref{fig:translation-workflow} shows how the mix of translators interoperate with AIWC, and justifys why CUDA and OpenCL implementations are excluded from this comparison.
+Namely, no translation is needed for the OpenCL implementation, while Coriander operating on the CUDA implementation does not generate any kernel representation form and only offers an intermediate representation -- which are discussed in [Section @sec:intermediate-representation].
+Of the two translated kernels presented in Listing \ref{lst:kernel-opencl-vs-openmp-and-openacc}-\ref{lst:kernel-openacc} and \ref{lst:kernel-opencl-vs-openmp-and-openacc}-\ref{lst:kernel-openmp} can be compared directly to the hand-coded OpenCL kernel presented in Listing \ref{lst:source-code}-\ref{lst:source-opencl} -- they are the translated OpenARC output of OpenACC and OpenMP (from \ref{lst:source-code}-\ref{lst:source-openacc} and \ref{lst:source-code}-\ref{lst:source-openmp}) respectively.
+We see the pragmas are preserved in the translated output regardless of whether OpenACC or OpenMP are used, however the OpenMP pragma is expressed in terms of OpenACC -- the number of threads and number of teams are rewritten as workers and gangs -- this is due to an intermediate step in OpenARC which converts OpenMP into OpenACC so it can directly use the OpenACC to OpenCL functionality.
+Regarding generated OpenCL kernels, both versions are equivilent, sharing the same logic (identical instructions at the same line numbers). Both have the same number of lines in the generated kernels -- although the lines in the OpenMP based version are longer because of longer variable names.
+
+When compared to the OpenCL hand-coded version shown in Listing \ref{lst:source-code}-\ref{lst:source-opencl}, both generated kernels have a fundamental difference in structure.
+There is the same check (in the form of an `if`-statement) to ensure work isn't occuring beyond the defined global boundary -- expressed as global work size in OpenCL.
+However, there is an added `for`-loop than exists in the OpenCL baseline (Listing \ref{lst:source-code}-\ref{lst:source-opencl}).OpenARC expresses all pragma based acceleration as using both local and global workgroups -- this makes sense as many kernels use local workgroups to utilise shared memory and ensure good memory access patterns (in the form of cache reuse on many hardware architectures) -- but the Fan1 base-line kernel doesn't.
+This artifact of translation explains many of the differences in the AIWC metrics when comparing the OpenACC and OpenMP to OpenCL and is discussed further in both the Intermediate-Representation analysis, in [Section @sec:intermediate-representation], and trace analysis, in [Section @sec:trace-analysis].
+
 \setcounter{mainlisting}{\value{lstlisting}}
 \setcounter{lstlisting}{0}
 \renewcommand{\thelstlisting}{\roman{lstlisting}}
 \renewcommand{\lstlistingname}{}
 \begin{figure*}[htp]
 \centering
-\begin{minipage}[t]{\columnwidth}
-\centering
-\lstinputlisting[language=c,caption=OpenCL,frame=tlrb,label=lst:kernel-opencl]{codes/data/fan1_kernel_opencl.cl}
-\end{minipage}
+%\begin{minipage}[t]{\columnwidth}
+%\centering
+%\lstinputlisting[language=c,caption=OpenCL,frame=tlrb,label=lst:kernel-opencl]{codes/data/fan1_kernel_opencl.cl}
+%\end{minipage}
 \begin{minipage}[t]{\columnwidth}
 \centering
 \lstinputlisting[language=c,caption=OpenACC,frame=tlrb,label=lst:kernel-openacc]{codes/data/fan1_kernel_openacc.cl}
@@ -379,7 +391,7 @@ We see no causes where the compiler improves beyond the initial OpenCL baseline.
 
 
 
-## Intermediate-Representation
+## Intermediate-Representation {#sec:intermediate-representation}
 
 \setcounter{mainlisting}{\value{lstlisting}}
 \setcounter{lstlisting}{0}
@@ -427,7 +439,7 @@ A comparison between generated LLVM/SPIR is presented in Listings \ref{lst:spir-
 Both identify differences in SPIR between Coriander (for CUDA implementations) and OpenARC (OpenACC and OpenMP) compiler outputs against the OpenCL based native version.
 The similarities between OpenMP and OpenACC implementations of the Fan1 kernel -- along with using the same compiler/translator toolchain -- means that the generated SPIR are identical and thus consolidated into a single Listing (\ref{lst:spir-opencl-vs-openacc-and-openmp}-\ref{lst:spir-openacc-and-openmp}).
 
-## Trace Analysis
+## Trace Analysis {#sec:trace-analysis}
 
 To examine these differences in actual execution based on the LLVM-IR codes we added the printing of the name of each executed instruction thereby giving a trace of each implementation.
 This was achieved by adding:
