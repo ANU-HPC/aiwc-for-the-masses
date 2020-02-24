@@ -326,7 +326,7 @@ A flat-line at 0% is ideal since it shows no difference between metrics captured
 In other words, if the applications workload characteristics are identical between languages the translator is doing an excellent job in preserving the structure (in terms of memory accesses, parallelism and compute work) of the code regardless of language.
 The implementations have been separated by colour and grouped into metrics for contrast.
 Firstly, the Opcode diversity metric is the same between all implementations however the number of instructions executed differ -- the CUDA translation has 24% more instructions than OpenCL, while OpenACC and OpenMP increase this count by 37%.
-To understand the reason, we must examine the generated SPIR and associated traces, presented in Listing \ref{lst:spir-opencl-vs-cuda} and \ref{lst:trace} respectively, and is discussed in Sections \ref{sec:} and \ref{sec:}.\todo{fix these references and add summary of the kernel representation subsection}
+To understand the reason, we must examine the translated kernels, generated SPIR and the associated traces of each implementation, these are <!--presented in Listings \ref{lst:kernel-opencl-vs-openmp-and-openacc}, \ref{lst:spir-opencl-vs-cuda} and \ref{lst:trace} respectively, and--> discussed in [Sections @sec:kernel-representation][, @sec:intermediate-representation] [and @sec:trace-analysis] respectively.
 We see all "Memory" (beige) metrics (on the x-axis) do not indicate any difference of any implementations against the OpenCL case -- this is good as it ensures that all the same frequency of memory accesses, the type (whether a read or write), the locations and order of memory accesses are preserved and are equivalent in all implementations, and shows an indistinguishable amount of work has occurred.
 
 The "Total Unique Branch Instructions" and "90% Branch Instructions" are doubled in both the OpenACC and OpenMP versions compared to OpenCL and CUDA.
@@ -350,7 +350,7 @@ This is due to the absolute number of branch instructions are doubled  --  \todo
 
 We see no causes where the compiler improves beyond the initial OpenCL baseline.
 
-## Kernel Representation
+## Kernel Representation {#sec:kernel-representation}
 
 Listing \ref{lst:kernel-opencl-vs-openmp-and-openacc} presents the OpenCL kernels generated in the Kernel Representation stage. 
 The workflow from Figure \ref{fig:translation-workflow} shows how the mix of translators interoperate with AIWC, and justifys why CUDA and OpenCL implementations are excluded from this comparison.
