@@ -39,65 +39,39 @@ Workload characterization is an important tool to examine the essential behaviou
 We perform these characterizations by examining the SPIR-V execution traces on an abstract OpenCL device.
 For instance, a code with regular memory accesses and predictable branching that is highly parallel (utilizing a large number of threads) is a suitable candidate for selection for a GPU type of accelerator. Conversely, inherently serial tasks are more suited for CPU devices which commonly offer a higher clock-speed. 
 In the past we have used AIWC and Workload Characterization to perform accurate run-time predictions of OpenCL codes over multiple accelerators -- motivated by the goal of automatically scheduling kernels to the most appropriate accelerator on an HPC system based on these essential characteristics.
-We have also shown that these characteristics are useful in guiding a developer's efforts in optimizing performance on accelerators by outlining the potential bottlenecks of the implementation of an algorithm (in the amount of parallelism available, memory access patterns and scaling over problem sizes, etc).
-Unfortunately both motivations will be undone without industry adoption and community support for SPIR-V (and the OpenCL runtime).
+We have also shown that these characteristics are useful in guiding a developer's efforts in optimizing performance on accelerators by outlining the potential bottlenecks of the implementation of an algorithm (in the amount of parallelism available, memory access patterns and scaling over problem sizes, etc). Unfortunately both motivations will be undone without industry adoption and community support for SPIR-V (and the OpenCL runtime).
 
-However Recent advances with SYCL, HIP/ROCM, and oneAPI may increase adoption of open-source models and present an alternative to the OpenCL-only characterization approach.
-These frameworks are also based on the SPIR-V representation, and support the OpenCL runtime and memory model, and can be leveraged by the same AIWC and Workload Characterization tools.
-Meanwhile, compilers are maturing and are increasingly able to provide source-to-source translations and code transformations, to generate low-level device-optimized code, and to allow implementations in one language to be mapped to another.
-The goal of this paper is to extend AIWC support for all languages: (1) firstly by assessing the AIWC feature-space outputs of contemporary source-to-source compiler/translator tools, and (2) secondly by highlighting the differences against a native OpenCL implementation to identify any potential inefficiencies of the translation by these tools.
+However recent advances with SYCL, HIP/ROCM, and oneAPI may increase adoption of open-source models and present an alternative to the OpenCL-only characterization approach.
+These frameworks are also based on the SPIR-V representation, support the OpenCL runtime and memory model, and can be leveraged by the same AIWC and Workload Characterization tools.
+Meanwhile, compilers are maturing and are increasingly able to provide source-to-source translations and code transformations, to generate low-level device-optimized code, and to allow implementations in one language to be mapped to another. The goal of this project is to extend AIWC support for all languages (1) by assessing the AIWC feature-space outputs of contemporary source-to-source compiler/translator tools, and (2) by exploring any differences compared to a native OpenCL implementation to identify any potential inefficiencies of the translation by these tools.
 
-In summary, in this paper we extend the use of AIWC to evaluate the current state-of-the-art in source-to-source translation to primarily examine the feasibility of leveraging existing language implementations of codes (as an example of those currently popular) to automatically map back to OpenCL.
-We summarize the common languages used on accelerators and survey the community's interest in each. This is done to motivate our interest in tooling and offering support for evaluating the back-end generation of SPIR-V codes.
-Related work is discussed, followed by our methodology highlighting our selection of source-to-source translation tools used in our experiments.
-Finally we present results, close with a summary of our findings, and the explore directions for future-work. 
+In summary, in this project we extend the use of AIWC to evaluate the current state-of-the-art in source-to-source translation. Primarily we examine the feasibility of leveraging existing language implementations of codes that automatically map back to OpenCL. In Section~\ref{sec:languages} we summarize the common languages used on accelerators and quantitatively survey the community's interest in each. This is done to motivate our interest in tooling and offering support for frameworks that rely on back-end generation of SPIR-V codes. In Section~\ref{sec:related} we discuss related work. In Section~\ref{sec:methodolgy} we present our methodology, highlighting our selection of source-to-source translation tools used in our experiments. We present our expiremental results in Section~\ref{sec:results}, and conclude in Section~\ref{sec:conclusion} with a summary of our findings and the directions for future-work. 
 
 # Accelerator Programming Frameworks and their Adoption <!--Adoption Survey-->
 
 <!--## CUDA-->
 
-CUDA -- NVIDIA's proprietary software model -- has been around since 2007.
-It has been widly adopted to repurpose GPUs from rendering in gaming workloads to highly-parallel compute intensive tasks common to scientific codes.
-Unfortunately, it is a single-vendor language, thus CUDA codes are executed solely on NVIDIA devices.
-There has been some recent activity by AMD with ROCm, which aims to automatically translate CUDA codes to their HIP (Heterogeneous-Compute Interface for Portability) framework -- an AMD defined standard and modified clang compiler.
+CUDA\ [@cuda] -- NVIDIA's proprietary software model -- has been around since 2007. CUDA has been widely adopted by the scientific community as a means to repurpose GPUs from traditional rendering in gaming workloads to highly-parallel compute intensive tasks common to scientific codes. Unfortunately, it is a single-vendor language, thus CUDA codes are executed solely on NVIDIA devices. There has been some recent activity by AMD with their ROCm software stack to provide an alternative. For example, their Hipify tool automatically generates a HIP (Heterogeneous-Compute Interface for Portability) representation -- an AMD defined standard -- from input CUDA code. 
 
 <!--## OpenCL-->
 
-OpenCL (Open Compute Language) was introduced shortly after CUDA (in 2009) as a standard agreed upon by accelerator vendors.
-This ideally allowing a code to be written once and executed on any (OpenCL complient) device.
-Vendors typically each develop their own-backend OpenCL runtime.
-This can result in greater variation in performance since vendors can choose there extent of support and optimization. 
-To remedy this POCL (Portable Computing Language) is an Open Source initive providing an implementation of the OpenCL standard.
-It is analogous to HIP but for OpenCL instead of CUDA -- both leverage Clang and LLVM, Clang for the front-end compilation of codes and LLVM for the kernel compiler implementation.
-POCL offers backends to NVIDIA devices (via a mapping of LLVM to CUDA/PTX), HSA (Heterogeneous System Architecture) GPUs such as those offered by ARM and AMD, along with CPUs and ASIPs (Application-Specific Instruction-set Processor).
-
-<!--## OpenMP -->
-
-OpenMP\ [@dagum1998openmp] exists as one of the most widely-used tools in high-performance computing, in-part because of it's high-level directive-based approach and broad availability.
-While OpenMP has traditionally been used to generate multi-threaded code on CPU devices, the recent addition of offloading directives in the OpenMP 4.X+ standards has extended OpenMP to also support accelerator devices, primarily GPUs.
-Similarly to OpenACC, the OpenMP offloading directives provide a high-level alternative to low-level offloading models like OpenCL and CUDA, and provide existing OpenMP programmers a familiar entrance to accelerator computing.
+OpenCL\ [@opencl] (Open Compute Language) was introduced shortly after CUDA (in 2009) as a standard agreed upon by accelerator vendors. This ideally allowing a code to be written once and executed on any (OpenCL complaint) device. Vendors typically each develop their own-backend OpenCL runtime. This can result in greater variation in performance since vendors can choose their extent of support and optimization. To remedy this POCL (Portable Computing Language) is an Open Source initiative providing an implementation of the OpenCL standard. POCL's relationship to OpenCL is analogous to HIPs relationship to CUDA -- both leverage Clang and LLVM, Clang for the front-end compilation of codes and LLVM for the kernel compiler implementation. POCL offers backends to NVIDIA devices (via a mapping of LLVM to CUDA/PTX), HSA (Heterogeneous System Architecture) GPUs such as those offered by ARM and AMD, along with CPUs and ASIPs (Application-Specific Instruction-set Processor).
 
 <!--## OpenACC -->
 
-OpenACC\ [@OpenACC] has been developed as a high-level directive-based alternative to low-level accelerator programming models.
-Lower-level approaches like CUDA and OpenCL typically require the programmer to explicitly manage mappings of parallelism and memory to device threads and memory, and require detailed knowledge about the target device.
-In contrast, OpenACC allows programmers to augment existing programs with directives to generically expose available parallelism, shifting the burden of thread and memory mapping to the underlying compiler.
-Because of its straightforward API and implications for performance portability, OpenACC has become an attractive option for domain scientists interested in exploring accelerator computing.
+OpenACC\ [@OpenACC] has been developed as a high-level directive-based alternative to low-level accelerator programming models. Lower-level approaches like CUDA and OpenCL typically require the programmer to explicitly manage mappings of parallelism and memory to device threads and memory, and require detailed knowledge about the target device. In contrast, OpenACC allows programmers to augment existing programs with directives to generically expose available parallelism, shifting the burden of thread and memory mapping to the underlying compiler. Because of its straightforward API and implications for performance portability, OpenACC has become an attractive option for domain scientists interested in exploring accelerator computing.
 
-The confidentiality of most super-computer scale scientific codes means it is unknown what percentage of kernels are developed in CUDA, OpenCL, OpenMP or OpenACC.
-If we assume the open-source community adoption of accelerator programming frameworks reflects their popularity used by the scientific HPC community, a quick survey of GitHub can help indicate their adoption.
-As of January 2020, the number of repositories including CUDA in the title was 18k, OpenCL was in 8K repositories, OpenMP 5K repositories  and OpenACC was featured < 400 repositories.
-If we compare the lines of code as a measure of language popularity, CUDA was listed more than 8M times, OpenCL occured 2M times, OpenMP 2M times while OpenACC was featured just ~124K times.
-From the newer frameworks, SYCL is either in the title or description of 144 repositories, 402k lines of code in the search contained SYCL.
-At the time of writing, OneAPI is less than 6 months old which biases this comparison, nonetheless there are 56 repositories and 4k lines. 
-This survey was performed by searching for "CUDA", "OPENCL", "OPENMP", "OPENACC", "SYCL" and "ONEAPI" in GitHub\footnote{\url{www.github.com}}.
-We are unable to be more precise around actual repositories using accelerator programming frameworks because OpenCL, OpenMP and OpenACC are not tracked as languages by GitHub -- CUDA is listed as a language and has ~5.9k repositories listed as such.
-Based on these results, we suspect that OpenCL isn't in the pole position to winning the race to adoption, however, translator tools may allow us to ensure OpenCL is used regardless -- as a backend runtime to SPIR-V intermediate representation.
+<!--## OpenMP -->
 
-Mapping back to a common OpenCL runtime is an obvious compromise, since it supports the greatest range of accelerator devices, and by supporting multiple front-end languagues and allowing developers the freedom to use desired language, still increases the impact of OpenCL.
-This common backend holds the potential to avoid the fragmentation and repeated reimplementation as systems are updated and accelerators replaced.
-Having efficent tools to enable this mapping is paramount.
-We use AIWC to evaluate the similarities and differences between outputs of translation tools on functionally equivilent kernel codes and show that it can be used to guide understanding of the mapping between versions and potential improvments to these tools.
+OpenMP\ [@dagum1998openmp] exists as one of the most widely-used tools in high-performance computing, in-part because of its high-level directive-based approach and broad availability. While OpenMP has traditionally been used to generate multi-threaded code on CPU devices, the recent addition of offloading directives in the OpenMP 4.X+ standards has extended OpenMP to also support accelerator devices, primarily GPUs. Similarly to OpenACC, the OpenMP offloading directives provide a high-level alternative to low-level offloading models like OpenCL and CUDA, and provide existing OpenMP programmers a familiar entrance to accelerator computing.
+
+<!--## Survey -->
+The confidentiality of many supercomputer-scale scientific codes means it is unknown what percentage of kernels are developed in CUDA, OpenCL, OpenMP or OpenACC by the scientific community. If we assume the open-source community adoption of accelerator programming frameworks reflects their popularity in the scientific HPC community, a survey of GitHub can help indicate their relative adoption rates. As of January 2020, the number of github repositories including CUDA in the repository title was 18k; 8k for OpenCL, 5k for OpenMP 5K, and fewer than 400 for OpenACC. If we compare the github metric of lines of code as a measure of language popularity, github classified 8M lines of CUDA code, 2M lines of OpenCL, 2M lines of OpenMP, and 124K lines of OpenACC. Of the newer frameworks, SYCL is either in the title or description of 144 repositories, and github classified 402k lines of code as SYCL. At the time of writing, OneAPI is less than 6 months old. Nonetheless there are already 56 repositories and 4k lines of code related to OneAPI. 
+\rem{JL: What actually is the lines of code metric? Is it just lines contained in the associated repositories, or an actual metric reported by github?}
+
+This survey was performed by searching for "CUDA", "OPENCL", "OPENMP", "OPENACC", "SYCL" and "ONEAPI" in GitHub\footnote{\url{www.github.com}}. We are unable to be more precise around actual repositories using accelerator programming frameworks because OpenCL, OpenMP and OpenACC are not tracked as languages by GitHub. However CUDA is listed as a language with ~5.9k repositories listed as such. Based on these results, we suspect that OpenCL may not be positioned to win the race to adoption. However, translator tools may allow us to ensure OpenCL is utilized regardless -- as a backend runtime to SPIR-V intermediate representation.
+
+Mapping back to a common OpenCL runtime is an obvious choice, as it supports the greatest range of accelerator devices and multiple front-end languages. The idea of a common backend representation like OpenCL potentially avoids fragmentations and repeated implementation as systems are updated and accelerators replaced, and having efficent tools to enable this mapping OpenCL is paramount. We use AIWC to evaluate the similarities and differences between outputs of translation tools on functionally equivilent kernel codes. We show that AIWC can be used to guide the understanding of the tools mapping between high-level source languages and OpenCL, and potentially guide improvments to these tools.
 
 
 # Related Work
