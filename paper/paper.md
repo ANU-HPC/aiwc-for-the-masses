@@ -94,12 +94,11 @@ Mapping back to a common OpenCL runtime is an obvious choice, as it supports the
 
 ##OpenARC
 
-The Open Accelerator Research Compiler (OpenARC)\ [@lee2014openarc] has been developed as a research-oriented OpenACC and OpenMP compiler.
-OpenARC performs source-to-source translations and code transformations to generate low-level device-optimized code, like CUDA or OpenCL, specific to a targeted device.
-OpenARC's primary strength is it's ability to enable rapid prototyping of novel ideas, features, and API extensions for emerging technologies.  
+The Open Accelerator Research Compiler (OpenARC)\ [@lee2014openarc] has been developed as a research-oriented OpenACC and OpenMP compiler. OpenARC performs source-to-source translations and code transformations to generate low-level device-optimized code, like CUDA or OpenCL, specific to a targeted device. OpenARC's primary strength is it's ability to enable rapid prototyping of novel ideas, features, and API extensions for emerging technologies.  
 
-In this work, we leverage OpenARC's OpenACC to OpenCL and OpenMP to OpenCL translations and use the output with AIWC to characterize the workloads resultant translation.
-This integration allows us to extend AIWC to characterize high-level codes written with OpenACC and OpenMP. 
+In this work, we leverage OpenARC's OpenACC to OpenCL and OpenMP to OpenCL translations and use the output with AIWC to characterize the workloads resultant translation. This integration allows us to extend AIWC to characterize high-level codes written with OpenACC and OpenMP. 
+<!-- We also leverage an OpenARC-related project, CCAMP\ [@lambert2018heteropar], to perform OpenMP to OpenACC translation. Additionaly, becuase OpenMP offload versions of the Rodinia benchmarks were specifically developed for CPU execution, we use CCAMP's OpenMP optimization pass to generate more GPU friendly OpenMP code for a closer comparisoin with the OpenCL and CUDA counterparts.
+-->
 
 ##Coriander
 
@@ -115,12 +114,17 @@ Unlike OpenARC it skips source-to-source level translation and instead produces 
 
 # Methodology
 
-The Rodinia Benchmark Suite was selected since they offer a number of scientific benchmarks each implemented in all the targeted programming frameworks we compare.
-We consider the gaussian elimination benchmark, which is composed of two kernels. 
-Coriander was used to convert a subset of the Rodinia Benchmark suite from CUDA to OpenCL translation while OpenARC was used for both OpenMP to OpenCL and OpenACC to OpenCL translation.
+We selected applications from the Rodinia Benchmark Suite\ [@Rodinia] for our evaluations. By design Rodinia applications are targeted toward accelerator-based systems, and many of the applications in the benchmark suite are represented in multiple programming models, including CUDA, OpenCL, and OpenMP. 
+Furthermore, additional OpenMP and OpenACC implementations of various Rodinia applications have been developed by open source extension projects\ [@pathscale], which we utilize in our evaluations. We specifically evaluate the Rodinia Gaussian elimination and the breadth-first search applications, each composed of two kernels.  
 
-Thus for each benchmarks kernel we present a comparison of the AIWC feature-spaces of the baseline OpenCL against CUDA, OpenACC and OpenMP.
-We also discuss the required changes made to each implemention to get the closest approximation of work between versions.
+
+\todo[inline]{JL: if we wanted to use CCAMP to generate OpenACC or gpu-specific OpenMP we can talk about that here, and maybe add an extra arrow to the visual. }
+
+Because AIWC analysis operates directly at the SPIR-V/LLVM-IR level, we utilize translation tools to lower the input languages to the desired abstraction level. Coriander was used to generate LLVM IR from CUDA input. OpenARC was used for both OpenMP to OpenCL and OpenACC to OpenCL translation, followed by clang, which was used to lower the output OpenCL to LLVM IR.
+
+\todo[inline]{JL: The above paragraph should be combined with the more detailed description below}
+
+Thus for each benchmark kernel we compare the AIWC feature-spaces of baseline OpenCL against CUDA, OpenACC and OpenMP. We also discuss the required changes made to each implement ion to get the closest approximation of work between versions.
 
 \begin{figure*}
     \centering
