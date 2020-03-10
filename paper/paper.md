@@ -330,7 +330,7 @@ To understand the reason, we must examine the translated kernels, generated SPIR
 We see all "Memory" (beige) metrics (on the x-axis) do not indicate any difference of any implementations against the OpenCL case -- this is good as it ensures that all the same frequency of memory accesses, the type (whether a read or write), the locations and order of memory accesses are preserved and are equivalent in all implementations, and shows an indistinguishable amount of work has occurred.
 
 The "Total Unique Branch Instructions" and "90% Branch Instructions" are doubled in both the OpenACC and OpenMP versions compared to OpenCL and CUDA.
-This is due to the absolute number of branch instructions are doubled  --  \todo[inline]{reference SPIR code block}
+This is because of the absolute doubling in the number of branch instructions the reason becomes apparent when considering the OpenARC generated OpenCL kernels and is discussed during the remainder of this Section.
 
 <!--
 \begin{figure*}
@@ -702,10 +702,12 @@ The CUDA trace shows that each \todo[inline]{tie in instructions added with each
 The OpenACC trace has no instruction reordering but has instructions added to componsate for the different control flow (looping) to support the workitems in a workgroup logic -- as was described in Section \ref{sec:spir}.
 There is no difference in traces between OpenMP and OpenACC traces because it uses the same OpenARC compiler toolchain.
 
+<!--
 ## Fan2
 
 Thus we can use example to illustrate how AIWC metrics highlight discrepencies between languages and implementations and how it can be used to guide sourcecode changes.
 Two separate loops in the `Fan2` function were consolidated into one, to mirror how the task is performed in the OpenCL and CUDA implementations of the algorithm.
+-->
 
 # Conclusions and Future Work
 
@@ -723,9 +725,9 @@ Thus, this work identifies the potential overheads when translating between func
 We also offer a methodology which uses AIWC over a number of tests kernels, and against an OpenCL implementation as a base-line, is an option to assess the suitability of any changes made to the translator.
 This work will assist the improvement of the translation tools on offer, increasing the adoption of SPIR-V and the use of the OpenCL runtime behind-the-scenes, resulting in less fragmentation between software models and languages on contemporary HPC systems.
 
-This paper shows that the visual inspection of AIWC metrics facilitates a high-level (and quick) overview of computational characteristics of kernels, and we've found that how they change has enabled us to compare the execution behaviour of codes in response to two different compilers performing translation.
-We've seen how source-code modifications in our selected benchmark kernels change these features -- in our instance to more closely resemble an OpenCL baseline.We believe the same methodology will be useful for compiler engineers to evaluate their own translators -- especially with the increasing use of LLVM as a backend, on which AIWC and this approach is based.
+This paper shows that the visual inspection of AIWC metrics facilitates a high-level (and quick) overview of computational characteristics of kernels, and we have found that how they change has enabled us to compare the execution behaviour of codes in response to different compilers performing translation.
+We have seen how source-code modifications in our selected benchmark kernels change these features -- in our instance to more closely resemble an OpenCL baseline.We believe the same methodology will be useful for compiler engineers to evaluate their own translators -- especially with the increasing use of LLVM as a backend, on which AIWC and this approach is based.
 This is useful since it is abstracted to an ideal OpenCL device and, as such, is free from micro-architecture and architectural details.
-We proprose this methodology will also encourage application developers of scientific codes to take a deeper-dive into their codes, and more generally, our future work will examine how AIWC metrics provide a developer insights around the suitability of the kernel code when initially selecting for, then optimizing on, a specific accelerators.
+We proprose this methodology will also encourage application developers of scientific codes to take a deeper-dive into their codes, and more generally, our future work will examine how AIWC metrics provide a developer insights around the suitability of the kernel code when initially selecting for, then optimizing on, specific accelerators.
 
 # References
