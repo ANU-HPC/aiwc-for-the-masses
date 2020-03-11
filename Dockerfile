@@ -10,8 +10,6 @@ ENV HOME /root
 ENV USER docker
 ENV LSB_SRC /libscibench-source
 ENV LSB /libscibench
-ENV LEVELDB_SRC /leveldb-source
-ENV LEVELDB_ROOT /leveldb
 ENV OCLGRIND_SRC /oclgrind-source
 ENV OCLGRIND /oclgrind
 ENV OCLGRIND_BIN /oclgrind/bin/oclgrind
@@ -52,14 +50,6 @@ RUN apt-get update -q && apt-get install --no-install-recommends -yq nvidia-cuda
 RUN git clone https://github.com/spcl/liblsb.git $LSB_SRC
 WORKDIR $LSB_SRC
 RUN ./configure --prefix=$LSB
-RUN make
-RUN make install
-
-# Install leveldb (optional dependency for OclGrind)
-RUN git clone https://github.com/google/leveldb.git $LEVELDB_SRC
-RUN mkdir $LEVELDB_SRC/build
-WORKDIR $LEVELDB_SRC/build
-RUN cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_INSTALL_PREFIX=$LEVELDB_ROOT
 RUN make
 RUN make install
 
@@ -104,7 +94,7 @@ RUN mkdir $OCLGRIND_SRC/build
 WORKDIR $OCLGRIND_SRC/build
 ENV CC /coriander/soft/llvm-3.9.0.bin/bin/clang
 ENV CXX /coriander/soft/llvm-3.9.0.bin/bin/clang++
-RUN cmake $OCLGRIND_SRC -DUSE_LEVELDB=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo -DLLVM_DIR=/coriander/soft/llvm-3.9.0.bin/lib/cmake/llvm -DCLANG_ROOT=/coriander/soft/llvm-3.9.0.bin -DCMAKE_INSTALL_PREFIX=$OCLGRIND -DBUILD_SHARED_LIBS=On
+RUN cmake $OCLGRIND_SRC -DCMAKE_BUILD_TYPE=RelWithDebInfo -DLLVM_DIR=/coriander/soft/llvm-3.9.0.bin/lib/cmake/llvm -DCLANG_ROOT=/coriander/soft/llvm-3.9.0.bin -DCMAKE_INSTALL_PREFIX=$OCLGRIND -DBUILD_SHARED_LIBS=On
 RUN make
 RUN make install
 

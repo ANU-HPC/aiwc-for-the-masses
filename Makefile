@@ -1,5 +1,5 @@
 
-all: output/ieee-paper.pdf #output/ieee-paper.tex output/lncs-paper.pdf output/release-paper.pdf output/double-blind-release-paper.pdf output/paper.tex
+all: output/acm-paper.pdf #output/ieee-paper.pdf #output/ieee-paper.tex output/lncs-paper.pdf output/release-paper.pdf output/double-blind-release-paper.pdf output/paper.tex
 
 #output/paper.md: paper/paper.Rmd
 #	mkdir -p output
@@ -31,17 +31,21 @@ grammarly: output/paper.md
 		-o output/paper.txt output/paper.md #now get just the text
 	open -a Grammarly output/paper.txt #and open it in grammarly
 
-output/acm-paper.pdf output/acm-paper.tex: output/paper.md
-	cp ./styles/acm.cls .
+output/acm-paper.pdf output/acm-paper.tex: paper/paper.md acm-author-preamble.latex bibliography/bibliography.bib
+	cp ./styles/acmart.cls .
+	mkdir -p output
 	pandoc  --wrap=preserve \
 		--filter pandoc-crossref \
 		--filter pandoc-citeproc \
+		--filter ./pandoc-tools/table-filter.py \
 		--csl=./styles/acm.csl \
 		--number-sections \
 		./acm-packages.yaml \
+		--include-before-body=./templates/acm-longtable-fix-preamble.latex \
+		--include-before-body=./acm-author-preamble.latex \
 		--template=./templates/acm.latex \
-		-o output/acm-paper.$(subst output/acm-paper.,,$@) output/paper.md
-	rm ./acm.cls
+		-o output/acm-paper.$(subst output/acm-paper.,,$@) paper/paper.md
+	rm ./acmart.cls
 
 arXiv.tar: output/acm-paper.tex
 	cp output/acm-paper.tex .

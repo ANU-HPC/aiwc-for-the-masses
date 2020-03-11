@@ -1,0 +1,36 @@
+---
+documentclass: acmart
+classoption: sigconf
+header-includes:
+    - \usepackage{booktabs}
+    - \usepackage[figurename={Figure.},tablename={Table.},listfigurename={List of Figures.},listtablename={List of Tables.}]{caption}
+    - \usepackage{tabularx}
+    - \usepackage{cite}
+    - \usepackage{amsmath,amssymb,amsfonts}
+    - \usepackage{textcomp}
+    - \usepackage{xargs}
+    - \usepackage{xcolor}
+    - \usepackage[colorinlistoftodos,prependcaption,textsize=small,color=yellow]{todonotes}
+    - \usepackage{regexpatch}
+    - \usepackage{adjustbox}
+    - \usepackage{etoolbox}
+    - \usepackage{listings}
+    - \lstset{basicstyle=\ttfamily,columns=fullflexible,frame=single, breaklines=true,postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space}}
+    - \usepackage{multicol}
+    - \usepackage[noend,ruled]{algorithm2e}
+    - \usepackage{float}
+    - \usepackage{threeparttable}
+    - \usepackage[binary-units=true]{siunitx}
+    - \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+    - \lstset{escapeinside={<@}{@>}}
+    - \usepackage{./styles/llvm/lang}
+    - \usepackage{./styles/nasm/style}
+include-before:
+    #this is also set in ./templates/acm-longtable-fix-preamble.latex
+    - \makeatletter
+    - \xpatchcmd{\@todo}{\setkeys{todonotes}{#1}}{\setkeys{todonotes}{inline,#1}}{}{}
+    - \newcommand{\@maketitle}{\@title}{\color{\@titlecolor}\@title}{}{}
+    - \newtoggle{ACM-BUILD}
+    - \toggletrue{ACM-BUILD}
+      \makeatother
+---
