@@ -105,7 +105,7 @@ It operates as a plugin within the Oclgrind [@price:15] LLVM OpenCL device simul
 During execution the AIWC plugin stores traces around behaviour that is representative of the workload while being removed from any phenomena that would impact the performance on actual hardware.
 These traces are evaluated at the end of each kernel run to compute the characterizing statistics.
 The listings of these statistics and how they are computed is available in associated literature [@johnston2018aiwc].
-The collected metrics have shown to accurately represent the codes characteristics and have shown their suitability in a predictive methodology where the summary statistics were (the only arguments) provided to perform precise execution time predictions over a range of accelerator devices.
+The collected metrics have shown to accurately represent the codes characteristics and have shown their suitability in a predictive methodology where the summary statistics were (the only arguments) provided to perform precise execution time predictions over a range of accelerator devices [@johnston18predicting].
 
 The change in these metrics offer insights around optimization of a code for accelerators by presenting interesting summaries for the developer to consider.
 Unfortunately, Oclgrind -- and thus also AIWC -- only support the OpenCL programming language, utilizing translator tools to migrate codes written in other languages into OpenCL will increase the impact of AIWC.
