@@ -1,5 +1,7 @@
 ---
-title: "AIWC for the Masses: Supporting Architecture-Independent Workload Characterization on OpenMP, OpenACC, CUDA and OpenCL"
+#title: "AIWC for the Masses: Supporting Architecture-Independent Workload Characterization on OpenMP, OpenACC, CUDA and OpenCL"
+title: "Towards Language-Agnostic Architecture-Independent Workload Characterization for HPC Accelerators"
+
 abstract: "
 
 The next-generation of supercomputers will feature a diverse mix of accelerator devices.
@@ -9,7 +11,8 @@ We have previously shown that presenting the characteristics of a code in a arch
 From examining these highly accurate predictions we propose that Architecture-Independent Workload Characterization (AIWC) metrics are also useful in determining the suitability of a code for potential accelerators.
 To this end, we extend the usability of AIWC by supporting additional programming languages common to accelerator-based High-Performance Computing (HPC).
 We use two compilers to perform source-to-source level translation from CUDA-to-OpenCL, OpenMP-to-OpenCL and OpenACC-to-OpenCL and extend the usefulness of the AIWC tool by evaluating the base execution behaviour on these outputs.
-Essentially, we examine how AIWC metrics change between OpenMP, OpenACC, CUDA and OpenCL implementations of identical applications commonly used in scientific benchmarking.
+Essentially, we examine how AIWC metrics change between OpenMP, OpenACC, CUDA and OpenCL implementations of identical applications.
+This is useful to guide a developer through optimizations, extend predictions for scheduling over languages and evaluate differences between compilers, frameworks and toolchains.
 
 "
 keywords: "architecture independent workload characterization, portability, OpenCL, CUDA, OpenACC, OpenMP"
@@ -42,11 +45,11 @@ Despite OpenCL having existed for over a decade, it has generated little tractio
 Fragmentation between implementations of scientific codes already exists. 
 Many lines of legacy code have already been reimplemented in accelerator directive-based languages such as OpenACC and OpenMP, while some computationally intensive kernels have been implemented in CUDA.
 Unfortunately, many of these codes must frequently target new accelerators, as supercomputers are rapidly updated, and the accelerators used on a node are just as quickly replaced -- often by different vendors and likely another class of accelerator (MIC, GPU or FPGA).
-We can easily imagine a world where developers at research laboratories will have full-time jobs rewriting the same codes on loop, taking years optimising and rewriting kernels for the upcoming system.
+We can easily imagine a world where developers at universities, in industry and research laboratories will have full-time jobs rewriting the same codes on loop, taking years optimising and rewriting kernels for the upcoming system.
 This demand will only grow as the HPC center's dependence on heterogeneous accelerator architectures increases, pushed by energy-efficiency requirements in the era of exascale computing, and is untenable.
 
 Workload characterization is an important tool to examine the fundamental behaviour of a code and its underlying structure. It facilitates identifying performance-limiting factors -- an understanding of which is critical when considering the portability between accelerators.
-We perform these characterizations by examining the SPIR-V execution traces on an abstract OpenCL device.
+Characterization, in this setting, occurs by examining the LLVM execution traces on an abstract OpenCL device and tracking and recording statistics about the fundamental nature of these codes.
 For instance, a code with regular memory accesses and predictable branching that is highly parallel (utilizing a large number of threads) is a suitable candidate for selection for a GPU type of accelerator. Conversely, inherently serial tasks are more suited for CPU devices which commonly offer a higher clock-speed. 
 In the past we have used Architecture-Independent Workload Characterization (AIWC) to perform accurate run-time predictions of OpenCL codes over multiple accelerators -- motivated by the goal of automatically scheduling kernels to the most appropriate accelerator on an HPC system based on these essential characteristics.
 We have also shown that these characteristics are useful in guiding a developer's efforts in optimizing performance on accelerators by outlining the potential bottlenecks of the implementation of an algorithm (in the amount of parallelism available, memory access patterns and scaling over problem sizes, etc).
@@ -112,7 +115,7 @@ Unfortunately, Oclgrind -- and thus also AIWC -- only support the OpenCL program
 
 ##OpenARC
 
-The Open Accelerator Research Compiler (OpenARC)\ [@lee2014openarc] has been developed as a research-oriented OpenACC and OpenMP compiler. OpenARC performs source-to-source translations and code transformations to generate low-level device-optimized code, like CUDA or OpenCL, specific to a targeted device. OpenARC's primary strength is it's ability to enable rapid prototyping of novel ideas, features, and API extensions for emerging technologies.  
+The Open Accelerator Research Compiler (OpenARC)\ [@lee2014openarc] has been developed as a research-oriented OpenACC and OpenMP compiler. OpenARC performs source-to-source translations and code transformations to generate low-level device-optimized code, like CUDA or OpenCL, specific to a targeted device. OpenARC's primary strength is it's ability to enable rapid prototyping of novel ideas, features, and API extensions for emerging technologies.
 
 In this work, we leverage OpenARC's OpenACC to OpenCL and OpenMP to OpenCL translations and use the output with AIWC to characterize the workloads resultant translation. This integration allows us to extend AIWC to characterize high-level codes written with OpenACC and OpenMP. 
 <!-- We also leverage an OpenARC-related project, CCAMP\ [@lambert2018heteropar], to perform OpenMP to OpenACC translation. Additionaly, becuase OpenMP offload versions of the Rodinia benchmarks were specifically developed for CPU execution, we use CCAMP's OpenMP optimization pass to generate more GPU friendly OpenMP code for a closer comparisoin with the OpenCL and CUDA counterparts.
@@ -120,28 +123,30 @@ In this work, we leverage OpenARC's OpenACC to OpenCL and OpenMP to OpenCL trans
 
 ##Coriander
 
+<!--
 At first glance we may be hopeful that AMD's HIP could be used for all CUDA to OpenCL backend translations, however, sadly, it does not use OpenCL as a back-end, instead choosing to use LLVM to generate kernels for the HSA Runtime and Direct-To-ISA skipping intermediate layers such as PTX, HSAIL, or SPIR-V.
-It is unknown why this decision was made and by skipping SPIR we are unable to perform the analysis with AIWC over the output since it skips any potential abstract "ideal"/"uniform" device, useful to checking errors, validating memory accesses and performing workload characterization that AIWC and Oclgrind provides.
+It is unknown why this decision was made and by skipping SPIR we are unable to perform the analysis with AIWC over the output since it skips any potential abstract "ideal"/"uniform" device, useful to checking errors, validating memory accesses and performing workload characterization that AIWC and Oclgrind provides.-->
 <!--This seems to be partly to avoid the latency associated with standards-body working groups.-->
 <!--see https://github.com/ROCm-Developer-Tools/HIP/issues/90-->
-Instead, we chose Coriander for the functionality of CUDA to OpenCL translation.
-Unlike OpenARC it skips source-to-source level translation and instead produces LLVM-IR/SPIR-V directly.
-
-\todo[inline]{**TODO, summarize Coriander**}
-
+The Coriander tool has the functionality of translating CUDA to OpenCL codes.
+It achieves compiling the device-side (kernel) code into OpenCL C and by providing a compiler for host-side code, including memory allocation, copy, streams and kernel launches.
+Unlike OpenARC it skips source-to-source level translation and instead produces LLVM-IR/SPIR directly.
+We use Coriander to translate CUDA codes into OpenCL so we can evaluate the similarities in functionality of benchmarks with AIWC.
 
 # Methodology
 
-We selected applications from the Rodinia Benchmark Suite\ [@Rodinia] for our evaluations. By design Rodinia applications are targeted toward accelerator-based systems, and many of the applications in the benchmark suite are represented in multiple programming models, including CUDA, OpenCL, and OpenMP. 
-Furthermore, additional OpenMP and OpenACC implementations of various Rodinia applications have been developed by open source extension projects\ [@pathscale], which we utilize in our evaluation. Specifically, we evaluate the Rodinia Gaussian elimination <!--and the breadth-first search applications, each composed of two kernels. --> application, which is composed of two kernels. 
+Since AIWC metrics were selected to be architecture independent, it is a reasonable assumption that these metrics should also be language independent.
+The methodology to verify this assumption is outline in the following.
+Given a functionally identical application but implemented in OpenCL, CUDA, OpenMP and OpenACC, we utilise contemporary translation tools to generate AIWC compatible OpenCL codes, then generate AIWC metrics, and finally compare the AIWC feature-spaces of different languages against a baseline OpenCL version.
+Because AIWC analysis operates directly at the SPIR-V/LLVM-IR level, we utilize translation tools to lower the input languages to the desired abstraction level.
+Coriander was used to generate LLVM IR from CUDA input, while OpenARC was used for both OpenMP to OpenCL and OpenACC to OpenCL translation.
+An identical version of clang and LLVM (3.9.0) is used to lower the output OpenCL to SPIR from all tools.
 
-\todo[inline]{JL: if we wanted to use CCAMP to generate OpenACC or gpu-specific OpenMP we can talk about that here, and maybe add an extra arrow to the visual. }
-
-Because AIWC analysis operates directly at the SPIR-V/LLVM-IR level, we utilize translation tools to lower the input languages to the desired abstraction level. Coriander was used to generate LLVM IR from CUDA input. OpenARC was used for both OpenMP to OpenCL and OpenACC to OpenCL translation, followed by clang, which was used to lower the output OpenCL to LLVM IR.
-
-\todo[inline]{JL: The above paragraph should be combined with the more detailed description below}
-
-Thus for each benchmark kernel we compare the AIWC feature-spaces of baseline OpenCL against CUDA, OpenACC and OpenMP. We also discuss the required changes made to each implement ion to get the closest approximation of work between versions.
+We selected the Gaussian Elimination application from the Rodinia Benchmark Suite\ [@Rodinia] for our evaluation.
+By design Rodinia applications are targeted toward accelerator-based systems, and many of the applications in the benchmark suite are represented in multiple programming models, including CUDA, OpenCL, and OpenMP. 
+Furthermore, additional OpenMP and OpenACC implementations of various Rodinia applications have been developed by open source extension projects\ [@pathscale], which we utilize in our evaluation.
+The Gaussian elimination <!--and the breadth-first search applications, each composed of two kernels. --> application is composed of two kernels, we present the comparison of the first `Fan1` kernel in Results (Section \ref{sec:results}), `Fan2` was also analysed and available in the associated Jupyter artefact \todo[inline]{reference artefact} but for brevity is omitted from the paper. 
+ We also discuss the required changes made to each implementation to get the closest approximation of work between versions.
 
 \begin{figure*}
     \centering
@@ -156,26 +161,33 @@ The entire workflow is composed of several stages and representations -- broadly
 OpenCL can skip the translation stage and kernel representation since the kernel is already presented in OpenCL-C.
 OpenARC is used to perform source-to-source translation from OpenACC and OpenMP to OpenCL-C kernels.
 Note, coriander does not perform source-to-source translation effectively skipping the kernel representation and compilation stages, it still uses the same version of Clang (from LLVM 3.9.0) to produce the SPIR however this is used from within the tool effectively using clang behind-the-scenes for the compilation stage however the details are hidden from the user and are thus omitted in the diagram.
-Our hypothesis is that these characteristics should be largely independent of language used to implement it, although it is expected that different compiler optimizations and translation stategies will subtly change the metrics.
-Part of the goal of this paper is to examine the magnitudes of change imposed by langage, compiler and translator.
-Ultimately, the similarities between metrics despite the original implementation can be used to evaluate the similarities in compiler and translator toolchains.
+Our hypothesis is that these characteristics should be largely independent of language used to implement it, although it is expected that different compiler optimizations and translation strategies will subtly change the metrics.
+Part of the goal of this paper is to examine the magnitudes of change imposed by language, compiler and translator.
+With the similarities between metrics despite the original implementation can be used to evaluate the similarities of application and potential deficiencies in specific compilers.
 
+The translation was largely automatic using both tools to convert between languages.
+OpenARC doesn't support C++ programs, thus, some benchmarks we examined had to be converted to ANSI C89, and our biggest pain was with user defined `struct`'s needing to be explicitly mentioned when used.
+Coriander lacks support of `cudaMemcpyToSymbol` function calls and required manually replacing to `cudaMemcpy`, similarly, deprecated calls in the code-base to ``cudaThreadSynchronize`` also required replacing with ``cudaDeviceSynchronize``.
+The greatest effort in using these tools was in setting them up in the first place, Coriander is selective in versions of LLVM supported, while using both Oclgrind with Coriander raises an interesting LLVM issue.
+Essentially multiple libraries that are using LLVM, which has some static initialization functions to register passes, end up breaking if they're called multiple times from the same process.
+To solve this issue we build and link all tools (AIWC and the translators) against a shared version of LLVM.
+We provide a Docker artefact to alleviate this pain for future users.\footnote{\url{https://github.com/ANU-HPC/coriander-and-oclgrind}}
+
+<!--
 # Manual Modifications
 
-<!-- ## Implementation Work / Source-Code changes -->
-<!-- OpenARC -->
+## OpenARC 
 Source code changes include C++ programs are unsupported as input programs, as such we need to change the `bfs` application extension.
 Most of the translation was autonomous, only one explicit typecast for a user defined struct needed to be clarifed use 'struct' keyword to refer to the type.
 Use of the preprocessor also doesn't work within OpenARC thus `TRANSFER_GRAPH_NODE` which was `typedef`ed to 1 was explicitly replaced.
 <!--
 TODO: summarise 
 [WARNING] the current OpenARC implementation assumes that input programs follow ANSI C standard (a.k.a C89), which does not allow mixed declarations and code. However, the following procedures have mixed declarations. Please change the procedures such that all delaration statements comes before any expression statements; otherwise, incorrect translation may occur!
--->
 
 * Steps taken to perform code translation from openacc to opencl kernel and wrapper
 
 
-<!-- Coriander-->
+# Coriander
 Use of Coriander was largely autonomous except it lacks support for `cudaMemcpyToSymbol` function calls.
 
 Deprecated calls in the code-base to ``cudaThreadSynchronize`` also required replacing with ``cudaDeviceSynchronize``.
@@ -187,7 +199,6 @@ error "'phi-node-folding-threshold' registered more than once"
 These changes have been provided in as an artefact with Docker incase you wish to try for yourself \footnote{\url{https://github.com/ANU-HPC/coriander-and-oclgrind}}
 Also many of the CUDA codes would crash during the translation to OpenCL -- thus, only a small subset of the Rodinia Benchmark suite are presented, nonetheless this work forms a proof-of-concept and these issues within Coriander can be fixed.
 
-<!--
 Source-to-source translation tools:
 cu2cl progress on CUDA rodinia bfs `/rodinia/cuda/bfs`:
 /cu2cl-build/cu2cl-build/cu2cl-tool bfs.cu ./kernel.cu  -- -I./ 
@@ -195,7 +206,7 @@ Results in `<command line>:7:10: fatal error: 'cuda_runtime.h' file not found`
 -->
 
 
-# Results
+# Results {#sec:results}
 
 We now present the results of this comparison over Gaussian Elimination (GE).
 The GE benchmark was provided by The Rodinia Benchmark Suite\ [@che2009rodinia] with an OpenACC, CUDA and OpenCL implementation.
