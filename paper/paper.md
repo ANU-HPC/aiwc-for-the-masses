@@ -52,12 +52,13 @@ In the past we have used Architecture-Independent Workload Characterization (AIW
 We have also shown that these characteristics are useful in guiding a developer's efforts in optimizing performance on accelerators by outlining the potential bottlenecks of the implementation of an algorithm (in the amount of parallelism available, memory access patterns and scaling over problem sizes, etc).
 Unfortunately, both motivations will be undone without industry adoption and community support for the OpenCL runtime.
 
-Standard Portable Intermediate Representation (SPIR) is an intermediate language for parallel compute and graphics by Khronos Group, primarily treated as an abstract LLVM based subset of codes to allow portable transitions between devices.
+Standard Portable Intermediate Representation (SPIR) is an intermediate language for parallel compute and graphics by Khronos Group, primarily treated as an abstract LLVM based subset of codes to allow portable transitions between OpenCL supported devices.
+It is low-level enough for general compiler optimizations to occur, but is more abstract than the allocation registers and micro-architecture-specific optimizations.
 Recent advances with SYCL, HIP/ROCM, and oneAPI may increase adoption of open-source models and present an alternative to the OpenCL-only characterization approach.
 These frameworks are also based on the SPIR representation, support the OpenCL runtime and memory model, and can be leveraged by the AIWC and Oclgrind debugging tools.
 Meanwhile, compilers are maturing and are increasingly able to provide source-to-source translations and code transformations, to generate low-level device-optimized code, and to allow implementations in one language to be mapped to another. The goal of this project is to extend AIWC support for all languages (1) by assessing the AIWC feature-space outputs of contemporary source-to-source compiler/translator tools, and (2) by exploring any differences compared to a native OpenCL implementation to identify any potential inefficiencies of the translation by these tools.
 
-In summary, in this project we extend the use of AIWC to evaluate the current state-of-the-art in source-to-source translation. Primarily we examine the feasibility of leveraging existing language implementations of codes that automatically map back to OpenCL. In Section~\ref{sec:languages} we summarize the common languages used on accelerators and quantitatively survey the community's interest in each. This is done to motivate our interest in tooling and offering support for frameworks that rely on back-end generation of SPIR-V codes. In Section~\ref{sec:related} we discuss related work. In Section~\ref{sec:methodolgy} we present our methodology, highlighting our selection of source-to-source translation tools used in our experiments. We present our expiremental results in Section~\ref{sec:results}, and conclude in Section~\ref{sec:conclusion} with a summary of our findings and the directions for future-work. 
+In summary, in this project we extend the use of AIWC to evaluate the current state-of-the-art in source-to-source translation. Primarily we examine the feasibility of leveraging existing language implementations of codes that automatically map back to OpenCL. In Section~\ref{sec:languages} we summarize the common languages used on accelerators and quantitatively survey the community's interest in each. This is done to motivate our interest in tooling and offering support for frameworks that rely on back-end generation of SPIR codes. In Section~\ref{sec:related} we discuss related work. In Section~\ref{sec:methodolgy} we present our methodology, highlighting our selection of source-to-source translation tools used in our experiments. We present our expiremental results in Section~\ref{sec:results}, and conclude in Section~\ref{sec:conclusion} with a summary of our findings and the directions for future-work. 
 
 # Accelerator Programming Frameworks and their Adoption <!--Adoption Survey-->
 
@@ -98,17 +99,16 @@ Mapping back to a common OpenCL runtime is an obvious choice, as it supports the
 
 ## AIWC
 
-* Brief about how AIWC currently operates on the Oclgrind LLVM OpenCL device simulator.
-* The collected metrics have shown to accurately represent the codes characteristics and the suitability of accelerator devices with precise execution time predictions
-* Offers insights around optimization of a code for accelerators by presenting interesting summaries for the developer to consider.
-* Unfortunately, Oclgrind -- and thus also AIWC -- only support the OpenCL programming language by simulating an ideal (and abstract) OpenCL device.
-* Abstract OpenCL device simulation enables that AIWC already architecture independent
+The Architecture-Independent Workload Characterization (AIWC) tool describes a workload in terms of statistics around the programs fundamental behaviour.
+For instance, summary statistics on the arithmetic intensity, branching behaviour and types of parallelism and the granularity of parallelism expressed within the code.
+It operates as a plugin within the Oclgrind [@price:15] LLVM OpenCL device simulator -- namely it simulates an abstract OpenCL device and processes each work-item, it is lossless, deterministic and slower than executing on real accelerator hardware.
+During execution the AIWC plugin stores traces around behaviour that is representative of the workload while being removed from any phenomena that would impact the performance on actual hardware.
+These traces are evaluated at the end of each kernel run to compute the characterizing statistics.
+The listings of these statistics and how they are computed is available in associated literature [@johnston2018aiwc].
+The collected metrics have shown to accurately represent the codes characteristics and have shown their suitability in a predictive methodology where the summary statistics were (the only arguments) provided to perform precise execution time predictions over a range of accelerator devices.
 
-## SPIR-V
-
-* LLVM common IR of all kernel codes 
-
-
+The change in these metrics offer insights around optimization of a code for accelerators by presenting interesting summaries for the developer to consider.
+Unfortunately, Oclgrind -- and thus also AIWC -- only support the OpenCL programming language, utilizing translator tools to migrate codes written in other languages into OpenCL will increase the impact of AIWC.
 
 ##OpenARC
 
