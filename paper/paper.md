@@ -102,13 +102,13 @@ Mapping back to a common OpenCL runtime is an obvious choice, as it supports the
 
 <!--## AIWC-->
 
-The Architecture-Independent Workload Characterization (AIWC) tool describes a workload in terms of statistics around the programs fundamental behaviour.
+The Architecture-Independent Workload Characterization (AIWC) [@opendwarfs2017base] tool describes a workload in terms of statistics around the programs fundamental behaviour.
 For instance, summary statistics on the arithmetic intensity, branching behaviour and types of parallelism and the granularity of parallelism expressed within the code.
 It operates as a plugin within the Oclgrind [@price:15] LLVM OpenCL device simulator -- namely it simulates an abstract OpenCL device and processes each work-item, it is lossless, deterministic and slower than executing on real accelerator hardware.
 During execution the AIWC plugin stores traces around behaviour that is representative of the workload while being removed from any phenomena that would impact the performance on actual hardware.
 These traces are evaluated at the end of each kernel run to compute the characterizing statistics.
-The listings of these statistics and how they are computed is available in associated literature [@johnston2018aiwc].
-The collected metrics have shown to accurately represent the codes characteristics and have shown their suitability in a predictive methodology where the summary statistics were (the only arguments) provided to perform precise execution time predictions over a range of accelerator devices [@johnston18predicting].
+The listings of these statistics and how they are computed is available in associated literature [@aiwc2018].
+The collected metrics have shown to accurately represent the codes characteristics and have shown their suitability in a predictive methodology where the summary statistics were (the only arguments) provided to perform precise execution time predictions over a range of accelerator devices [@johnston2018opencl].
 
 The change in these metrics offer insights around optimization of a code for accelerators by presenting interesting summaries for the developer to consider.
 Unfortunately, Oclgrind -- and thus also AIWC -- only support the OpenCL programming language, utilizing translator tools to migrate codes written in other languages into OpenCL will increase the impact of AIWC.
@@ -159,7 +159,7 @@ Our hypothesis is that these characteristics should be largely independent of la
 Part of the goal of this paper is to examine the magnitudes of change imposed by language, compiler and translator.
 With the similarities between metrics despite the original implementation can be used to evaluate the similarities of application and potential deficiencies in specific compilers.
 
-We selected the Gaussian Elimination application from the Rodinia Benchmark Suite\ [@Rodinia] for our evaluation.
+We selected the Gaussian Elimination application from the Rodinia Benchmark Suite\ [@che2009rodinia] for our evaluation.
 By design Rodinia applications are targeted toward accelerator-based systems, and many of the applications in the benchmark suite are represented in multiple programming models, including CUDA, OpenCL, and OpenMP. 
 Furthermore, additional OpenMP and OpenACC implementations of various Rodinia applications have been developed by open source extension projects\ [@pathscale], which we utilize in our evaluation.
 All implementations of Gaussian Elimination have been divided into two discrete computationally intensive regions/kernels -- known as `Fan1` and `Fan2`.
@@ -447,10 +447,8 @@ if(workItem->getGlobalID()[0]==0){
 ````
 
 to the function `instructionExecuted` to AIWC (in `src/plugins/WorkloadCharacterisation.cpp`) which is triggered as a callback when the Oclgrind simulator executes each instruction.
-Since oclgrind is a multithreaded program -- to the extent that each OpenCL workitem is run on a separate pthread -- we only print the log if it occurs on the first thread.
-The default Gaussian Elimination test data is run on 4 threads and calls the `Fan1` and `Fan2` kernels three (3) times.
-For this analysis we only store the traces of first execution of the `Fan1` kernel.
-These traces were then piped from each of the implementations.
+Since oclgrind is a multi-threaded simulator -- to the extent that each OpenCL workitem is run on a separate pthread -- we only print the log if it occurs on the first thread.
+These traces were then collected from each of the implementations.
 
 \setcounter{mainlisting}{\value{lstlisting}}
 \setcounter{lstlisting}{0}
@@ -693,7 +691,7 @@ ret
 \end{figure*}
 
 The differences between traces are shown in Listing\ \ref{lst:trace}.
-The OpenCL trace is shown in Listing \ref{lst:trace}-\ref{lst:trace-opencl} and presents the baseline progression of instructions expected, \ref{lst:trace-cuda} is the CUDA trace, OpenACC in \ref{lst:trace-openacc} and OpenMP in \ref{lst:trace-openmp}.
+The OpenCL trace is shown in Listing \ref{lst:trace}-\ref{lst:trace-opencl} and presents the baseline progression of instructions, \ref{lst:trace-cuda} is the CUDA trace, OpenACC in \ref{lst:trace-openacc} and OpenMP in \ref{lst:trace-openmp}.
 Each trace should be read as the LLVM instruction executed over time as we proceed down the Listing.
 Blank lines have been inserted to align common instructions in the trace between implementations, this is to present the clearest difference between traces.
 Instructions of interest have also been coloured -- red indicates added instructions no apparent in the baseline OpenCL trace, blue instructions show a reordering of instructions between traces and olive shows substitution (or deviation) of instructions.

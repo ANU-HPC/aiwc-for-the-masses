@@ -1,34 +1,652 @@
 @misc{pathscale,
-    author = {PathScale Inc.},
-    title = {Rodinia benchmark modified to run with ENZO and pathcu instead of nvcc CUDA compiler},
+    author = {{PathScale Inc.}},
+    title = {{Rodinia} benchmark modified to run with {ENZO} and pathcu instead of nvcc {CUDA} compiler},
     year = {2014},
     note = {Accessed: 2020-03-11},
     howpublished = {\url{https://github.com/pathscale/rodinia}}
 }
 
+@phdthesis{johnston2019thesis,
+    author = {Johnston, Beau},
+    title = {Characterizing and Predicting Scientific Workloads for Heterogeneous Computing Systems},
+    year = {2019},
+    howpublished = "{[Online]. Available}: \url{https://openresearch-repository.anu.edu.au/handle/1885/162792}"
+}
 
 @inproceedings{lee2014openarc,
-    title={OpenARC: open accelerator research compiler for directive-based, efficient heterogeneous computing},
+    title={{OpenARC}: open accelerator research compiler for directive-based, efficient heterogeneous computing},
     author={Lee, Seyong and Vetter, Jeffrey S},
     booktitle={Proceedings of the 23rd international symposium on High-performance parallel and distributed computing},
     pages={115--120},
     year={2014},
     organization={ACM}
 }
-@phdthesis{johnston2019thesis,
-	author = {Johnston, Beau},
-	title = {Characterizing and Predicting Scientific Workloads for Heterogeneous Computing Systems},
-	year = {2019},
-	howpublished = "{[Online]. Available}: \url{https://openresearch-repository.anu.edu.au/handle/1885/162792}"
+
+@Misc{opencl,
+  author =       "Khronos Group",
+  title =        "{Open Compute Language (OpenCL)}",
+  howpublished = "{[Online]. Available}: \url{http://www.khronos.org/opencl/}",
+  year =         "2013",
+  note =         ACCESSDATE
 }
 
-@inproceedings{che2009rodinia,
-	title={Rodinia: A benchmark suite for heterogeneous computing},
-	author={Che, Shuai and Boyer, Michael and Meng, Jiayuan and Tarjan, David and Sheaffer, Jeremy W and Lee, Sang-Ha and Skadron, Kevin},
-	booktitle={2009 IEEE international symposium on workload characterization (IISWC)},
-	pages={44--54},
-	year={2009},
-	organization={Ieee}
+// CUDA
+@article{cuda,
+  title={Scalable parallel programming with {CUDA}},
+  author={Nickolls, John and Buck, Ian and Garland, Michael and Skadron, Kevin},
+  journal={Queue},
+  volume={6},
+  number={2},
+  pages={40--53},
+  year={2008},
+  publisher={ACM New York, NY, USA}
+}
+
+@inproceedings{rupp2016opencl,
+    title={The {OpenCL} Library Ecosystem: Current Status and Future Perspectives},
+    author={Rupp, Karl},
+    booktitle={Proceedings of the 4th International Workshop on {OpenCL}},
+    pages={13},
+    year={2016},
+    organization={ACM}
+}
+
+@article{stone2010opencl,
+    title={{OpenCL}: A parallel programming standard for heterogeneous computing systems},
+    author={Stone, John E and Gohara, David and Shi, Guochun},
+    journal={Computing in science \& engineering},
+    volume={12},
+    number={3},
+    pages={66--73},
+    year={2010},
+    publisher={IEEE}
+}
+
+@Misc{OpenACC,
+  author =       "OpenACC",
+  title =        "{OpenACC: Directives for Accelerators}",
+  howpublished = "{[Online]. Available}: \url{http://www.openacc.org}",
+  year =         "2011",
+  note =         ACCESSDATE
+}
+
+@article{dagum1998openmp,
+    title={{OpenMP}: an industry standard {API} for shared-memory programming},
+    author={Dagum, Leonardo and Menon, Ramesh},
+    journal={{IEEE} computational science and engineering},
+    volume={5},
+    number={1},
+    pages={46--55},
+    year={1998},
+    publisher={IEEE}
+}
+
+@article{breternitzmachine,
+    title={Machine learning at {AMD} foundations and support},
+    author={Breternitz, Mauricio}
+}
+
+@article{nvidia2007compute,
+    title={Compute unified device architecture programming guide},
+    author={Nvidia, CUDA},
+    year={2007}
+}
+
+@article{stuecheli2018ibm,
+    title={{IBM POWER9} opens up a new era of acceleration enablement: {OpenCAPI}},
+    author={Stuecheli, J and Starke, WJ and Irish, JD and Arimilli, LB and Dreps, D and Blaner, B and Wollbrink, C and Allison, B},
+    journal={{IBM} Journal of Research and Development},
+    volume={62},
+    number={4/5},
+    pages={8--1},
+    year={2018},
+    publisher={IBM}
+}
+
+@article{foley2017ultra,
+    title={Ultra-performance {Pascal GPU} and {NVLink} interconnect},
+    author={Foley, Denis and Danskin, John},
+    journal={IEEE Micro},
+    volume={37},
+    number={2},
+    pages={7--17},
+    year={2017},
+    publisher={IEEE}
+}
+
+@article{sadasivam2017ibm,
+    title={{IBM Power9} processor architecture},
+    author={Sadasivam, Satish Kumar and Thompto, Brian W and Kalla, Ron and Starke, William J},
+    journal={{IEEE} Micro},
+    volume={37},
+    number={2},
+    pages={40--51},
+    year={2017},
+    publisher={IEEE}
+}
+
+@inproceedings{david2010rapl,
+    title={{RAPL}: memory power estimation and capping},
+    author={David, Howard and Gorbatov, Eugene and Hanebutte, Ulf R and Khanna, Rahul and Le, Christian},
+    booktitle={Proceedings of the 16th {ACM/IEEE} international symposium on Low power electronics and design},
+    pages={189--194},
+    year={2010},
+    organization={ACM}
+}
+
+@inproceedings{kasichayanula2012power,
+    title={Power aware computing on {GPUs}},
+    author={Kasichayanula, Kiran and Terpstra, Dan and Luszczek, Piotr and Tomov, Stan and Moore, Shirley and Peterson, Gregory D},
+    booktitle={Application Accelerators in High Performance Computing ({SAAHPC}), 2012 Symposium on},
+    pages={64--73},
+    year={2012},
+    organization={IEEE}
+}
+
+@inproceedings{Kumar:2016:PPE:2925426.2926269,
+    author = {Kumar, Snehasish and Srinivasan, Vijayalakshmi and Sharifian, Amirali and Sumner, Nick and Shriraman, Arrvindh},
+    title = {Peruse and Profit: Estimating the Accelerability of Loops},
+    booktitle = {Proceedings of the 2016 International Conference on Supercomputing},
+    series = {ICS '16},
+    year = {2016},
+    isbn = {978-1-4503-4361-9},
+    location = {Istanbul, Turkey},
+    pages = {21:1--21:13},
+    articleno = {21},
+    numpages = {13},
+    url = {http://doi.acm.org/10.1145/2925426.2926269},
+    doi = {10.1145/2925426.2926269},
+    acmid = {2926269},
+    publisher = {ACM},
+    address = {New York, NY, USA},
+    keywords = {Accelerator, machine learning, static analysis},
+} 
+
+@article{augonnet2011starpu,
+    title={{StarPU}: a unified platform for task scheduling on heterogeneous multicore architectures},
+    author={Augonnet, C{\'e}dric and Thibault, Samuel and Namyst, Raymond and Wacrenier, Pierre-Andr{\'e}},
+    journal={Concurrency and Computation: Practice and Experience},
+    volume={23},
+    number={2},
+    pages={187--198},
+    year={2011},
+    publisher={Wiley Online Library}
+}
+
+@article{duran2011ompss,
+    title={Ompss: a proposal for programming heterogeneous multi-core architectures},
+    author={Duran, Alejandro and Ayguad{\'e}, Eduard and Badia, Rosa M and Labarta, Jes{\'u}s and Martinell, Luis and Martorell, Xavier and Planas, Judit},
+    journal={Parallel Processing Letters},
+    volume={21},
+    number={02},
+    pages={173--193},
+    year={2011},
+    publisher={World Scientific}
+}
+
+@inproceedings{scogland2014coretsar,
+    title={Coretsar: Adaptive worksharing for heterogeneous systems},
+    author={Scogland, Thomas RW and Feng, Wu-chun and Rountree, Barry and de Supinski, Bronis R},
+    booktitle={International Supercomputing Conference},
+    pages={172--186},
+    year={2014},
+    organization={Springer}
+}
+
+@inproceedings{helal2017automatch,
+    title={{AutoMatch}: An automated framework for relative performance estimation and workload distribution on heterogeneous {HPC} systems},
+    author={Helal, Ahmed E and Feng, Wu-chun and Jung, Changhee and Hanafy, Yasser Y},
+    booktitle={Workload Characterization ({IISWC}), 2017 IEEE International Symposium on},
+    pages={32--42},
+    year={2017},
+    organization={IEEE}
+}
+
+@inproceedings{eeckhout2005exploiting,
+    title={Exploiting program microarchitecture independent characteristics and phase behavior for reduced benchmark suite simulation},
+    author={Eeckhout, Lieven and Sampson, John and Calder, Brad},
+    booktitle={Workload Characterization Symposium, 2005. Proceedings of the {IEEE} International},
+    pages={2--12},
+    year={2005},
+    organization={IEEE}
+}
+
+@article{mcintosh2015high,
+    title={High performance in silico virtual drug screening on many-core processors},
+    author={McIntosh-Smith, Simon and Price, James and Sessions, Richard B and Ibarra, Amaurys A},
+    journal={The international journal of high performance computing applications ({IJHPCA})},
+    volume={29},
+    number={2},
+    pages={119--134},
+    year={2015},
+    publisher={SAGE Publications Sage UK: London, England}
+}
+
+@inproceedings{reagen2014machsuite,
+    title={Machsuite: Benchmarks for accelerator design and customized architectures},
+    author={Reagen, Brandon and Adolf, Robert and Shao, Yakun Sophia and Wei, Gu-Yeon and Brooks, David},
+    booktitle={Workload Characterization ({IISWC}), 2014 {IEEE} International Symposium on},
+    pages={110--119},
+    year={2014},
+    organization={IEEE}
+}
+
+@inproceedings{Filipovic:2017:AOK:3152821.3152877,
+    author = {Filipovi\v{c}, Ji\v{r}\'{\i} and Petrovi\v{c}, Filip and Benkner, Siegfried},
+    title = {Autotuning of {OpenCL} Kernels with Global Optimizations},
+    booktitle = {Proceedings of the 1st Workshop on AutotuniNg and aDaptivity AppRoaches for Energy Efficient {HPC} Systems},
+    series = {ANDARE '17},
+    year = {2017},
+    isbn = {978-1-4503-5363-2},
+    location = {Portland, OR, USA},
+    pages = {2:1--2:6},
+    articleno = {2},
+    numpages = {6},
+    url = {http://doi.acm.org/10.1145/3152821.3152877},
+    doi = {10.1145/3152821.3152877},
+    acmid = {3152877},
+    publisher = {ACM},
+    address = {New York, NY, USA},
+}
+
+@inproceedings{reagen2013quantifying,
+    title={Quantifying acceleration: Power/performance trade-offs of application kernels in hardware},
+    author={Reagen, Brandon and Shao, Yakun Sophia and Wei, Gu-Yeon and Brooks, David},
+    booktitle={Low Power Electronics and Design ({ISLPED}), 2013 IEEE International Symposium on},
+    pages={395--400},
+    year={2013},
+    organization={IEEE}
+}
+
+@article{Lee:2010:DGV:1816038.1816021,
+    author = {Lee, Victor W. and Kim, Changkyu and Chhugani, Jatin and Deisher, Michael and Kim, Daehyun and Nguyen, Anthony D. and Satish, Nadathur and Smelyanskiy, Mikhail and Chennupaty, Srinivas and Hammarlund, Per and Singhal, Ronak and Dubey, Pradeep},
+    title = {Debunking the {100X GPU} vs. {CPU} Myth: An Evaluation of Throughput Computing on {CPU} and {GPU}},
+    journal = {{SIGARCH} Comput. Archit. News},
+    issue_date = {June 2010},
+    volume = {38},
+    number = {3},
+    month = jun,
+    year = {2010},
+    issn = {0163-5964},
+    pages = {451--460},
+    numpages = {10},
+    url = {http://doi.acm.org/10.1145/1816038.1816021},
+    doi = {10.1145/1816038.1816021},
+    acmid = {1816021},
+    publisher = {ACM},
+    address = {New York, NY, USA},
+    keywords = {cpu architecture, gpu architecture, performance analysis, performance measurement, software optimization, throughput computing},
+}
+
+
+@inproceedings{muller2016latency,
+    title={Latency-hiding work stealing: Scheduling interacting parallel computations with work stealing},
+    author={Muller, Stefan K and Acar, Umut A},
+    booktitle={Proceedings of the 28th {ACM} Symposium on Parallelism in Algorithms and Architectures},
+    pages={71--82},
+    year={2016},
+    organization={ACM}
+}
+
+@phdthesis{sembrant2016hiding,
+    title={Hiding and Reducing Memory Latency: Energy-Efficient Pipeline and Memory System Techniques},
+    author={Sembrant, Andreas},
+    year={2016},
+    school={Acta Universitatis Upsaliensis}
+}
+
+@article{simula2018real,
+    title={Real-time cortical simulations-Energy and interconnect scaling on distributed systems},
+    author={Simula, Francesco and Pastorelli, Elena and Paolucci, Pier Stanislao and Martinelli, Michele and Lonardo, Alessandro and Biagioni, Andrea and Capone, Cristiano and Capuani, Fabrizio and Cretaro, Paolo and De Bonis, Giulia and others},
+    journal={arXiv preprint arXiv:1812.04974},
+    year={2018}
+}
+
+@inproceedings{Bienia2008,
+    author = {Bienia, Christian and Kumar, Sanjeev and Singh, Jaswinder Pal and Li, Kai},
+    title = {The {PARSEC} Benchmark Suite: Characterization and Architectural Implications},
+    booktitle = {Proceedings of the 17th International Conference on Parallel Architectures and Compilation Techniques},
+    series = {{PACT} '08},
+    year = {2008},
+    isbn = {978-1-60558-282-5},
+    location = {Toronto, Ontario, Canada},
+    pages = {72--81},
+    numpages = {10},
+    url = {http://doi.acm.org/10.1145/1454115.1454128},
+    doi = {10.1145/1454115.1454128},
+    acmid = {1454128},
+    publisher = {ACM},
+    address = {New York, NY, USA},
+    keywords = {benchmark suite, multithreading, performance measurement, shared-memory computers},
+} 
+
+@article{Shelepov2009,
+    author = {Shelepov, Daniel and Saez Alcaide, Juan Carlos and Jeffery, Stacey and Fedorova, Alexandra and Perez, Nestor and Huang, Zhi Feng and Blagodurov, Sergey and Kumar, Viren},
+    title = {{HASS}: A Scheduler for Heterogeneous Multicore Systems},
+    journal = {SIGOPS Oper. Syst. Rev.},
+    issue_date = {April 2009},
+    volume = {43},
+    number = {2},
+    month = apr,
+    year = {2009},
+    issn = {0163-5980},
+    pages = {66--75},
+    numpages = {10},
+    url = {http://doi.acm.org/10.1145/1531793.1531804},
+    doi = {10.1145/1531793.1531804},
+    acmid = {1531804},
+    publisher = {ACM},
+    address = {New York, NY, USA},
+    keywords = {architectural signatures, asymmetric, heterogeneous, multicore, scheduling},
+} 
+
+@inproceedings{Perkins:2017,
+    author = {Perkins, Hugh},
+    title = {{CUDA-on-CL}: A Compiler and Runtime for Running {NVIDIA} {CUDA} {C++11} Applications on {OpenCL} 1.2 Devices},
+    booktitle = {Proceedings of the 5th International Workshop on {OpenCL}},
+    series = {IWOCL 2017},
+    year = {2017},
+    isbn = {978-1-4503-5214-7},
+    location = {Toronto, Canada},
+    pages = {6:1--6:4},
+    articleno = {6},
+    numpages = {4},
+    url = {http://doi.acm.org/10.1145/3078155.3078156},
+    doi = {10.1145/3078155.3078156},
+    acmid = {3078156},
+    publisher = {ACM},
+    address = {New York, NY, USA},
+    keywords = {CUDA, Compilers, GPGPU, LLVM, Machine Learning, OpenCL},
+} 
+
+@inproceedings{cummins2017a,
+    title={Synthesizing Benchmarks for Predictive Modeling},
+    author={Cummins, Chris and Petoumenos, Pavlos and Wang, Zheng and Leather, Hugh},
+    booktitle={CGO},
+    year={2017},
+    organization={IEEE}
+}
+
+@article{DePestel:2017:LBE:3057890.3057908,
+    author = {De Pestel, Sander and Eyerman, Stijn and Eeckhout, Lieven},
+    title = {Linear Branch Entropy: Characterizing and Optimizing Branch Behavior in a Micro-Architecture Independent Way},
+    journal = {{IEEE} Trans. Comput.},
+    issue_date = {March 2017},
+    volume = {66},
+    number = {3},
+    month = mar,
+    year = {2017},
+    issn = {0018-9340},
+    pages = {458--472},
+    numpages = {15},
+    url = {https://doi.org/10.1109/TC.2016.2601323},
+    doi = {10.1109/TC.2016.2601323},
+    acmid = {3057908},
+    publisher = {IEEE Computer Society},
+    address = {Washington, DC, USA},
+}
+
+@inproceedings{villa2014scaling,
+    title={Scaling the power wall: a path to exascale},
+    author={Villa, Oreste and Johnson, Daniel R and O'Connor, Mike and Bolotin, Evgeny and Nellans, David and Luitjens, Justin and Sakharnykh, Nikolai and Wang, Peng and Micikevicius, Paulius and Scudiero, Anthony and others},
+    booktitle={Proceedings of the International Conference for High Performance Computing, Networking, Storage and Analysis},
+    pages={830--841},
+    year={2014},
+    organization={IEEE Press}
+}
+
+@inproceedings{jarus2013performance,
+    title={Performance evaluation and energy efficiency of high-density {HPC} platforms based on {Intel}, {AMD} and {ARM} processors},
+    author={Jarus, Mateusz and Varrette, S{\'e}bastien and Oleksiak, Ariel and Bouvry, Pascal},
+    booktitle={European Conference on Energy Efficiency in Large Scale Distributed Systems},
+    pages={182--200},
+    year={2013},
+    organization={Springer}
+}
+
+@article{rajovic2014tibidabo1,
+    title={Tibidabo1: Making the case for an {ARM}-based {HPC} system},
+    author={Rajovic, Nikola and Rico, Alejandro and Puzovic, Nikola and Adeniyi-Jones, Chris and Ramirez, Alex},
+    journal={Future Generation Computer Systems},
+    volume={36},
+    pages={322--334},
+    year={2014},
+    publisher={Elsevier}
+}
+
+@article{mcintoshcomparative,
+    title={Comparative Benchmarking of the First Generation of {HPC}-Optimised {ARM} Processors on {I}sambard},
+    author={McIntosh-Smith, Simon and Price, James and Deakin, Tom and Poenaru, Andrei}
+}
+
+@techreport{lacy2018building,
+    title={Building 725 Astra and Vanguard.},
+    author={Lacy, Susan Whitney and Noe, John P and Ogden, Jeffry Brandon and Hammond, Simon David},
+    year={2018},
+    institution={Sandia National Lab.(SNL-NM), Albuquerque, NM (United States)}
+}
+
+@article{maqbool2015evaluating,
+    title={Evaluating {ARM} {HPC} clusters for scientific workloads},
+    author={Maqbool, Jahanzeb and Oh, Sangyoon and Fox, Geoffrey C},
+    journal={Concurrency and Computation: Practice and Experience},
+    volume={27},
+    number={17},
+    pages={5390--5410},
+    year={2015},
+    publisher={Wiley Online Library}
+}
+
+@inproceedings{mitra2018development,
+    title={Development and application of a hybrid programming environment on an {ARM/DSP} system for High Performance Computing},
+    author={Mitra, Gaurav and Bohmann, Jonathan and Lintault, Ian and Rendell, Alistair P},
+    booktitle={2018 IEEE International Parallel and Distributed Processing Symposium (IPDPS)},
+    pages={286--295},
+    year={2018},
+    organization={{IEEE}}
+}
+
+@inproceedings{li2012enabling,
+    title={Enabling an {OpenCL} compiler for embedded multicore {DSP} systems},
+    author={Li, Jia-Jhe and Kuan, Chi-Bang and Wu, Tung-Yu and Lee, Jenq Kuen},
+    booktitle={Parallel Processing Workshops ({ICPPW}), 2012 41st International Conference on},
+    pages={545--552},
+    year={2012},
+    organization={IEEE}
+}
+
+@article{dongarra2015hpc,
+    title={{HPC} programming on {I}ntel {Many-Integrated-Core} hardware with {MAGMA} port to {Xeon Phi}},
+    author={Dongarra, Jack and Gates, Mark and Haidar, Azzam and Jia, Yulu and Kabir, Khairul and Luszczek, Piotr and Tomov, Stanimire},
+    journal={Scientific Programming},
+    volume={2015},
+    pages={9},
+    year={2015},
+    publisher={Hindawi Publishing Corp.}
+}
+
+@article{sodani2016knights,
+    title={Knights landing: {Second-generation Intel Xeon Phi} product},
+    author={Sodani, Avinash and Gramunt, Roger and Corbal, Jesus and Kim, Ho-Seop and Vinod, Krishna and Chinthamani, Sundaram and Hutsell, Steven and Agarwal, Rajat and Liu, Yen-Chen},
+    journal={IEEE Micro},
+    volume={36},
+    number={2},
+    pages={34--46},
+    year={2016},
+    publisher={IEEE}
+}
+
+@inproceedings{muralidharan2015semi,
+    title={A semi-automated tool flow for roofline anaylsis of {OpenCL} kernels on accelerators},
+    author={Muralidharan, Servesh and O'Brien, Kenneth and Lalanne, Christian},
+    booktitle={First International Workshop on Heterogeneous High-performance Reconfigurable Computing ({H2RC'15})},
+    year={2015}
+}
+
+@article{husmannr,
+      title={The {R} Package optimization: Flexible Global Optimization with Simulated-Annealing},
+      author={Husmann, Kai and Lange, Alexander and Spiegel, Elmar},
+      year={2017}
+}
+
+@article{liess2014sloping,
+    title={The sloping mire soil-landscape of southern {Ecuador}: Influence of predictor resolution and model tuning on random forest predictions},
+    author={Lie{\ss}, Mareike and Hitziger, Martin and Huwe, Bernd},
+    journal={Applied and environmental soil science},
+    volume={2014},
+    year={2014},
+    publisher={Hindawi}
+}
+
+@article{breiman2001random,
+    title={Random forests},
+    author={Breiman, Leo},
+    journal={Machine learning},
+    volume={45},
+    number={1},
+    pages={5--32},
+    year={2001},
+    publisher={Springer}
+}
+
+@article{JSSv077i01,
+    author = {Marvin Wright and Andreas Ziegler},
+    title = {{ranger: A Fast Implementation of Random Forests for High Dimensional Data in {C++} and {R}}},
+    journal = {Journal of Statistical Software, Articles},
+    volume = {77},
+    number = {1},
+    year = {2017},
+    keywords = {C++; classification; machine learning; R; random forests; Rcpp; recursive partitioning; survival analysis},
+    abstract = {We introduce the C++ application and R package ranger. The software is a fast implementation of random forests for high dimensional data. Ensembles of classification, regression and survival trees are supported. We describe the implementation, provide examples, validate the package with a reference implementation, and compare runtime and memory usage with other implementations. The new software proves to scale best with the number of features, samples, trees, and features tried for splitting. Finally, we show that ranger is the fastest and most memory efficient implementation of random forests to analyze data on the scale of a genome-wide association study.},
+    issn = {1548-7660},
+    pages = {1--17},
+    doi = {10.18637/jss.v077.i01},
+    url = {https://www.jstatsoft.org/v077/i01}
+}
+
+@article{sinnen2004list,
+    title={List scheduling: extension for contention awareness and evaluation of node priorities for heterogeneous cluster architectures},
+    author={Sinnen, Oliver and Sousa, Leonel},
+    journal={Parallel Computing},
+    volume={30},
+    number={1},
+    pages={81--101},
+    year={2004},
+    publisher={Elsevier}
+}
+
+@article{xiaoyong2011novel,
+    title={A novel security-driven scheduling algorithm for precedence-constrained tasks in heterogeneous distributed systems},
+    author={Xiaoyong, Tang and Li, Kenli and Zeng, Zeng and Veeravalli, Bharadwaj},
+    journal={{IEEE} Transactions on Computers},
+    volume={60},
+    number={7},
+    pages={1017--1029},
+    year={2011},
+    publisher={IEEE}
+}
+
+@article{bajaj2004improving,
+    title={Improving scheduling of tasks in a heterogeneous environment},
+    author={Bajaj, Rashmi and Agrawal, Dharma P},
+    journal={{IEEE} Transactions on Parallel and Distributed Systems},
+    volume={15},
+    number={2},
+    pages={107--118},
+    year={2004},
+    publisher={IEEE}
+}
+
+@inproceedings{topcuoglu1999task,
+    title={Task scheduling algorithms for heterogeneous processors},
+    author={Topcuoglu, Haluk and Hariri, Salim and Wu, Min-You},
+    booktitle={Heterogeneous Computing Workshop ({HCW})},
+    pages={3--14},
+    year={1999},
+    organization={IEEE}
+}
+
+@inproceedings{augonnet2010data,
+    title={Data-aware task scheduling on multi-accelerator based platforms},
+    author={Augonnet, C{\'e}dric and Clet-Ortega, J{\'e}r{\^o}me and Thibault, Samuel and Namyst, Raymond},
+    booktitle={{IEEE} International Conference on Parallel and Distributed Systems ({ICPADS})},
+    pages={291--298},
+    year={2010},
+    organization={IEEE}
+}
+
+@article{fowers2013performance,
+    title={A performance and energy comparison of convolution on {GPUs}, {FPGAs}, and multicore processors},
+    author={Fowers, Jeremy and Brown, Greg and Wernsing, John and Stitt, Greg},
+    journal={ACM Transactions on Architecture and Code Optimization (TACO)},
+    volume={9},
+    number={4},
+    pages={25},
+    year={2013},
+    publisher={ACM}
+}
+
+@article{yildirim2012single,
+  title={Single-machine sustainable production planning to minimize total energy consumption and total completion time using a multiple objective genetic algorithm},
+  author={Yildirim, Mehmet Bayram and Mouzon, Gilles},
+  journal={IEEE transactions on engineering management},
+  volume={59},
+  number={4},
+  pages={585--597},
+  year={2012},
+  publisher={IEEE}
+}
+
+@article{carrington2006performance,
+  title={A performance prediction framework for scientific applications},
+  author={Carrington, Laura and Snavely, Allan and Wolter, Nicole},
+  journal={{Future Generation Computer Systems}},
+  volume={22},
+  number={3},
+  pages={336--346},
+  year={2006},
+  publisher={Elsevier}
+}
+
+@inproceedings{yang2005cross,
+  title={{Cross-platform performance prediction of parallel applications using partial execution}},
+  author={Yang, Leo T and Ma, Xiaosong and Mueller, Frank},
+  booktitle={{Proceedings of the 2005 ACM/IEEE conference on Supercomputing}},
+  pages={40},
+  year={2005},
+  organization={IEEE Computer Society}
+}
+
+@inproceedings{johnston2018opencl,
+    title={{OpenCL} Performance Prediction using Architecture-Independent Features},
+    author={Johnston, Beau and Falzon, Gregory and Milthorpe, Josh},
+    booktitle={2018 International Conference on High Performance Computing \& Simulation (HPCS)},
+    pages={561--569},
+    year={2018},
+    organization={IEEE}
+}
+
+@ARTICLE{aiwc2018,
+    author = {{Johnston}, B. and {Milthorpe}, J.},
+    title = "{{AIWC}: {OpenCL}-based Architecture-Independent Workload Characterisation}",
+    journal = {LLVM-HPC2018 Workshop, held in conjunction with the 30th International Conference for High Performance Computing, Networking, Storage, and Analysis (SC18)},
+    eprint = {1805.04207},
+    primaryClass = "cs.SE",
+    keywords = {Computer Science - Software Engineering},
+    year = 2018,
+    month = may,
+    adsurl = {http://adsabs.harvard.edu/abs/2018arXiv180504207J},
+    adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+
+@inproceedings{che2008accelerating,
+  title={Accelerating compute-intensive applications with {GPUs} and {FPGAs}},
+  author={Che, Shuai and Li, Jie and Sheaffer, Jeremy W and Skadron, Kevin and Lach, John},
+  booktitle={Application Specific Processors, 2008. SASP 2008. Symposium on},
+  pages={101--107},
+  year={2008},
+  organization={IEEE}
 }
 
 @misc{beau_johnston_2017_1134175,
@@ -65,34 +683,40 @@
  keywords = {basic-block-level parallelism, berkeley computational motifs, data movement, instruction-level parallelism},
 }
 
-@article{spafford2010maestro,
-  title={Maestro: data orchestration and tuning for {OpenCL} devices},
-  author={Spafford, Kyle and Meredith, Jeremy and Vetter, Jeffrey},
-  journal={Euro-Par 2010-Parallel Processing},
-  pages={275--286},
-  year={2010},
-  publisher={Springer}
+@article{depestel2017linear,
+    author = {De Pestel, Sander and Eyerman, Stijn and Eeckhout, Lieven},
+    title = {Linear Branch Entropy: Characterizing and Optimizing Branch Behavior in a Micro-Architecture Independent Way},
+    journal = {IEEE Transactions on Computers},
+    issue_date = {March 2017},
+    volume = {66},
+    number = {3},
+    month = mar,
+    year = {2017},
+    issn = {0018-9340},
+    pages = {458--472},
+    numpages = {15},
+    url = {https://doi.org/10.1109/TC.2016.2601323},
+    doi = {10.1109/TC.2016.2601323},
+    acmid = {3057908},
+    publisher = {IEEE Computer Society},
+    address = {Washington, DC, USA},
 }
 
-@inproceedings{price2017analyzing,
-   title={Analyzing and improving performance portability of {OpenCL} applications via auto-tuning},
-   author={Price, James and McIntosh-Smith, Simon},
-   booktitle={Proceedings of the 5th International Workshop on {OpenCL}},
-   pages={14},
-   year={2017},
-   organization={ACM}
+@article{johnston17opendwarfs,
+    title={Dwarfs on Accelerators: Extending {OpenCL} Benchmarking for Heterogeneous Computing Architectures},
+    author={Johnston, Beau and Milthorpe, Josh},
+    _journal={International Workshop on Programming Models and Applications for Multicores and Manycores},
+    journal={ICPP '18 Proceedings of the 47th International Conference on Parallel Processing Companion},
+    year={2018}
 }
 
-@InProceedings{ansel:pact:2014,
-   author    = "Jason Ansel and Shoaib Kamil and Kalyan Veeramachaneni and Jonathan Ragan-Kelley and Jeffrey Bosboom and Una-May O'Reilly and Saman Amarasinghe",
-   title     = "OpenTuner: An Extensible Framework for Program Autotuning",
-   url       = "http://groups.csail.mit.edu/commit/papers/2014/ansel-pact14-opentuner.pdf",
-   slides    = "http://groups.csail.mit.edu/commit/papers/2014/ansel-pact14-opentuner-slides.pdf",
-   keywords  = "OpenTuner",
-   month     = "August",
-   year      = "2014",
-   address   = "Edmonton, Canada",
-   booktitle = "International Conference on Parallel Architectures and Compilation Techniques ({PACT})",
+@inproceedings{nugteren2015cltune,
+   title={{CLTune}: A generic auto-tuner for {OpenCL} kernels},
+   author={Nugteren, Cedric and Codreanu, Valeriu},
+   booktitle={IEEE International Symposium on Embedded Multicore/Many-core Systems-on-Chip ({MCSoC})},
+   pages={195--202},
+   year={2015},
+   organization={IEEE}
 }
 
 @inproceedings{chaimov2014toward,
@@ -104,66 +728,1005 @@
    organization={IEEE}
 }
 
-@inproceedings{nugteren2015cltune,
-   title={CLTune: A generic auto-tuner for {OpenCL} kernels},
-   author={Nugteren, Cedric and Codreanu, Valeriu},
-   booktitle={IEEE International Symposium on Embedded Multicore/Many-core Systems-on-Chip ({MCSoC})},
-   pages={195--202},
-   year={2015},
-   organization={IEEE}
+@article{spafford2010maestro,
+  title={Maestro: data orchestration and tuning for {OpenCL} devices},
+  author={Spafford, Kyle and Meredith, Jeremy and Vetter, Jeffrey},
+  journal={Euro-Par 2010-Parallel Processing},
+  pages={275--286},
+  year={2010},
+  publisher={Springer}
+}
+
+@article{declerck2016cori,
+	title={Cori - A system to support data-intensive computing},
+	author={Declerck, Tina and Antypas, Katie and Bard, Deborah and Bhimji, Wahid and Canon, Shane and Cholia, Shreyas and He, Helen Yun and Jacobsen, Douglas and Prabhat, Nicholas J Wright},
+	journal={Proceedings of the Cray User Group},
+	pages={8},
+	year={2016}
+}
+
+@inproceedings{sun2016,
+    author = {Sun, Yifan and Gong, Xiang and Amir, Kavyan and Ziabari, Amir Kavyan and Yu, Leiming and Li, Xiangyu and Mukherjee, Saoni and McCardwell, Carter and Villegas, Alejandro and Kaeli, David},
+    year = {2016},
+    title = {{Hetero-Mark}, a benchmark suite for {CPU-GPU} collaborative computing},
+    booktitle={IEEE International Symposium on Workload Characterization (IISWC)}
+}
+
+@inproceedings{gomez2017chai,
+    title={Chai: Collaborative heterogeneous applications for integrated-architectures},
+    author={G{\'o}mez-Luna, Juan and El Hajj, Izzat and Chang, Li-Wen Garcia-Flores, Victor and Garcia de Gonzalo, Simon and Jablin, Thomas and Pena, Antonio J and Hwu, Wen-mei},
+    booktitle={IEEE International Symposium on Performance Analysis of Systems and Software (ISPASS)},
+    year={2017},
+    organization={IEEE}
+}
+
+@misc{bainville2010fft,
+	title={{OpenCL} Fast {Fourier} Transform},
+	author={Bainville, Eric},
+	year={2010},
+	url={http://www.bealto.com/gpu-fft.html}
+}
+
+@inproceedings{che2009rodinia,
+    title={Rodinia: A benchmark suite for heterogeneous computing},
+    author={Che, Shuai and Boyer, Michael and Meng, Jiayuan and Tarjan, David and Sheaffer, Jeremy W and Lee, Sang-Ha and Skadron, Kevin},
+    booktitle={IEEE International Symposium on Workload Characterization (IISWC)},
+    pages={44--54},
+    year={2009},
+    publisher={IEEE}
+}
+
+@inproceedings{che2010characterization,
+    title={A characterization of the {Rodinia} benchmark suite with comparison to contemporary {CMP} workloads},
+    author={Che, Shuai and Sheaffer, Jeremy W and Boyer, Michael and Szafaryn, Lukasz G and Wang, Liang and Skadron, Kevin},
+    booktitle={Workload Characterization (IISWC), 2010 IEEE International Symposium on},
+    pages={1--11},
+    year={2010},
+    organization={IEEE}
+}
+
+@mastersThesis{joshi2016thesis,
+	author={Anagha S Joshi},
+	title={A performance focused, development friendly and model aided parallelization strategy for scientific applications},
+	year={2016},
+	school={Clemson University},
+	isbn={9781369550160}
+}
+
+@article{krommydas2016opendwarfs,
+    title={{OpenDwarfs}: Characterization of dwarf-based benchmarks on fixed and reconfigurable architectures},
+    author={Krommydas, Konstantinos and Feng, Wu-Chun and Antonopoulos, Christos D and Bellas, Nikolaos},
+    journal={Journal of Signal Processing Systems},
+    volume={85},
+    number={3},
+    pages={373--392},
+    year={2016},
+    publisher={Springer}
+}
+
+@techreport{asanovic2006landscape,
+    title={The landscape of parallel computing research: A view from {Berkeley}},
+    author={Asanovi\'{c}, Krste and Bodik, Ras and Catanzaro, Bryan Christopher and Gebis, Joseph James and Husbands, Parry and Keutzer, Kurt and Patterson, David A and Plishker, William Lester and Shalf, John and Williams, Samuel Webb and Yelick, Kathy},
+    year={2006},
+    number={UCB/EECS-2006-183},
+    institution={EECS Department, University of California, Berkeley}
+}
+
+@inproceedings{johnston2017embedded,
+  title={Embedded Accelerators for Scientific High-Performance Computing: An Energy Study of {OpenCL} {Gaussian} Elimination Workloads},
+  author={Johnston, Beau and Lee, Brian and Angove, Luke and Rendell, Alistair},
+  booktitle={International Conference on Parallel Processing Workshops (ICPPW)},
+  pages={59--68},
+  year={2017},
+  publisher={IEEE}
+}
+
+@inproceedings{mitra2014implementation,
+  title={Implementation and optimization of the {OpenMP} accelerator model for the {TI Keystone II} architecture},
+  author={Mitra, Gaurav and Stotzer, Eric and Jayaraj, Ajay and Rendell, Alistair P},
+  booktitle={International Workshop on OpenMP},
+  pages={202--214},
+  year={2014},
+  publisher={Springer}
+}
+
+@article{bailey1991parallel,
+	title={The {NAS} parallel benchmarks},
+	author={Bailey, David H and Barszcz, Eric and Barton, John T and Browning, David S and Carter, Robert L and Dagum, Leonardo and Fatoohi, Rod A and Frederickson, Paul O and Lasinski, Thomas A and Schreiber, Rob S and others},
+	journal={International Journal of Supercomputing Applications},
+	volume={5},
+	number={3},
+	pages={63--73},
+	year={1991},
+	publisher={Sage Publications Sage CA: Thousand Oaks, CA}
+}
+
+@inproceedings{barnes2016evaluating,
+    title={Evaluating and optimizing the {NERSC} workload on {Knights Landing}},
+    author={Barnes, Taylor and Cook, Brandon and Deslippe, Jack and Doerfler, Douglas and Friesen, Brian and He, Yun and Kurth, Thorsten and Koskela, Tuomas and Lobet, Mathieu and Malas, Tareq and others},
+    booktitle={International Workshop on Performance Modeling, Benchmarking and Simulation of High Performance Computer Systems (PMBS)},
+    pages={43--53},
+    year={2016},
+    publisher={IEEE}
+}
+
+@inproceedings{martineau2016performance,
+    title={Performance analysis and optimization of {Clang}'s {OpenMP} 4.5 {GPU} support},
+    author={Martineau, Matt and McIntosh-Smith, Simon and Bertolli, Carlo and Jacob, Arpith C and Antao, Samuel F and Eichenberger, Alexandre and Bercea, Gheorghe-Teodor and Chen, Tong and Jin, Tian and O'Brien, Kevin and others},
+    booktitle={International Workshop on Performance Modeling, Benchmarking and Simulation of High Performance Computer Systems (PMBS)},
+    pages={54--64},
+    year={2016},
+    publisher={IEEE}
+}
+
+@inproceedings{marjanovic2016hpc,
+    title={{HPC} benchmarking: problem size matters},
+    author={Marjanovi{\'c}, Vladimir and Gracia, Jos{\'e} and Glass, Colin W},
+    booktitle={International Workshop on Performance Modeling, Benchmarking and Simulation of High Performance Computer Systems (PMBS)},
+    pages={1--10},
+    year={2016},
+    publisher={IEEE}
+}
+
+@misc{feldman_2018,
+    title={Prototypes of {China’s} Exascale Supercomputers Point to Some New Realities},
+    howpublished={https://www.top500.org/news/prototypes-of-chinas-exascale-supercomputers-point-to-some-new-realities/},
+    journal={TOP500 Supercomputer Sites},
+    publisher={Top500.org},
+    author={Feldman, Michael},
+    year={2018},
+    month={Aug}
+}
+
+@article{aroca2012towards,
+    title={Towards green data centers: A comparison of x86 and {ARM} architectures power efficiency},
+    author={Aroca, Rafael Vidal and Gon{\c{c}}alves, Luiz Marcos Garcia},
+    journal={Journal of Parallel and Distributed Computing},
+    volume={72},
+    number={12},
+    pages={1770--1780},
+    year={2012},
+    publisher={Elsevier}
+}
+
+@article{keipert2015energy,
+    title={Energy-efficient computational chemistry: Comparison of x86 and {ARM} systems},
+    author={Keipert, Kristopher and Mitra, Gaurav and Sunriyal, Vaibhav and Leang, Sarom S and Sosonkina, Masha and Rendell, Alistair P and Gordon, Mark S},
+    journal={Journal of chemical theory and computation},
+    volume={11},
+    number={11},
+    pages={5055--5061},
+    year={2015},
+    publisher={ACS Publications}
+}
+
+@article{komatitsch2010high,
+    title={High-order finite-element seismic wave propagation modeling with MPI on a large {GPU} cluster},
+    author={Komatitsch, Dimitri and Erlebacher, Gordon and G{\"o}ddeke, Dominik and Mich{\'e}a, David},
+    journal={Journal of computational physics},
+    volume={229},
+    number={20},
+    pages={7692--7714},
+    year={2010},
+    publisher={Elsevier}
+}
+
+@inproceedings{fujita2018accelerating,
+    title={Accelerating Space Radiative Transfer on {FPGA} using {OpenCL}},
+    author={Fujita, Norihisa and Kobayashi, Ryohei and Yamaguchi, Yoshiki and Oobata, Yuma and Boku, Taisuke and Abe, Makito and Yoshikawa, Kohji and Umemura, Masayuki},
+    booktitle={Proceedings of the 9th International Symposium on Highly-Efficient Accelerators and Reconfigurable Technologies},
+    pages={6},
+    year={2018},
+    organization={ACM}
+}
+
+@inproceedings{akram2018fpga,
+    title={{FPGA} and {ARM} processor based supercomputing},
+    author={Akram, Wasim and Hussain, Tassadaq and Ayguade, Eduard},
+    booktitle={Computing, Mathematics and Engineering Technologies (iCoMET), 2018 International Conference on},
+    pages={1--5},
+    year={2018},
+    organization={IEEE}
+}
+
+@article{antypas2014cori,
+    title={Cori: a {Cray XC} pre-exascale system for {NERSC}},
+    author={Antypas, Katie and Wright, Nicholas and Cardo, Nicholas P and Andrews, Allison and Cordery, Matthew},
+    journal={Cray User Group Proceedings. Cray},
+    year={2014}
+}
+
+@article{rajantrinity,
+    title={Trinity Benchmarks on {Intel Xeon Phi} ({K}nights {C}orner)},
+    author={Rajan, Mahesh and Doerfler, Doug and Hammond, Si}
+}
+
+@article{abdelfattah2018analysis,
+    title={Analysis and Design Techniques towards High-Performance and Energy-Efficient Dense Linear Solvers on {GPUs}},
+    author={Abdelfattah, Ahmad and Haidar, Azzam and Tomov, Stanimire and Dongarra, Jack},
+    journal={IEEE Transactions on Parallel and Distributed Systems},
+    year={2018},
+    publisher={IEEE}
+}
+
+@article{markidis2018nvidia,
+    title={{NVIDIA} Tensor Core Programmability, Performance \& Precision},
+    author={Markidis, Stefano and Der Chien, Steven Wei and Laure, Erwin and Peng, Ivy Bo and Vetter, Jeffrey S},
+    journal={arXiv preprint arXiv:1803.04014},
+    year={2018}
+}
+
+@article{tomov2010towards,
+    title={Towards dense linear algebra for hybrid {GPU} accelerated manycore systems},
+    author={Tomov, Stanimire and Dongarra, Jack and Baboulin, Marc},
+    journal={Parallel Computing},
+    volume={36},
+    number={5-6},
+    pages={232--240},
+    year={2010},
+    publisher={Elsevier}
+}
+
+@inproceedings{tomov2010dense,
+    title={Dense linear algebra solvers for multicore with {GPU} accelerators},
+    author={Tomov, Stanimire and Nath, Rajib and Ltaief, Hatem and Dongarra, Jack},
+    booktitle={Parallel \& Distributed Processing, Workshops and Phd Forum (IPDPSW), 2010 IEEE International Symposium on},
+    pages={1--8},
+    year={2010},
+    organization={IEEE}
+}
+
+@inproceedings{volkov2008benchmarking,
+    title={Benchmarking {GPUs} to tune dense linear algebra},
+    author={Volkov, Vasily and Demmel, James W},
+    booktitle={High Performance Computing, Networking, Storage and Analysis, 2008. SC 2008. International Conference for},
+    pages={1--11},
+    year={2008},
+    organization={IEEE}
+}
+
+@inproceedings{merrill2012scalable,
+    title={Scalable {GPU} graph traversal},
+    author={Merrill, Duane and Garland, Michael and Grimshaw, Andrew},
+    booktitle={ACM SIGPLAN Notices},
+    volume={47},
+    number={8},
+    pages={117--128},
+    year={2012},
+    organization={ACM}
+}
+
+@article{springer2011berkeley,
+    title={Berkeley’s Dwarfs on {CUDA}},
+    author={Springer, Paul},
+    journal={RWTH Aachen University, Tech. Rep},
+    year={2011}
+}
+
+@inproceedings{nicolescu2015structured,
+    title={Structured grid algorithms modelled with complex objects},
+    author={Nicolescu, Radu},
+    booktitle={International Conference on Membrane Computing},
+    pages={321--337},
+    year={2015},
+    organization={Springer}
+}
+
+@article{rajovic2013low,
+    title={The low power architecture approach towards exascale computing},
+    author={Rajovic, Nikola and Vilanova, Lluis and Villavieja, Carlos and Puzovic, Nikola and Ramirez, Alex},
+    journal={Journal of Computational Science},
+    volume={4},
+    number={6},
+    pages={439--443},
+    year={2013},
+    publisher={Elsevier}
+}
+
+@article{padoin2014performance,
+    title={Performance/energy trade-off in scientific computing: the case of {ARM} big. {LITTLE} and {Intel Sandy Bridge}},
+    author={Padoin, Edson Luiz and Pilla, La{\'e}rcio Lima and Castro, M{\'a}rcio and Boito, Francieli Z and Navaux, Philippe Olivier Alexandre and M{\'e}haut, Jean-Fran{\c{c}}ois},
+    journal={IET Computers \& Digital Techniques},
+    volume={9},
+    number={1},
+    pages={27--35},
+    year={2014},
+    publisher={IET}
+}
+
+@article{dongarra2016report,
+    title={Report on the {Sunway TaihuLight} system},
+    author={Dongarra, Jack},
+    journal={PDF). www. netlib. org. Retrieved June},
+    volume={20},
+    year={2016}
+}
+
+@misc{morgan_2017_tianhe,
+    title={China Arms Upgraded {Tianhe-2A} Hybrid Supercomputer},
+    howpublished={https://www.nextplatform.com/2017/09/20/china-arms-upgraded-tianhe-2a-hybrid-supercomputer/},
+    journal={TOP500 Supercomputer Sites},
+    publisher={Top500.org},
+    author={Morgan, Timothy},
+    year={2017},
+    month={Sep}
+}
+
+@misc{feldman_2017,
+    title={{TOP500} Meanderings: Supercomputers Take Big Green Leap in 2017},
+    howpublished={https://www.top500.org/news/top500-meanderings-supercomputers-take-big-green-leap-in-2017/},
+    journal={TOP500 Supercomputer Sites},
+    publisher={Top500.org},
+    author={Feldman, Michael},
+    year={2017},
+    month={Sep}
+}
+
+@misc{dwarfmine_2006,
+	title={{D}warf {M}ine},
+	howpublished={http://view.eecs.berkeley.edu/wiki/Dwarf_Mine},
+	journal={Berkeley Wiki},
+	author={Patterson, David and Keutzer, Kurt and Asanovic, Krste and Yelick, Kathy and Bodik, Ras},
+	year={2006},
+	month={Dec}
+}
+
+@book{gallopoulos2016parallelism,
+    title={Parallelism in matrix computations},
+    author={Gallopoulos, Efstratios and Philippe, Bernard and Sameh, Ahmed H},
+    year={2016},
+    publisher={Springer}
+}
+
+@inproceedings{abadi2016tensorflow,
+    title={Tensorflow: a system for large-scale machine learning.},
+    author={Abadi, Mart{\'\i}n and Barham, Paul and Chen, Jianmin and Chen, Zhifeng and Davis, Andy and Dean, Jeffrey and Devin, Matthieu and Ghemawat, Sanjay and Irving, Geoffrey and Isard, Michael and others},
+    booktitle={OSDI},
+    volume={16},
+    pages={265--283},
+    year={2016}
+}
+
+@article{shetty2017x,
+    title={{X-MAP} A Performance Prediction Tool for Porting Algorithms and Applications to Accelerators},
+    author={Shetty, Ashrit},
+    year={2017}
+}
+
+@inproceedings{boyer2013improving,
+    title={Improving {GPU} performance prediction with data transfer modeling},
+    author={Boyer, Michael and Meng, Jiayuan and Kumaran, Kalyan},
+    booktitle={Parallel and Distributed Processing Symposium Workshops \& PhD Forum (IPDPSW), 2013 IEEE 27th International},
+    pages={1097--1106},
+    year={2013},
+    organization={IEEE}
+}
+
+@article{che2014benchfriend,
+    title={BenchFriend: Correlating the performance of {GPU} benchmarks},
+    author={Che, Shuai and Skadron, Kevin},
+    journal={{The International Journal of High Performance Computing Applications}},
+    volume={28},
+    number={2},
+    pages={238--250},
+    year={2014},
+    publisher={Sage Publications Sage UK: London, England}
+}
+
+@inproceedings{wu2015gpgpu,
+    title={{GPGPU} performance and power estimation using machine learning},
+    author={Wu, Gene and Greathouse, Joseph L and Lyashevsky, Alexander and Jayasena, Nuwan and Chiou, Derek},
+    booktitle={{High Performance Computer Architecture (HPCA)}, 2015 IEEE 21st International Symposium on},
+    pages={564--576},
+    year={2015},
+    organization={IEEE}
+}
+
+@inproceedings{lee2017performance,
+    title={Performance characterization, prediction, and optimization for heterogeneous systems with multi-level memory interference},
+    author={Lee, Shin-Ying and Wu, Carole-Jean},
+    booktitle={Workload Characterization (IISWC), 2017 IEEE International Symposium on},
+    pages={43--53},
+    year={2017},
+    organization={IEEE}
+}
+
+@inproceedings{karami2013statistical,
+    title={A statistical performance prediction model for {OpenCL} kernels on {NVIDIA GPUs}},
+    author={Karami, Ali and Mirsoleimani, Sayyed Ali and Khunjush, Farshad},
+    booktitle={Computer Architecture and Digital Systems (CADS), 2013 17th CSI International Symposium on},
+    pages={15--22},
+    year={2013},
+    organization={IEEE}
+}
+
+@article{lee2015opencl,
+    title={{OpenCL} performance evaluation on modern multicore {CPUs}},
+    author={Lee, Joo Hwan and Nigania, Nimit and Kim, Hyesoon and Patel, Kaushik and Kim, Hyojong},
+    journal={Scientific Programming},
+    volume={2015},
+    pages={4},
+    year={2015},
+    publisher={Hindawi Publishing Corp.}
+}
+
+@article{du2012cuda,
+    title={From {CUDA} to {OpenCL}: Towards a performance-portable solution for multi-platform {GPU} programming},
+    author={Du, Peng and Weber, Rick and Luszczek, Piotr and Tomov, Stanimire and Peterson, Gregory and Dongarra, Jack},
+    journal={Parallel Computing},
+    volume={38},
+    number={8},
+    pages={391--407},
+    year={2012},
+    publisher={Elsevier}
+}
+
+@article{abraham2015gromacs,
+    title={{GROMACS}: High performance molecular simulations through multi-level parallelism from laptops to supercomputers},
+    author={Abraham, Mark James and Murtola, Teemu and Schulz, Roland and P{\'a}ll, Szil{\'a}rd and Smith, Jeremy C and Hess, Berk and Lindahl, Erik},
+    journal={SoftwareX},
+    volume={1},
+    pages={19--25},
+    year={2015},
+    publisher={Elsevier}
+}
+
+@incollection{baker2012scaling,
+    title={Scaling hypre’s multigrid solvers to 100,000 cores},
+    author={Baker, Allison H and Falgout, Robert D and Kolev, Tzanio V and Yang, Ulrike Meier},
+    booktitle={High-Performance Scientific Computing},
+    pages={261--279},
+    year={2012},
+    publisher={Springer}
+}
+
+@inproceedings{esmaeilzadeh2011dark,
+    title={Dark silicon and the end of multicore scaling},
+    author={Esmaeilzadeh, Hadi and Blem, Emily and Amant, Renee St and Sankaralingam, Karthikeyan and Burger, Doug},
+    booktitle={Computer Architecture (ISCA), 2011 38th Annual International Symposium on},
+    pages={365--376},
+    year={2011},
+    organization={IEEE}
+}
+
+@article{feldman_2017_isambard,
+	title={Cray to Deliver {ARM}-Powered Supercomputer to {UK} Consortium},
+	url={https://www.top500.org/news/cray-to-deliver-arm-powered-supercomputer-to-uk-consortium/},
+	journal={TOP500 Supercomputer Sites},
+	publisher={Top500.org},
+	author={Feldman, Michael},
+	year={2017},
+	month={Jan}
+}
+
+@article{morgan_2016,
+    title={{NVLink} Takes {GPU} Acceleration To The Next Level},
+    url={https://www.nextplatform.com/2016/05/04/nvlink-takes-gpu-acceleration-next-level/},
+    journal={The Next Platform},
+    author={Morgan, Timothy},
+    publisher={Stackhouse Publishing Inc.},
+    year={2016},
+    month={May}
+}
+
+@misc{top500_2018,
+    title={{TOP500} List - {J}une 2018},
+    howpublished={https://www.top500.org/list/2018/06/},
+    journal={TOP500.org},
+    author={TOP500},
+    publisher={TOP500.org},
+    year={2018},
+    month={June}
+}
+
+
+@misc{morgan_2017,
+    title={The {Power9} Rollout Begins With {Summit} And {Sierra} Supercomputers},
+    howpublished={https://www.nextplatform.com/2017/09/19/power9-rollout-begins-summit-sierra/},
+    journal={The Next Platform},
+    author={Morgan, Timothy},
+    publisher={Stackhouse Publishing Inc.},
+    year={2017},
+    month={Sep}
+}
+
+@misc{morgan_2016_postk,
+    title={Inside {Japan}'s Future Exascale {ARM} Supercomputer},
+    howpublished={https://www.nextplatform.com/2016/06/23/inside-japans-future-exaflops-arm-supercomputer/},
+    journal={The Next Platform},
+    publisher={Stackhouse Publishing Inc.},
+    author={Morgan, Timothy},
+    year={2016},
+    month={Jun}}
+
+
+@inproceedings{lopez2015examining,
+    title={Examining recent many-core architectures and programming models using {SHOC}},
+    author={Lopez, M Graham and Young, Jeffrey and Meredith, Jeremy S and Roth, Philip C and Horton, Mitchel and Vetter, Jeffrey S},
+    booktitle={International Workshop on Performance Modeling, Benchmarking and Simulation of High Performance Computer Systems (PMBS)},
+    pages={3},
+    year={2015},
+    publisher={ACM}
+}
+
+@inproceedings{hoefler2015scientific,
+  title={Scientific benchmarking of parallel computing systems: Twelve ways to tell the masses when reporting performance results},
+  author={Hoefler, Torsten and Belli, Roberto},
+  booktitle={Proceedings of the International Conference for High Performance Computing, Networking, Storage and Analysis},
+  pages={73},
+  year={2015},
+  publisher={ACM}
+}
+
+@inproceedings{mucci1999papi,
+  title={{PAPI}: A portable interface to hardware performance counters},
+  author={Mucci, Philip J and Browne, Shirley and Deane, Christine and Ho, George},
+  booktitle={Proceedings of the Department of Defense HPCMP users group conference},
+  volume={710},
+  year={1999}
+}
+
+
+@misc{johnston2017,
+  author = {Johnston, Beau},
+  title = {{OpenDwarfs}},
+  year = {2017},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/BeauJoh/OpenDwarfs}}
+}
+
+@misc{opendwarfs2017base,
+  key={OpenDwarfs},
+  title={{OpenDwarfs} (base version)},
+  day={26},
+  month={Feb},
+  year={2017},
+  howpublished={\url{https://github.com/vtsynergy/OpenDwarfs/commit/31c099aff5343e93ba9e8c3cd42bee5ec536aa93}}
+}
+
+@article{madej2013mmdb,
+	title={{MMDB} and {VAST+}: tracking structural similarities between macromolecular complexes},
+	author={Madej, Thomas and Lanczycki, Christopher J and Zhang, Dachuan and Thiessen, Paul A and Geer, Renata C and Marchler-Bauer, Aron and Bryant, Stephen H},
+	journal={Nucleic Acids Research},
+	volume={42},
+	number={D1},
+	pages={D297--D303},
+	year={2013},
+	publisher={Oxford University Press}
+}
+
+@article{yu2015crystal,
+	title={Crystal structures of polymorphic prion protein $\beta$1 peptides reveal variable steric zipper conformations},
+	author={Yu, Lu and Lee, Seung-Joo and Yee, Vivien C},
+	journal={Biochemistry},
+	volume={54},
+	number={23},
+	pages={3640--3648},
+	year={2015},
+	publisher={ACS Publications}
+}
+
+@article{shiroishi2006crystal,
+	title={Crystal structure of the human monocyte-activating receptor, ``{Group 2}'' leukocyte {Ig}-like receptor {A5 (LILRA5/LIR9/ILT11)}},
+	author={Shiroishi, Mitsunori and Kajikawa, Mizuho and Kuroki, Kimiko and Ose, Toyoyuki and Kohda, Daisuke and Maenaka, Katsumi},
+	journal={Journal of Biological Chemistry},
+	volume={281},
+	number={28},
+	pages={19536--19544},
+	year={2006},
+	publisher={ASBMB}
+}
+
+@article{davey2002solvent,
+	title={Solvent mediated interactions in the structure of the nucleosome core particle at {1.9\AA} resolution},
+	author={Davey, Curt A and Sargent, David F and Luger, Karolin and Maeder, Armin W and Richmond, Timothy J},
+	journal={Journal of Molecular Biology},
+	volume={319},
+	number={5},
+	pages={1097--1113},
+	year={2002},
+	publisher={Elsevier}
+}
+
+@article{dolinsky2004pdb2pqr,
+	title={{PDB2PQR}: an automated pipeline for the setup of {Poisson--Boltzmann} electrostatics calculations},
+	author={Dolinsky, Todd J and Nielsen, Jens E and McCammon, J Andrew and Baker, Nathan A},
+	journal={Nucleic Acids Research},
+	volume={32},
+	number={suppl\_2},
+	pages={W665--W667},
+	year={2004},
+	publisher={Oxford University Press}
+}
+
+@article{sanner1996reduced,
+	title={Reduced surface: an efficient way to compute molecular surfaces},
+	author={Sanner, Michel F and Olson, Arthur J and Spehner, Jean-Claude},
+	journal={Biopolymers},
+	volume={38},
+	number={3},
+	pages={305--320},
+	year={1996},
+	publisher={Wiley Online Library}
 }
 
 @inproceedings{meajil1997architecture,
     title={An architecture-independent workload characterization model for parallel computer architectures},
     author={Meajil, Abdullah I and El-Ghazawi, Tarek and Sterling, Thomas},
-    booktitle={Second Aizu International Symposium on Parallel Algorithms/Architecture Synthesis},
+    booktitle={Parallel Algorithms/Architecture Synthesis, 1997. Proceedings., Second Aizu International Symposium},
     pages={143--150},
     year={1997},
     organization={IEEE}
 }
 
-@article{chen1996analysis,
-    title={Analysis of branch prediction via data compression},
-    author={Chen, I-Cheng K and Coffey, John T and Mudge, Trevor N},
-    journal={ACM SIGPLAN Notices},
-    volume={31},
-    number={9},
-    pages={128--137},
-    year={1996},
+@inproceedings{price:15,
+    title = {Oclgrind: An extensible {OpenCL} device simulator},
+    author = {Price, James and McIntosh-Smith, Simon},
+    booktitle = {Proceedings of the 3rd International Workshop on OpenCL},
+    pages = {12},
+    year = {2015},
+    organization = {ACM}
+}
+
+@inproceedings{endo2008massive,
+  title={Massive supercomputing coping with heterogeneity of modern accelerators},
+  author={Endo, Toshio and Matsuoka, Satoshi},
+  booktitle={Parallel and Distributed Processing, 2008. IPDPS 2008. IEEE International Symposium on},
+  pages={1--10},
+  year={2008},
+  organization={IEEE}
+}
+
+@inproceedings{shao2013isa,
+    title={{ISA}-independent workload characterization and its implications for specialized architectures},
+    author={Shao, Yakun Sophia and Brooks, David},
+    booktitle={Performance Analysis of Systems and Software (ISPASS), 2013 IEEE International Symposium on},
+    pages={245--255},
+    year={2013},
+    organization={IEEE}
+}
+
+@inproceedings{blackburn2006dacapo,
+    title={The {DaCapo} benchmarks: {Java} benchmarking development and analysis},
+    author={Blackburn, Stephen M and Garner, Robin and Hoffmann, Chris and Khang, Asjad M and McKinley, Kathryn S and Bentzur, Rotem and Diwan, Amer and Feinberg, Daniel and Frampton, Daniel and Guyer, Samuel Z and others},
+    booktitle={ACM Sigplan Notices},
+    volume={41},
+    number={10},
+    pages={169--190},
+    year={2006},
+    organization={ACM}
+}
+
+@article{hara2009proposal,
+    title={Proposal and quantitative analysis of the {CHStone} benchmark program suite for practical {C}-based high-level synthesis},
+    author={Hara, Yuko and Tomiyama, Hiroyuki and Honda, Shinya and Takada, Hiroaki},
+    journal={Journal of Information Processing},
+    volume={17},
+    pages={242--254},
+    year={2009},
+    publisher={Information Processing Society of Japan}
+}
+
+
+@article{phansalkar2007analysis,
+    title={Analysis of redundancy and application balance in the {SPEC CPU2006} benchmark suite},
+    author={Phansalkar, Aashish and Joshi, Ajay and John, Lizy K},
+    journal={ACM SIGARCH Computer Architecture News},
+    volume={35},
+    number={2},
+    pages={412--423},
+    year={2007},
     publisher={ACM}
 }
 
-@inproceedings{yokota2007introducing,
-  title={Introducing entropies for representing program behavior and branch predictor performance},
-  author={Yokota, Takashi and Ootsu, Kanemitsu and Baba, Takanobu},
-  booktitle={Proceedings of the 2007 workshop on Experimental computer science},
-  pages={17},
-  year={2007},
-  organization={ACM}
+@article{marr2002hyper,
+    title={Hyper-threading technology in the netburst{\textregistered} microarchitecture},
+    author={Marr, Debbie and Binns, Frank and Hill, D and Hinton, Glenn and Koufaty, D and others},
+    journal={14th Hot Chips},
+    year={2002}
 }
 
-@inproceedings{Hammerstrom:1977:ICC:800255.810669,
-    author = {Hammerstrom, D. W. and Davidson, E. S.},
-    title = {Information Content of {CPU} Memory Referencing Behavior},
-    booktitle = {Proceedings of the $4^{th}$ Annual Symposium on Computer Architecture},
-    series = {ISCA '77},
-    year = {1977},
-    pages = {184--192},
-    numpages = {9},
-    url = {http://doi.acm.org/10.1145/800255.810669},
-    doi = {10.1145/800255.810669},
-    acmid = {810669},
+@article{colelladefining,
+    title={Defining software requirements for scientific computing, 2004},
+    author={Colella, P},
+    journal={DARPA HPCS presentation}
+}
+
+@techreport{asanovic2006landscape,
+    title={The landscape of parallel computing research: A view from {B}erkeley},
+    author={Asanovic, Krste and Bodik, Ras and Catanzaro, Bryan Christopher and Gebis, Joseph James and Husbands, Parry and Keutzer, Kurt and Patterson, David A and Plishker, William Lester and Shalf, John and Williams, Samuel Webb and others},
+    year={2006},
+    institution={Technical Report UCB/EECS-2006-183, EECS Department, University of California, Berkeley}
+}
+
+@article{hoste2007microarchitecture,
+    title={Microarchitecture-independent workload characterization},
+    author={Hoste, Kenneth and Eeckhout, Lieven},
+    journal={IEEE Micro},
+    volume={27},
+    number={3},
+    year={2007},
+    publisher={IEEE}
+}
+
+@inproceedings{ganesan2008performance,
+    title={A performance counter based workload characterization on {Blue Gene/P}},
+    author={Ganesan, Karthik and John, Lizy and Salapura, Valentina and Sexton, James},
+    booktitle={Parallel Processing, 2008. ICPP'08. 37th International Conference on},
+    pages={330--337},
+    year={2008},
+    organization={IEEE}
+}
+
+@article{prakash2008performance,
+    title={Performance characterization of {SPEC CPU2006} benchmarks on {Intel Core 2 Duo} processor},
+    author={Prakash, Tribuvan Kumar and Peng, Lu},
+    journal={ISAST Trans. Comput. Softw. Eng},
+    volume={2},
+    number={1},
+    pages={36--41},
+    year={2008}
+}
+
+@inproceedings{luk2005pin,
+    title={Pin: building customized program analysis tools with dynamic instrumentation},
+    author={Luk, Chi-Keung and Cohn, Robert and Muth, Robert and Patil, Harish and Klauser, Artur and Lowney, Geoff and Wallace, Steven and Reddi, Vijay Janapa and Hazelwood, Kim},
+    booktitle={Acm sigplan notices},
+    volume={40},
+    number={6},
+    pages={190--200},
+    year={2005},
+    organization={ACM}
+}
+
+@inproceedings{hoste2006performance,
+    title={Performance prediction based on inherent program similarity},
+    author={Hoste, Kenneth and Phansalkar, Aashish and Eeckhout, Lieven and Georges, Andy and John, Lizy K and De Bosschere, Koen},
+    booktitle={Parallel Architectures and Compilation Techniques (PACT), 2006 International Conference on},
+    pages={114--122},
+    year={2006},
+    organization={IEEE}
+}
+
+@article{lively2011energy,
+    title={Energy and performance characteristics of different parallel implementations of scientific applications on multicore systems},
+    author={Lively, Charles and Wu, Xingfu and Taylor, Valerie and Moore, Shirley and Chang, Hung-Ching and Cameron, Kirk},
+    journal={The International Journal of High Performance Computing Applications},
+    volume={25},
+    number={3},
+    pages={342--350},
+    year={2011},
+    publisher={SAGE Publications Sage UK: London, England}
+}
+
+@article{team2000r,
+    title={R language definition},
+    author={Team, R Core},
+    journal={Vienna, Austria: R foundation for statistical computing},
+    year={2000}
+}
+
+@inproceedings{hsu2000compiler,
+    title={Compiler-directed dynamic frequency and voltage scheduling},
+    author={Hsu, Chung-Hsing and Kremer, Ulrich and Hsiao, Michael},
+    booktitle={International Workshop on Power-Aware Computer Systems},
+    pages={65--81},
+    year={2000},
+    organization={Springer}
+}
+
+@inproceedings{hoefler2015scientific,
+    title={Scientific benchmarking of parallel computing systems: Twelve ways to tell the masses when reporting performance results},
+    author={Hoefler, Torsten and Belli, Roberto},
+    booktitle={Proceedings of the International Conference for High Performance Computing, Networking, Storage and Analysis},
+    pages={73},
+    year={2015},
+    organization={ACM}
+}
+
+@article{declerck2016cori,
+    title={Cori - A system to support data-intensive computing},
+    author={Declerck, Tina and Antypas, Katie and Bard, Deborah and Bhimji, Wahid and Canon, Shane and Cholia, Shreyas and He, Helen Yun and Jacobsen, Douglas and Prabhat, Nicholas J Wright},
+    journal={Proceedings of the Cray User Group},
+    pages={8},
+    year={2016}
+}
+
+@misc{kessenich2015,
+    title={A {K}hronos-Defined Intermediate Language for Native Representation of Graphical Shaders and Compute Kernels},
+    author={Kessenich, John},
+    year={2015},
+    url={https://www.khronos.org/registry/spir-v/papers/WhitePaper.html}
+}
+
+@misc{bainville2010fft,
+    title={{OpenCL} Fast {Fourier} Transform},
+    author={Bainville, Eric},
+    year={2010},
+    url={http://www.bealto.com/gpu-fft.html}
+}
+
+@article{lyerly2014automatic,
+    title={Automatic Scheduling of Compute Kernels Across Heterogeneous Architectures},
+    author={Lyerly, Robert Frantz},
+    year={2014}
+}
+
+@inproceedings{che2009rodinia,
+    title={{Rodinia}: A benchmark suite for heterogeneous computing},
+    author={Che, Shuai and Boyer, Michael and Meng, Jiayuan and Tarjan, David and Sheaffer, Jeremy W and Lee, Sang-Ha and Skadron, Kevin},
+    booktitle={Workload Characterization, 2009. IISWC 2009. IEEE International Symposium on},
+    pages={44--54},
+    year={2009},
+    organization={IEEE}
+}
+
+@inproceedings{feng2012opencl,
+    title={{OpenCL} and the 13 dwarfs: a work in progress},
+    author={Feng, Wu-chun and Lin, Heshan and Scogland, Thomas and Zhang, Jing},
+    booktitle={Proceedings of the 3rd ACM/SPEC International Conference on Performance Engineering},
+    pages={291--294},
+    year={2012},
+    organization={ACM}
+}
+
+@article{krommydas2016opendwarfs,
+    title={{OpenDwarfs}: Characterization of dwarf-based benchmarks on fixed and reconfigurable architectures},
+    author={Krommydas, Konstantinos and Feng, Wu-chun and Antonopoulos, Christos D and Bellas, Nikolaos},
+    journal={Journal of Signal Processing Systems},
+    volume={85},
+    number={3},
+    pages={373--392},
+    year={2016},
+    publisher={Springer}
+}
+
+@inproceedings{johnston2017embedded,
+  title={Embedded Accelerators for Scientific High-Performance Computing: An Energy Study of {OpenCL} {Gaussian} Elimination Workloads},
+  author={Johnston, Beau and Lee, Brian and Angove, Luke and Rendell, Alistair},
+  booktitle={International Conference on Parallel Processing Workshops (ICPPW)},
+  pages={59--68},
+  year={2017},
+  organization={IEEE}
+}
+
+@inproceedings{johnston2017parallel,
+    title={Parallel Huffman Decoding: Presenting Fast and Scalable Algorithm for Increasingly Multicore Devices},
+    author={Johnston, Beau and McCreath, Eric C.},
+    booktitle={International Symposium on Parallel and Distributed Processing with Applications (ISPA)},
+    year={2017},
+    organization={IEEE}
+}
+
+@inproceedings{mitra2014implementation,
+  title={Implementation and optimization of the {OpenMP} accelerator model for the {TI Keystone II} architecture},
+  author={Mitra, Gaurav and Stotzer, Eric and Jayaraj, Ajay and Rendell, Alistair P},
+  booktitle={International Workshop on OpenMP},
+  pages={202--214},
+  year={2014},
+  organization={Springer}
+}
+
+@article{choi2005fine,
+    title={Fine-grained dynamic voltage and frequency scaling for precise energy and performance tradeoff based on the ratio of off-chip access to on-chip computation times},
+    author={Choi, Kihwan and Soma, Ramakrishna and Pedram, Massoud},
+    journal={IEEE transactions on computer-aided design of integrated circuits and systems},
+    volume={24},
+    number={1},
+    pages={18--28},
+    year={2005},
+    publisher={IEEE}
+}
+
+@article{Albers:2014:RIN:2578852.2556953,
+    author = {Albers, Susanne and Antoniadis, Antonios},
+    title = {Race to Idle: New Algorithms for Speed Scaling with a Sleep State},
+    journal = {ACM Trans. Algorithms},
+    issue_date = {February 2014},
+    volume = {10},
+    number = {2},
+    month = feb,
+    year = {2014},
+    issn = {1549-6325},
+    pages = {9:1--9:31},
+    articleno = {9},
+    numpages = {31},
+    url = {http://doi.acm.org/10.1145/2556953},
+    doi = {10.1145/2556953},
+    acmid = {2556953},
+    publisher = {ACM},
+    address = {New York, NY, USA},
+    keywords = {NP-hard, Variable-speed processor, approximation algorithm, power-down mechanism},
+} 
+
+@inproceedings{taylor2012dark,
+    title={Is dark silicon useful? Harnessing the four horsemen of the coming dark silicon apocalypse},
+    author={Taylor, Michael B},
+    booktitle={Design Automation Conference (DAC), 2012 49th ACM/EDAC/IEEE},
+    pages={1131--1136},
+    year={2012},
+    organization={IEEE}
+}
+
+@article{krommydas2016opendwarfs,
+    title={{OpenDwarfs}: Characterization of dwarf-based benchmarks on fixed and reconfigurable architectures},
+    author={Krommydas, Konstantinos and Feng, Wu-chun and Antonopoulos, Christos D and Bellas, Nikolaos},
+    journal={Journal of Signal Processing Systems},
+    volume={85},
+    number={3},
+    pages={373--392},
+    year={2016},
+    publisher={Springer}
+}
+
+@inproceedings{venkatesh2010conservation,
+    title={Conservation cores: reducing the energy of mature computations},
+    author={Venkatesh, Ganesh and Sampson, Jack and Goulding, Nathan and Garcia, Saturnino and Bryksin, Vladyslav and Lugo-Martinez, Jose and Swanson, Steven and Taylor, Michael Bedford},
+    booktitle={ACM SIGARCH Computer Architecture News},
+    volume={38},
+    number={1},
+    pages={205--218},
+    year={2010},
+    organization={ACM}
+}
+
+@article{brown2010toward,
+    title={Toward energy-efficient computing},
+    author={Brown, David J and Reams, Charles},
+    journal={Communications of the ACM},
+    volume={53},
+    number={3},
+    pages={50--58},
+    year={2010},
+    publisher={ACM}
+}
+
+@inproceedings{Agarwal:2000:CRV:339647.339691,
+    author = {Agarwal, Vikas and Hrishikesh, M. S. and Keckler, Stephen W. and Burger, Doug},
+    title = {Clock Rate Versus {IPC}: The End of the Road for Conventional Microarchitectures},
+    booktitle = {Proceedings of the 27th Annual International Symposium on Computer Architecture},
+    series = {ISCA '00},
+    year = {2000},
+    isbn = {1-58113-232-8},
+    location = {Vancouver, British Columbia, Canada},
+    pages = {248--259},
+    numpages = {12},
+    url = {http://doi.acm.org/10.1145/339647.339691},
+    doi = {10.1145/339647.339691},
+    acmid = {339691},
     publisher = {ACM},
     address = {New York, NY, USA},
 } 
 
-@inproceedings{shao2013isa,
-    title={ISA-independent workload characterization and its implications for specialized architectures},
-    author={Shao, Yakun Sophia and Brooks, David},
-    booktitle={IEEE International Symposium on Performance Analysis of Systems and Software {(ISPASS)}},
-    pages={245--255},
-    year={2013},
-    organization={IEEE}
+
+@article{bailey1991parallel,
+    title={The {NAS} parallel benchmarks},
+    author={Bailey, David H and Barszcz, Eric and Barton, John T and Browning, David S and Carter, Robert L and Dagum, Leonardo and Fatoohi, Rod A and Frederickson, Paul O and Lasinski, Thomas A and Schreiber, Rob S and others},
+    journal={International Journal of Supercomputing Applications},
+    volume={5},
+    number={3},
+    pages={63--73},
+    year={1991},
+    publisher={Sage Publications Sage CA: Thousand Oaks, CA}
+}
+
+@article{williams2009roofline,
+  title={Roofline: An insightful visual performance model for floating-point programs and multicore architectures},
+  author={Williams, Samuel and Waterman, Andrew and Patterson, David},
+  journal={Communications of the Association for Computing Machinery},
+  year={2009}
+}
+
+@article{hager2013exploring,
+  title={Exploring performance and power properties of modern multi-core chips via simple machine models},
+  author={Hager, Georg and Treibig, Jan and Habich, Johannes and Wellein, Gerhard},
+  journal={Concurrency and Computation: Practice and Experience},
+  volume={28},
+  number={2},
+  pages={189--210},
+  year={2013},
+  publisher={Wiley Online Library}
 }
 
 @inproceedings{johnston18opendwarfs,
@@ -184,200 +1747,10 @@
     address = {New York, NY, USA},
 } 
 
-@inproceedings{johnston2018aiwc,
-    title={AIWC: OpenCL-Based Architecture-Independent Workload Characterization},
-    author={Johnston, Beau and Milthorpe, Josh},
-    booktitle={2018 IEEE/ACM 5th Workshop on the LLVM Compiler Infrastructure in HPC (LLVM-HPC)},
-    pages={81--91},
-    year={2018},
-    organization={IEEE}
-}
-
-@misc{johnston18predicting,
-    title={{OpenCL} Performance Prediction using Architecture-Independent Features},
-    author={Johnston, Beau and Falzon, Greg and Milthorpe, Josh},
-    journal={International Workshop on High Performance and Dynamic Reconfigurable Systems and Networks (DRSN-2018) (in press)},
-    howpublished={http://www.milthorpe.org/pubs/aiwc-perf-prediction},
-    year={2018}
-}
-
-@article{declerck2016cori,
-    title={Cori - A system to support data-intensive computing},
-    author={Declerck, Tina and Antypas, Katie and Bard, Deborah and Bhimji, Wahid and Canon, Shane and Cholia, Shreyas and He, Helen Yun and Jacobsen, Douglas and Prabhat, Nicholas J Wright},
-    journal={Proceedings of the Cray User Group},
-    pages={8},
-    year={2016}
-}
-
-@misc{bainville2010fft,
-    title={{OpenCL} Fast {Fourier} Transform},
-    author={Bainville, Eric},
-    year={2010},
-    url={http://www.bealto.com/gpu-fft.html}
-}
-
-@inproceedings{che2009rodinia,
-    title={{Rodinia}: A benchmark suite for heterogeneous computing},
-    author={Che, Shuai and Boyer, Michael and Meng, Jiayuan and Tarjan, David and Sheaffer, Jeremy W and Lee, Sang-Ha and Skadron, Kevin},
-    booktitle={Workload Characterization, 2009. IISWC 2009. IEEE International Symposium on},
-    pages={44--54},
-    year={2009},
-    organization={Ieee}
-}
-
-@inproceedings{ganesan2008performance,
-    title={A performance counter based workload characterization on {Blue Gene/P}},
-    author={Ganesan, Karthik and John, Lizy and Salapura, Valentina and Sexton, James},
-    booktitle={International Conference on Parallel Processing ({ICPP})},
-    pages={330--337},
-    year={2008},
-    organization={IEEE}
-}
-
-@article{depestel2017linear,
-    author = {De Pestel, Sander and Eyerman, Stijn and Eeckhout, Lieven},
-    title = {Linear Branch Entropy: Characterizing and Optimizing Branch Behavior in a Micro-Architecture Independent Way},
-    journal = {IEEE Transactions on Computers},
-    issue_date = {March 2017},
-    volume = {66},
-    number = {3},
-    month = mar,
-    year = {2017},
-    issn = {0018-9340},
-    pages = {458--472},
-    numpages = {15},
-    url = {https://doi.org/10.1109/TC.2016.2601323},
-    doi = {10.1109/TC.2016.2601323},
-    acmid = {3057908},
-    publisher = {IEEE Computer Society},
-    address = {Washington, DC, USA},
-}
-@article{prakash2008performance,
-    title={Performance characterization of {SPEC CPU2006} benchmarks on {Intel Core 2 Duo} processor},
-    author={Prakash, Tribuvan Kumar and Peng, Lu},
-    journal={ISAST Trans. Comput. Softw. Eng},
-    volume={2},
-    number={1},
-    pages={36--41},
-    year={2008}
-}
-
-
-@inproceedings{price:15,
-    title = {Oclgrind: An extensible {OpenCL} device simulator},
-    author = {Price, James and McIntosh-Smith, Simon},
-    booktitle = {Proceedings of the 3rd International Workshop on {OpenCL}},
-    pages = {12},
-    year = {2015},
-    organization = {ACM}
-}
-
-@misc{kessenich2015,
-    title={{A Khronos-Defined Intermediate Language for Native Representation of Graphical Shaders and Compute Kernels}},
-    author={Kessenich, John},
-    year={2015},
-    url={https://www.khronos.org/registry/spir-v/papers/WhitePaper.html}
-}
-
-
-
-@article{hoste2007microarchitecture,
-    title={Microarchitecture-independent workload characterization},
-    author={Hoste, Kenneth and Eeckhout, Lieven},
-    journal={IEEE Micro},
-    volume={27},
-    number={3},
-    year={2007},
-    publisher={IEEE}
-}
-
-@inproceedings{luk2005pin,
-    title={Pin: building customized program analysis tools with dynamic instrumentation},
-    author={Luk, Chi-Keung and Cohn, Robert and Muth, Robert and Patil, Harish and Klauser, Artur and Lowney, Geoff and Wallace, Steven and Reddi, Vijay Janapa and Hazelwood, Kim},
-    booktitle={{ACM SIGPLAN} notices},
-    volume={40},
-    number={6},
-    pages={190--200},
-    year={2005},
-    organization={ACM}
-}
-
-@inproceedings{hoste2006performance,
-    title={Performance prediction based on inherent program similarity},
-    author={Hoste, Kenneth and Phansalkar, Aashish and Eeckhout, Lieven and Georges, Andy and John, Lizy K and De Bosschere, Koen},
-    booktitle={International Conference on Parallel Architectures and Compilation Techniques ({PACT})},
-    pages={114--122},
-    year={2006},
-    organization={IEEE}
-}
-
-@article{lively2011energy,
-    title={Energy and performance characteristics of different parallel implementations of scientific applications on multicore systems},
-    author={Lively, Charles and Wu, Xingfu and Taylor, Valerie and Moore, Shirley and Chang, Hung-Ching and Cameron, Kirk},
-    journal={International Journal of High Performance Computing Applications},
-    volume={25},
-    number={3},
-    pages={342--350},
-    year={2011},
-    publisher={SAGE Publications Sage UK: London, England}
-}
-
-
-
-@article{krommydas2016opendwarfs,
-    title={Opendwarfs: Characterization of dwarf-based benchmarks on fixed and reconfigurable architectures},
-    author={Krommydas, Konstantinos and Feng, Wu-chun and Antonopoulos, Christos D and Bellas, Nikolaos},
-    journal={Journal of Signal Processing Systems},
-    volume={85},
-    number={3},
-    pages={373--392},
-    year={2016},
-    publisher={Springer}
-}
-
-@techreport{asanovic2006landscape,
-    title={The landscape of parallel computing research: A view from berkeley},
-    author={Asanovic, Krste and Bodik, Ras and Catanzaro, Bryan Christopher and Gebis, Joseph James and Husbands, Parry and Keutzer, Kurt and Patterson, David A and Plishker, William Lester and Shalf, John and Williams, Samuel Webb and others},
-    year={2006},
-    institution={Technical Report UCB/EECS-2006-183, EECS Department, University of California, Berkeley}
-}
-
-@inproceedings{johnston2017embedded,
-  title={Embedded Accelerators for Scientific High-Performance Computing: An Energy Study of {OpenCL} {Gaussian} Elimination Workloads},
-  author={Johnston, Beau and Lee, Brian and Angove, Luke and Rendell, Alistair},
-  booktitle={International Conference on Parallel Processing Workshops ({ICPPW})},
-  pages={59--68},
-  year={2017},
-  organization={IEEE}
-}
-
-
-@inproceedings{mitra2014implementation,
-  title={Implementation and optimization of the {OpenMP} accelerator model for the {TI Keystone II} architecture},
-  author={Mitra, Gaurav and Stotzer, Eric and Jayaraj, Ajay and Rendell, Alistair P},
-  booktitle={International Workshop on OpenMP},
-  pages={202--214},
-  year={2014},
-  organization={Springer}
-}
-
-
-
-@article{bailey1991parallel,
-	title={The {NAS} parallel benchmarks},
-	author={Bailey, David H and Barszcz, Eric and Barton, John T and Browning, David S and Carter, Robert L and Dagum, Leonardo and Fatoohi, Rod A and Frederickson, Paul O and Lasinski, Thomas A and Schreiber, Rob S and others},
-	journal={International Journal of Supercomputing Applications},
-	volume={5},
-	number={3},
-	pages={63--73},
-	year={1991},
-	publisher={Sage Publications Sage CA: Thousand Oaks, CA}
-}
-
 @inproceedings{barnes2016evaluating,
     title={Evaluating and optimizing the {NERSC} workload on {Knights Landing}},
     author={Barnes, Taylor and Cook, Brandon and Deslippe, Jack and Doerfler, Douglas and Friesen, Brian and He, Yun and Kurth, Thorsten and Koskela, Tuomas and Lobet, Mathieu and Malas, Tareq and others},
-    booktitle={International Workshop on Performance Modeling, Benchmarking and Simulation of High Performance Computer Systems (PMBS)},
+    booktitle={International Workshop on Performance Modeling, Benchmarking and Simulation of High Performance Computer Systems (PMBS},
     pages={43--53},
     year={2016},
     organization={IEEE}
@@ -402,7 +1775,7 @@
 }
 
 @article{feldman_2017,
-    title={TOP500 Meanderings: Supercomputers Take Big Green Leap in 2017},
+    title={{TOP500} Meanderings: Supercomputers Take Big Green Leap in 2017},
     url={https://www.top500.org/news/top500-meanderings-supercomputers-take-big-green-leap-in-2017/},
     journal={TOP500 Supercomputer Sites},
     publisher={Top500.org},
@@ -413,9 +1786,9 @@
 
 
 
-@article{feldman_2017_isambard,
+@misc{feldman_2017_isambard,
 	title={Cray to Deliver {ARM}-Powered Supercomputer to {UK} Consortium},
-	url={https://www.top500.org/news/cray-to-deliver-arm-powered-supercomputer-to-uk-consortium/},
+	howpublished={https://www.top500.org/news/cray-to-deliver-arm-powered-supercomputer-to-uk-consortium/},
 	journal={TOP500 Supercomputer Sites},
 	publisher={Top500.org},
 	author={Feldman, Michael},
@@ -423,9 +1796,9 @@
 	month={Jan}
 }
 
-@article{morgan_2016,
+@misc{morgan_2016,
     title={{NVLink} Takes {GPU} Acceleration To The Next Level},
-    url={https://www.nextplatform.com/2016/05/04/nvlink-takes-gpu-acceleration-next-level/},
+    howpublished={https://www.nextplatform.com/2016/05/04/nvlink-takes-gpu-acceleration-next-level/},
     journal={The Next Platform},
     author={Morgan, Timothy},
     publisher={Stackhouse Publishing Inc.},
@@ -433,9 +1806,9 @@
     month={May}
 }
 
-@article{morgan_2017,
+@misc{morgan_2017,
     title={The {Power9} Rollout Begins With {Summit} And {Sierra} Supercomputers},
-    url={https://www.nextplatform.com/2017/09/19/power9-rollout-begins-summit-sierra/},
+    howpublished={https://www.nextplatform.com/2017/09/19/power9-rollout-begins-summit-sierra/},
     journal={The Next Platform},
     author={Morgan, Timothy},
     publisher={Stackhouse Publishing Inc.},
@@ -445,20 +1818,91 @@
 
 @misc{morgan_2016_postk,
     title={Inside {Japan}'s Future Exascale {ARM} Supercomputer},
-    url={https://www.nextplatform.com/2016/06/23/inside-japans-future-exaflops-arm-supercomputer/},
+    howpublished={https://www.nextplatform.com/2016/06/23/inside-japans-future-exaflops-arm-supercomputer/},
     journal={The Next Platform},
     publisher={Stackhouse Publishing Inc.},
     author={Morgan, Timothy},
     year={2016},
     month={Jun}}
 
-
 @inproceedings{lopez2015examining,
     title={Examining recent many-core architectures and programming models using {SHOC}},
     author={Lopez, M Graham and Young, Jeffrey and Meredith, Jeremy S and Roth, Philip C and Horton, Mitchel and Vetter, Jeffrey S},
-    booktitle={International Workshop on Performance Modeling, Benchmarking and Simulation of High Performance Computer Systems (PMBS)},
+    booktitle={International Workshop on Performance Modeling, Benchmarking and Simulation of High Performance Computer Systems (PMBS},
     pages={3},
     year={2015},
+    organization={ACM}
+}
+
+@InProceedings{ansel:pact:2014,
+    author    = "Jason Ansel and Shoaib Kamil and Kalyan Veeramachaneni and Jonathan Ragan-Kelley and Jeffrey Bosboom and Una-May O'Reilly and Saman Amarasinghe",
+    title     = "OpenTuner: An Extensible Framework for Program Autotuning",
+    url       = "http://groups.csail.mit.edu/commit/papers/2014/ansel-pact14-opentuner.pdf",
+    slides    = "http://groups.csail.mit.edu/commit/papers/2014/ansel-pact14-opentuner-slides.pdf",
+    keywords  = "OpenTuner",
+    month     = "August",
+    year      = "2014",
+    address   = "Edmonton, Canada",
+    booktitle = "International Conference on Parallel Architectures and Compilation Techniques",
+}
+
+@inproceedings{price2017analyzing,
+    title={Analyzing and improving performance portability of {OpenCL} applications via auto-tuning},
+    author={Price, James and McIntosh-Smith, Simon},
+    booktitle={Proceedings of the 5th International Workshop on OpenCL},
+    pages={14},
+    year={2017},
+    organization={ACM}
+}
+
+@article{sherwood2003discovering,
+    title={Discovering and exploiting program phases},
+    author={Sherwood, Timothy and Perelman, Erez and Hamerly, Greg and Sair, Suleyman and Calder, Brad},
+    journal={IEEE micro},
+    volume={23},
+    number={6},
+    pages={84--93},
+    year={2003},
+    publisher={IEEE}
+}
+
+@inproceedings{sherwood2002automatically,
+    title={Automatically characterizing large scale program behavior},
+    author={Sherwood, Timothy and Perelman, Erez and Hamerly, Greg and Calder, Brad},
+    booktitle={ACM SIGARCH Computer Architecture News},
+    volume={30},
+    number={5},
+    pages={45--57},
+    year={2002},
+    organization={ACM}
+}
+
+@article{bailey1991parallel,
+    title={The {NAS} parallel benchmarks},
+    author={Bailey, David H and Barszcz, Eric and Barton, John T and Browning, David S and Carter, Robert L and Dagum, Leonardo and Fatoohi, Rod A and Frederickson, Paul O and Lasinski, Thomas A and Schreiber, Rob S and others},
+    journal={International Journal of Supercomputing Applications},
+    volume={5},
+    number={3},
+    pages={63--73},
+    year={1991},
+    publisher={Sage Publications Sage CA: Thousand Oaks, CA}
+}
+
+@inproceedings{lattner2004llvm,
+    title={LLVM: A compilation framework for lifelong program analysis \& transformation},
+    author={Lattner, Chris and Adve, Vikram},
+    booktitle={Proceedings of the international symposium on Code generation and optimization: feedback-directed and runtime optimization},
+    pages={75},
+    year={2004},
+    organization={IEEE Computer Society}
+}
+
+@inproceedings{danalis2010scalable,
+    title={The scalable heterogeneous computing ({SHOC}) benchmark suite},
+    author={Danalis, Anthony and Marin, Gabriel and McCurdy, Collin and Meredith, Jeremy S and Roth, Philip C and Spafford, Kyle and Tipparaju, Vinod and Vetter, Jeffrey S},
+    booktitle={Proceedings of the 3rd Workshop on General-Purpose Computation on Graphics Processing Units},
+    pages={63--74},
+    year={2010},
     organization={ACM}
 }
 
@@ -471,6 +1915,15 @@
   organization={ACM}
 }
 
+@inproceedings{yokota2007introducing,
+  title={Introducing entropies for representing program behavior and branch predictor performance},
+  author={Yokota, Takashi and Ootsu, Kanemitsu and Baba, Takanobu},
+  booktitle={Proceedings of the 2007 workshop on Experimental computer science},
+  pages={17},
+  year={2007},
+  organization={ACM}
+}
+
 @inproceedings{mucci1999papi,
   title={{PAPI}: A portable interface to hardware performance counters},
   author={Mucci, Philip J and Browne, Shirley and Deane, Christine and Ho, George},
@@ -479,8 +1932,9 @@
   year={1999}
 }
 
+
 @misc{johnston2017,
-  author = {Johnston, B.},
+  author = {Johnston, Beau},
   title = {{OpenDwarfs}},
   year = {2017},
   publisher = {GitHub},
@@ -496,69 +1950,69 @@
   howpublished={\url{https://github.com/vtsynergy/OpenDwarfs/commit/31c099aff5343e93ba9e8c3cd42bee5ec536aa93}}
 }
 
-@article{hager2013exploring,
-  title={Exploring performance and power properties of modern multi-core chips via simple machine models},
-  author={Hager, Georg and Treibig, Jan and Habich, Johannes and Wellein, Gerhard},
-  journal={Concurrency and Computation: Practice and Experience},
-  volume={28},
-  number={2},
-  pages={189--210},
-  year={2013},
-  publisher={Wiley Online Library}
+@article{madej2013mmdb,
+	title={{MMDB} and {VAST+}: tracking structural similarities between macromolecular complexes},
+	author={Madej, Thomas and Lanczycki, Christopher J and Zhang, Dachuan and Thiessen, Paul A and Geer, Renata C and Marchler-Bauer, Aron and Bryant, Stephen H},
+	journal={Nucleic Acids Research},
+	volume={42},
+	number={D1},
+	pages={D297--D303},
+	year={2013},
+	publisher={Oxford University Press}
 }
 
-@article{williams2009roofline,
-  title={Roofline: An insightful visual performance model for floating-point programs and multicore architectures},
-  author={Williams, Samuel and Waterman, Andrew and Patterson, David},
-  journal={Communications of the Association for Computing Machinery},
-  year={2009}
+@article{yu2015crystal,
+	title={Crystal structures of polymorphic prion protein $\beta$1 peptides reveal variable steric zipper conformations},
+	author={Yu, Lu and Lee, Seung-Joo and Yee, Vivien C},
+	journal={Biochemistry},
+	volume={54},
+	number={23},
+	pages={3640--3648},
+	year={2015},
+	publisher={ACS Publications}
 }
 
-// OpenACC
-@Misc{OpenACC,
-  author =       "OpenACC",
-  title =        "{OpenACC: Directives for Accelerators}",
-  howpublished = "{[Online]. Available}: \url{http://www.openacc.org}",
-  year =         "2011",
-  note =         ACCESSDATE
+@article{shiroishi2006crystal,
+	title={Crystal structure of the human monocyte-activating receptor, ``{Group 2}'' leukocyte {Ig}-like receptor {A5 (LILRA5/LIR9/ILT11)}},
+	author={Shiroishi, Mitsunori and Kajikawa, Mizuho and Kuroki, Kimiko and Ose, Toyoyuki and Kohda, Daisuke and Maenaka, Katsumi},
+	journal={Journal of Biological Chemistry},
+	volume={281},
+	number={28},
+	pages={19536--19544},
+	year={2006},
+	publisher={ASBMB}
 }
 
-// OpenMP
-@article{dagum1998openmp,
-  title={OpenMP: An industry-standard API for shared-memory programming},
-  author={Dagum, Leonardo and Menon, Ramesh},
-  journal={Computing in Science \& Engineering},
-  number={1},
-  pages={46--55},
-  year={1998},
-  publisher={IEEE}
+@article{davey2002solvent,
+	title={Solvent mediated interactions in the structure of the nucleosome core particle at {1.9\AA} resolution},
+	author={Davey, Curt A and Sargent, David F and Luger, Karolin and Maeder, Armin W and Richmond, Timothy J},
+	journal={Journal of Molecular Biology},
+	volume={319},
+	number={5},
+	pages={1097--1113},
+	year={2002},
+	publisher={Elsevier}
 }
 
-// OpenCL
-@Misc{opencl,
-  author =       "Khronos Group",
-  title =        "{Open Compute Language (OpenCL)}",
-  howpublished = "{[Online]. Available}: \url{http://www.khronos.org/opencl/}",
-  year =         "2013",
-  note =         ACCESSDATE
+@article{dolinsky2004pdb2pqr,
+	title={{PDB2PQR}: an automated pipeline for the setup of {Poisson--Boltzmann} electrostatics calculations},
+	author={Dolinsky, Todd J and Nielsen, Jens E and McCammon, J Andrew and Baker, Nathan A},
+	journal={Nucleic Acids Research},
+	volume={32},
+	number={suppl\_2},
+	pages={W665--W667},
+	year={2004},
+	publisher={Oxford University Press}
 }
 
-// CUDA
-@article{cuda,
-  title={Scalable parallel programming with CUDA},
-  author={Nickolls, John and Buck, Ian and Garland, Michael and Skadron, Kevin},
-  journal={Queue},
-  volume={6},
-  number={2},
-  pages={40--53},
-  year={2008},
-  publisher={ACM New York, NY, USA}
+@article{sanner1996reduced,
+	title={Reduced surface: an efficient way to compute molecular surfaces},
+	author={Sanner, Michel F and Olson, Arthur J and Spehner, Jean-Claude},
+	journal={Biopolymers},
+	volume={38},
+	number={3},
+	pages={305--320},
+	year={1996},
+	publisher={Wiley Online Library}
 }
 
-// Rodinia
-@inproceedings{Rodinia,
-    author = {Shuai Che and Michael Boyer and Jiayuan Meng and David Tarjan and Jeremy W. Sheaffer and Sang-ha Lee and Kevin Skadron},
-    title = {Rodinia: A Benchmark Suite for Heterogeneous Computing},
-        booktitle = {Proceedings of the IEEE International Symposium on Workload Characterization (IISWC)},
-    year = {2009}
-}
