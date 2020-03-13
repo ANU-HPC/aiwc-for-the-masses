@@ -61,13 +61,14 @@ Recent advances with SYCL, HIP/ROCM, and oneAPI may increase adoption of open-so
 These frameworks are also based on the SPIR representation, support the OpenCL runtime and memory model, and can be leveraged by the AIWC and Oclgrind debugging tools.
 Meanwhile, compilers are maturing and are increasingly able to provide source-to-source translations and code transformations, to generate low-level device-optimized code, and to allow implementations in one language to be mapped to another. The goal of this project is to extend AIWC support for all languages (1) by assessing the AIWC feature-space outputs of contemporary source-to-source compiler/translator tools, and (2) by exploring any differences compared to a native OpenCL implementation to identify any potential inefficiencies of the translation by these tools.
 
-In summary, in this project we extend the use of AIWC to evaluate the current state-of-the-art in source-to-source translation. Primarily we examine the feasibility of leveraging existing language implementations of codes that automatically map back to OpenCL. In Section~\ref{sec:languages} we summarize the common languages used on accelerators and quantitatively survey the community's interest in each. This is done to motivate our interest in tooling and offering support for frameworks that rely on back-end generation of SPIR codes. In Section~\ref{sec:related} we discuss related work. In Section~\ref{sec:methodolgy} we present our methodology, highlighting our selection of source-to-source translation tools used in our experiments. We present our expiremental results in Section~\ref{sec:results}, and conclude in Section~\ref{sec:conclusion} with a summary of our findings and the directions for future-work. 
+In summary, in this project we extend the use of AIWC to evaluate the current state-of-the-art in source-to-source translation. Primarily we examine the feasibility of leveraging existing language implementations of codes that automatically map back to OpenCL. In Section\ \ref{sec:languages} we summarize the common languages used on accelerators and quantitatively survey the community's interest in each. This is done to motivate our interest in tooling and offering support for frameworks that rely on back-end generation of SPIR codes. In Section\ \ref{sec:related} we discuss related work. In Section\ \ref{sec:methodology} we present our methodology, highlighting our selection of source-to-source translation tools used in our experiments and discuss changes made to the implementations to support these tools. We present our results in Section\ \ref{sec:results}, and conclude in Section\ \ref{sec:conclusion} with a summary of our findings and the directions for future work. 
 
-# Accelerator Programming Frameworks and their Adoption <!--Adoption Survey-->
+# Accelerator Programming Frameworks and their Adoption <!--Adoption Survey--> {#sec:languages}
 
 <!--## CUDA-->
 
-CUDA\ [@cuda] -- NVIDIA's proprietary software model -- has been around since 2007. CUDA has been widely adopted by the scientific community as a means to repurpose GPUs from traditional rendering in gaming workloads to highly-parallel compute intensive tasks common to scientific codes. Unfortunately, it is a single-vendor language, thus CUDA codes are executed solely on NVIDIA devices. There has been some recent activity by AMD with their ROCm software stack to provide an alternative. For example, their Hipify tool automatically generates a HIP (Heterogeneous-Compute Interface for Portability) representation -- an AMD defined standard -- from input CUDA code. 
+CUDA\ [@cuda] -- NVIDIA's proprietary software model -- has been around since 2007.
+It has been widely adopted by the scientific community as a means to repurpose GPUs from traditional rendering in gaming workloads to highly-parallel compute intensive tasks common to scientific codes. Unfortunately, it is a single-vendor language, thus CUDA codes are executed solely on NVIDIA devices. There has been some recent activity by AMD with their ROCm software stack to provide an alternative. For example, their Hipify tool automatically generates a HIP (Heterogeneous-Compute Interface for Portability) representation -- an AMD defined standard -- from input CUDA code. 
 
 <!--## OpenCL-->
 
@@ -88,8 +89,7 @@ As of January 2020, the number of github repositories including CUDA in the repo
 If we compare the lines of code (Github presented metric) as a measure of language popularity, github classified 8M lines of CUDA code, 2M lines of OpenCL, 2M lines of OpenMP, and 124K lines of OpenACC.
 Of the newer frameworks, SYCL is either in the title or description of 144 repositories, and github classified 402k lines of code as SYCL.
 At the time of writing, OneAPI is less than a year old, and there are already 56 repositories and 4k lines of code related to it.
-
-This survey was performed by searching for "CUDA", "OPENCL", "OPENMP", "OPENACC", "SYCL" and "ONEAPI" in GitHub\footnote{\url{www.github.com}}.
+This survey was performed by searching for "CUDA", "OPENCL", "OPENMP", "OPENACC", "SYCL" and "ONEAPI" in GitHub.\footnote{\url{www.github.com}}
 We are unable to be more precise around actual repositories using accelerator programming frameworks because OpenCL, OpenMP and OpenACC are not tracked as individual languages by GitHub.
 However CUDA is listed as a language with ~5.9k repositories listed.
 Based on these results, we suspect that OpenCL may not be positioned to win the race to adoption.
@@ -98,9 +98,9 @@ Appropriate support of translator tools will allow us to ensure OpenCL is utiliz
 Mapping back to a common OpenCL runtime is an obvious choice, as it supports the greatest range of accelerator devices and multiple front-end languages. The idea of a common back-end representation like OpenCL potentially avoids fragmentations and repeated implementation as systems are updated and accelerators replaced, and having efficient tools to enable this mapping OpenCL is paramount. In this work, we use AIWC to evaluate the similarities and differences between outputs of translation tools on functionally equivalent kernel codes. We show that AIWC can be used to guide the understanding of the tools mapping between high-level source languages and OpenCL, and potentially guide improvements to these tools.
 
 
-# Related Work
+# Related Work{#sec:related}
 
-## AIWC
+<!--## AIWC-->
 
 The Architecture-Independent Workload Characterization (AIWC) tool describes a workload in terms of statistics around the programs fundamental behaviour.
 For instance, summary statistics on the arithmetic intensity, branching behaviour and types of parallelism and the granularity of parallelism expressed within the code.
@@ -113,7 +113,7 @@ The collected metrics have shown to accurately represent the codes characteristi
 The change in these metrics offer insights around optimization of a code for accelerators by presenting interesting summaries for the developer to consider.
 Unfortunately, Oclgrind -- and thus also AIWC -- only support the OpenCL programming language, utilizing translator tools to migrate codes written in other languages into OpenCL will increase the impact of AIWC.
 
-##OpenARC
+<!--##OpenARC-->
 
 The Open Accelerator Research Compiler (OpenARC)\ [@lee2014openarc] has been developed as a research-oriented OpenACC and OpenMP compiler. OpenARC performs source-to-source translations and code transformations to generate low-level device-optimized code, like CUDA or OpenCL, specific to a targeted device. OpenARC's primary strength is it's ability to enable rapid prototyping of novel ideas, features, and API extensions for emerging technologies.
 
@@ -121,7 +121,7 @@ In this work, we leverage OpenARC's OpenACC to OpenCL and OpenMP to OpenCL trans
 <!-- We also leverage an OpenARC-related project, CCAMP\ [@lambert2018heteropar], to perform OpenMP to OpenACC translation. Additionaly, becuase OpenMP offload versions of the Rodinia benchmarks were specifically developed for CPU execution, we use CCAMP's OpenMP optimization pass to generate more GPU friendly OpenMP code for a closer comparisoin with the OpenCL and CUDA counterparts.
 -->
 
-##Coriander
+<!--##Coriander-->
 
 <!--
 At first glance we may be hopeful that AMD's HIP could be used for all CUDA to OpenCL backend translations, however, sadly, it does not use OpenCL as a back-end, instead choosing to use LLVM to generate kernels for the HSA Runtime and Direct-To-ISA skipping intermediate layers such as PTX, HSAIL, or SPIR-V.
@@ -133,20 +133,14 @@ It achieves compiling the device-side (kernel) code into OpenCL C and by providi
 Unlike OpenARC it skips source-to-source level translation and instead produces LLVM-IR/SPIR directly.
 We use Coriander to translate CUDA codes into OpenCL so we can evaluate the similarities in functionality of benchmarks with AIWC.
 
-# Methodology
+# Methodology{#sec:methodology}
 
-Since AIWC metrics were selected to be architecture independent, it is a reasonable assumption that these metrics should also be language independent.
+AIWC metrics were selected to be architecture independent, it is a reasonable assumption that these metrics should also be language independent.
 The methodology to verify this assumption is outline in the following.
-Given a functionally identical application but implemented in OpenCL, CUDA, OpenMP and OpenACC, we utilise contemporary translation tools to generate AIWC compatible OpenCL codes, then generate AIWC metrics, and finally compare the AIWC feature-spaces of different languages against a baseline OpenCL version.
+Given a functionally identical application but implemented in OpenCL, CUDA, OpenMP and OpenACC, we utilise contemporary translation tools to generate AIWC compatible OpenCL codes, then generate AIWC metrics, and finally compare the AIWC feature-spaces of different language implementations against features from the baseline OpenCL version.
 Because AIWC analysis operates directly at the SPIR-V/LLVM-IR level, we utilize translation tools to lower the input languages to the desired abstraction level.
 Coriander was used to generate LLVM IR from CUDA input, while OpenARC was used for both OpenMP to OpenCL and OpenACC to OpenCL translation.
 An identical version of clang and LLVM (3.9.0) is used to lower the output OpenCL to SPIR from all tools.
-
-We selected the Gaussian Elimination application from the Rodinia Benchmark Suite\ [@Rodinia] for our evaluation.
-By design Rodinia applications are targeted toward accelerator-based systems, and many of the applications in the benchmark suite are represented in multiple programming models, including CUDA, OpenCL, and OpenMP. 
-Furthermore, additional OpenMP and OpenACC implementations of various Rodinia applications have been developed by open source extension projects\ [@pathscale], which we utilize in our evaluation.
-The Gaussian elimination <!--and the breadth-first search applications, each composed of two kernels. --> application is composed of two kernels, we present the comparison of the first `Fan1` kernel in Results (Section \ref{sec:results}), `Fan2` was also analysed and available in the associated Jupyter artefact \todo[inline]{reference artefact} but for brevity is omitted from the paper. 
- We also discuss the required changes made to each implementation to get the closest approximation of work between versions.
 
 \begin{figure*}
     \centering
@@ -164,6 +158,13 @@ Note, coriander does not perform source-to-source translation effectively skippi
 Our hypothesis is that these characteristics should be largely independent of language used to implement it, although it is expected that different compiler optimizations and translation strategies will subtly change the metrics.
 Part of the goal of this paper is to examine the magnitudes of change imposed by language, compiler and translator.
 With the similarities between metrics despite the original implementation can be used to evaluate the similarities of application and potential deficiencies in specific compilers.
+
+We selected the Gaussian Elimination application from the Rodinia Benchmark Suite\ [@Rodinia] for our evaluation.
+By design Rodinia applications are targeted toward accelerator-based systems, and many of the applications in the benchmark suite are represented in multiple programming models, including CUDA, OpenCL, and OpenMP. 
+Furthermore, additional OpenMP and OpenACC implementations of various Rodinia applications have been developed by open source extension projects\ [@pathscale], which we utilize in our evaluation.
+All implementations of Gaussian Elimination have been divided into two discrete computationally intensive regions/kernels -- known as `Fan1` and `Fan2`.
+The former calculates the multiplier matrix while `Fan2` modifies the matrix A into the Lower-Upper Decomposition.
+For brevity we only consider `Fan1` in this paper, however both kernels and results are available in the Jupyter artefact.\todo[inline ]{reference artefact}
 
 The translation was largely automatic using both tools to convert between languages.
 OpenARC doesn't support C++ programs, thus, some benchmarks we examined had to be converted to ANSI C89, and our biggest pain was with user defined `struct`'s needing to be explicitly mentioned when used.
@@ -205,36 +206,28 @@ cu2cl progress on CUDA rodinia bfs `/rodinia/cuda/bfs`:
 Results in `<command line>:7:10: fatal error: 'cuda_runtime.h' file not found`
 -->
 
+We built the OpenMP version of Gaussian Elimination -- with 4.0 accelerator directives -- based on the OpenACC version.
 
-# Results {#sec:results}
+Adding AIWC into this work-flow had the surprising benefit of finding inconsistencies already present in the Rodinia Benchmark Suite.
+We found the existing implementations to lack a perfect mapping between versions, in particular our work (guided by AIWC analysis) modified the partitioning of work to ensure an equivalent division of work is allocated between versions -- allowing an apples-to-apples comparison of languages performing identical benchmark tasks.
 
-We now present the results of this comparison over Gaussian Elimination (GE).
-The GE benchmark was provided by The Rodinia Benchmark Suite\ [@che2009rodinia] with an OpenACC, CUDA and OpenCL implementation.
-We found the existing implementations to lack a perfect mapping between versions, in particular our work modifies the partitioning of work to ensure an equivilent division of work is allocated between versions.
-We also built the OpenMP version -- with 4.0 accelerator directives -- based on the OpenACC version.
-All implmentations have been divided into two discrete computationally intensive regions/kernels -- known as `Fan1` and `Fan2`.
-`Fan1` calculates the multiplier matrix while `Fan2` modifies the matrix A into the Lower-Upper Decomposition.
-For our experiments the application was evaluated over a fixed dataset of a 4x4 matrix, where the same data was applied to all the implementations.
+The initial CUDA implementation varied in the amount of parallelism compared to OpenCL.
+The `Block` size was explicitly set to the `MAXBLOCKSIZE` (512 threads), our change: `block_size = (Size % MAXBLOCKSIZE == 0) ? MAXBLOCKSIZE : Size;` states that if we have smaller work to do than the max block size, just run 1 block of that size, which mirrors the way OpenCL expresses parallelism of this benchmark -- i.e. the `global workgroup size` is the total number of threads to execute run in teams of `local workgroup size`.
+Thus, the CUDA implementation went from `512` workitems being invoked (where only 4 of them did any meaningful work) to `4` workitems being run.
+To this end, it was adjusted to more closely mirror the behaviour of the OpenCL version offered in the benchmark.
 
-## Fan1
-
-4 work-items were used for all implementations, however the way parallelism is expressed differ between languages and for an apples to apples comparison in generated AIWC features required code changes to the kernel.
-These changes are listed in full in the associated Jupyter artefact\todo[inline]{Add url once this is pushed to github}, for convenience a summary 
-
-In OpenCL
-
-The initial CUDA implementation had a variation in parallelism due to the way it is expressed in CUDA compared to OpenCL. To this end, it was adjusted to more closely mirror the behaviour of the OpenCL version offered in the benchmark.
-The `Block` size was explicitly set to the `MAXBLOCKSIZE` (512 threads), our change: `block_size = (Size % MAXBLOCKSIZE == 0) ? MAXBLOCKSIZE : Size;` states that if we have smaller work to do than the max block size, just run 1 block of that size, which mirrors the way OpenCL expresses parallelism of this benchmark -- i.e. the `global workgroup size` is the total number of threads to execute run in teams of `local workgroup size`. Thus, the CUDA implementation went from `512` workitems being invoked (where only 4 of them did any meaningful work) to `4` workitems being run.
-
-In OpenMP 4 threads are explictly requested by setting the `OMP_NUM_THREADS=4` environment variable at runtime while work-items in OpenACC was manually modified to support the same number of parallelism as the other versions.
-**mention other omp changes**
 
 OpenARC uses `workers` and `gangs` variables to express parallelism in the OpenACC to OpenCL setting.
-To this end, we added these variables and the `MAXBLOCKSIZE` to be 512 to be equivilent to the CUDA version of the Gaussian Elimination benchmark.
-`gangs = (Size % MAXBLOCKSIZE == 0) ? MAXBLOCKSIZE : Size;` is set to be analagous to `block_size` (`block_size = (Size % MAXBLOCKSIZE == 0) ? MAXBLOCKSIZE : Size;`) which we added to the CUDA version, similarly, `workers = (Size/gangs) + (!(Size%gangs)? 0:1);` is identical to the CUDA version of `grid_size` (`grid_size = (Size/block_size) + (!(Size%block_size)? 0:1);`).
-Finally, the OpenACC pragmas where modified to explicitly use the `workers` and `gangs` variables: from `#pragma acc parallel loop present(m,a)` to `#pragma acc kernels loop independent gang(gangs) worker(workers)`.
+We specified the following variables to mirror functionality of the CUDA and OpenCL versions.
+The OpenACC pragmas where modified to explicitly use the `workers` and `gangs` variables<!--: from `#pragma acc parallel loop present(m,a)` to `#pragma acc kernels loop independent gang(gangs) worker(workers)`.-->,
+`MAXBLOCKSIZE` was added and set to be 512 as in the other versions. <!--
+`gangs = (Size % MAXBLOCKSIZE == 0) ? MAXBLOCKSIZE : Size` is set to be analagous to `block_size = (Size % MAXBLOCKSIZE == 0) ? MAXBLOCKSIZE : Size` which we added to the CUDA version.
+Similarly, `workers = (Size/gangs) + (!(Size%gangs)? 0:1)` is now logically equivalent to the other versions with `grid_size = (Size/block_size) + (!(Size%block_size)? 0:1)`.-->
 
-The resulting source code of each of the four implementations is listed in Table \ref{lst:source-code}.
+In OpenMP, 4 threads are explictly requested by setting the `OMP_NUM_THREADS=4` environment variable at runtime.
+The code is analogous to OpenACC except for `#pragma` notation; `workers` are replaced by `threads` and `gangs` with `teams`.
+The kernel source of each of the four implementations is listed in Table \ref{lst:source-code} while the full source-code is available in the associated artefact. \todo[inline]{Add url once this is pushed to github}
+
 
 <!-- %use a temporary counter for sublists -- so keep a backup of the old one then  change it's styling from arabic to roman -->
 \newcounter{mainlisting}
@@ -246,8 +239,10 @@ The resulting source code of each of the four implementations is listed in Table
 \begin{figure*}[htp]
 \begin{minipage}[t]{\figcolumnwidth}
 \begin{lstlisting}[caption=OpenCL,frame=tlrb,language=c,label=lst:source-opencl]
-__kernel void Fan1(__global float *m, __global float *a, const int size, const int t){
+__kernel void Fan1(__global float *m, __global float *a, const int size, const int t)
+{
     int gid = get_local_id(0) + get_group_id(0) * get_local_size(0);
+
     if (gid < size-1-t) {
         m[size*(gid+t+1)+t] = a[size*(gid+t+1)+t] / a[size*t+t]; 
     }
@@ -297,12 +292,9 @@ void Fan1(float *m, float *a, int size, int t)
 \label{lst:source-code}
 \end{figure*}
 
-The baseline OpenCL kernel code for Fan1 is presented in Listing \ref{lst:source-code}-\ref{lst:source-opencl}, CUDA in , OpenACC in , and OpenMP in.
-\todo[inline]{write summary}
 
-In summary, the OpenACC implementation went from `64` workitems being invoked (where only 4 of them did any meaningful work) to `4` workitems being run.
 
-The AIWC metrics of this kernel are presented in figure~\ref{fig:fan1-absolute}.
+# Results {#sec:results}
 
 
 \begin{figure*}
@@ -313,16 +305,18 @@ The AIWC metrics of this kernel are presented in figure~\ref{fig:fan1-absolute}.
 \end{figure*}
 
 
+The comparison of AIWC metrics of the Gaussian Elimination `Fan1` kernel are presented in Figure\ \ref{fig:fan1-absolute}.
 Metrics (along the x-axis) have been grouped by category and is indicated by colour.
 These categories outline the overall type of characteristic being measured by each metric.
 The blue metrics (Opcode and Total Instruction Count) show the "Compute" category (which denote the amount of work to be done per thread and the diversity of the instruction sets required), metrics in green present "Parallelism" type metrics (these metrics are broadly around number of threads available in the workload, the amount of independence between threads and whether vectorization/SIMD is appropriate), "Memory" are presented in beige (and are included to collect the spread, proximity and raw number of memory addresses accessed), while purple metrics indicate "Control" (the predictability of branching during control flow of the workload).
-A full list and description of these metrics is available [@johnston2019thesis] but for brevity is not further discussed in this paper.  
+A full list and description of these metrics is available [@johnston2019thesis] but for brevity is not further discussed in this paper.
 The y-axis presents the absolute count of each AIWC metric.
 The bars have been coloured according to Implementation (as shown in the legend) with CUDA in green, OpenACC in blue, OpenCL in tan and OpenMP in grey.
-Each metric has the four implementations grouped together, thus Figure~\ref{fig:fan1-absolute} gives a visual inspection of the feature-space comparison of each metric between all implementations.
+Each metric has the four implementations grouped together, thus Figure\ \ref{fig:fan1-absolute} gives a visual inspection of the feature-space comparison of each metric between all implementations.
 It's expected that OpenCL should be the lowest count -- or the lowest overhead -- of all the implemenations regardless of metric, since it serves as the baseline; a compiler doing source-to-source translations would have to be doing additional optimizations to result in lower counts than the OpenCL baseline.
 
-Figure~\ref{fig:fan1-relative-difference} shows the same comparison of Fan1 implementations but with normalization against the baseline OpenCL counts, and is done to show the relative difference between each implementation -- allowing a closer inspection of the differences.
+
+Figure\ \ref{fig:fan1-relative-difference} shows the same comparison of Fan1 implementations but with normalization against the baseline OpenCL counts, and is done to show the relative difference between each implementation -- allowing a closer inspection of the differences.
 A flat-line at 0% is ideal since it shows no difference between metrics captured by AIWC, a perfect translation between implementations results in the same instructions being executed, operating on the same sequence of locations in memory, under the same degree of parallelism and identical AIWC metrics will ensue.
 In other words, if the applications workload characteristics are identical between languages the translator is doing an excellent job in preserving the structure (in terms of memory accesses, parallelism and compute work) of the code regardless of language.
 The implementations have been separated by colour and grouped into metrics for contrast.
@@ -353,14 +347,14 @@ We see no causes where the compiler improves beyond the initial OpenCL baseline.
 
 ## Kernel Representation {#sec:kernel-representation}
 
-Listing \ref{lst:kernel-opencl-vs-openmp-and-openacc} presents the OpenCL kernels generated in the Kernel Representation stage. 
+Listing\ \ref{lst:kernel-opencl-vs-openmp-and-openacc} presents the OpenCL kernels generated in the Kernel Representation stage. 
 The workflow from Figure \ref{fig:translation-workflow} shows how the mix of translators interoperate with AIWC, and justifys why CUDA and OpenCL implementations are excluded from this comparison.
 Namely, no translation is needed for the OpenCL implementation, while Coriander operating on the CUDA implementation does not generate any kernel representation form and only offers an intermediate representation -- which are discussed in [Section @sec:intermediate-representation].
-Of the two translated kernels presented in Listing \ref{lst:kernel-opencl-vs-openmp-and-openacc}-\ref{lst:kernel-openacc} and \ref{lst:kernel-opencl-vs-openmp-and-openacc}-\ref{lst:kernel-openmp} can be compared directly to the hand-coded OpenCL kernel presented in Listing \ref{lst:source-code}-\ref{lst:source-opencl} -- they are the translated OpenARC output of OpenACC and OpenMP (from \ref{lst:source-code}-\ref{lst:source-openacc} and \ref{lst:source-code}-\ref{lst:source-openmp}) respectively.
+Of the two translated kernels presented in Listing\ \ref{lst:kernel-opencl-vs-openmp-and-openacc}-\ref{lst:kernel-openacc} and \ref{lst:kernel-opencl-vs-openmp-and-openacc}-\ref{lst:kernel-openmp} can be compared directly to the hand-coded OpenCL kernel presented in Listing \ref{lst:source-code}-\ref{lst:source-opencl} -- they are the translated OpenARC output of OpenACC and OpenMP (from \ref{lst:source-code}-\ref{lst:source-openacc} and \ref{lst:source-code}-\ref{lst:source-openmp}) respectively.
 We see the pragmas are preserved in the translated output regardless of whether OpenACC or OpenMP are used, however the OpenMP pragma is expressed in terms of OpenACC -- the number of threads and number of teams are rewritten as workers and gangs -- this is due to an intermediate step in OpenARC which converts OpenMP into OpenACC so it can directly use the OpenACC to OpenCL functionality.
 Regarding generated OpenCL kernels, both versions are equivilent, sharing the same logic (identical instructions at the same line numbers). Both have the same number of lines in the generated kernels -- although the lines in the OpenMP based version are longer because of longer variable names.
 
-When compared to the OpenCL hand-coded version shown in Listing \ref{lst:source-code}-\ref{lst:source-opencl}, both generated kernels have a fundamental difference in structure.
+When compared to the OpenCL hand-coded version shown in Listing\ \ref{lst:source-code}-\ref{lst:source-opencl}, both generated kernels have a fundamental difference in structure.
 There is the same check (in the form of an `if`-statement) to ensure work isn't occuring beyond the defined global boundary -- expressed as global work size in OpenCL.
 However, there is an added `for`-loop than exists in the OpenCL baseline (Listing \ref{lst:source-code}-\ref{lst:source-opencl}).OpenARC expresses all pragma based acceleration as using both local and global workgroups -- this makes sense as many kernels use local workgroups to utilise shared memory and ensure good memory access patterns (in the form of cache reuse on many hardware architectures) -- but the Fan1 base-line kernel doesn't.
 This artifact of translation explains many of the differences in the AIWC metrics when comparing the OpenACC and OpenMP to OpenCL and is discussed further in both the Intermediate-Representation analysis, in [Section @sec:intermediate-representation], and trace analysis, in [Section @sec:trace-analysis].
@@ -437,9 +431,9 @@ This artifact of translation explains many of the differences in the AIWC metric
 \label{lst:spir-opencl-vs-openacc-and-openmp}
 \end{figure*}
 
-A comparison between generated LLVM/SPIR is presented in Listings \ref{lst:spir-opencl-vs-cuda} and \ref{lst:spir-opencl-vs-openacc-and-openmp}.
+A comparison between generated LLVM/SPIR is presented in Listings\ \ref{lst:spir-opencl-vs-cuda} and \ref{lst:spir-opencl-vs-openacc-and-openmp}.
 Both identify differences in SPIR between Coriander (for CUDA implementations) and OpenARC (OpenACC and OpenMP) compiler outputs against the OpenCL based native version.
-The similarities between OpenMP and OpenACC implementations of the Fan1 kernel -- along with using the same compiler/translator toolchain -- means that the generated SPIR are identical and thus consolidated into a single Listing (\ref{lst:spir-opencl-vs-openacc-and-openmp}-\ref{lst:spir-openacc-and-openmp}).
+The similarities between OpenMP and OpenACC implementations of the Fan1 kernel -- along with using the same compiler/translator toolchain -- means that the generated SPIR are identical and thus consolidated into a single Listing\ (\ref{lst:spir-opencl-vs-openacc-and-openmp}-\ref{lst:spir-openacc-and-openmp}).
 
 ## Trace Analysis {#sec:trace-analysis}
 
@@ -698,13 +692,13 @@ ret
 \label{lst:trace}
 \end{figure*}
 
-The differences between traces are shown in Listing \ref{lst:trace}.
+The differences between traces are shown in Listing\ \ref{lst:trace}.
 The OpenCL trace is shown in Listing \ref{lst:trace}-\ref{lst:trace-opencl} and presents the baseline progression of instructions expected, \ref{lst:trace-cuda} is the CUDA trace, OpenACC in \ref{lst:trace-openacc} and OpenMP in \ref{lst:trace-openmp}.
 Each trace should be read as the LLVM instruction executed over time as we proceed down the Listing.
 Blank lines have been inserted to align common instructions in the trace between implementations, this is to present the clearest difference between traces.
 Instructions of interest have also been coloured -- red indicates added instructions no apparent in the baseline OpenCL trace, blue instructions show a reordering of instructions between traces and olive shows substitution (or deviation) of instructions.
 The CUDA trace shows that each \todo[inline]{tie in instructions added with each memory lookup from the SPIR}.
-The OpenACC trace has no instruction reordering but has instructions added to componsate for the different control flow (looping) to support the workitems in a workgroup logic -- as was described in Section \ref{sec:spir}.
+The OpenACC trace has no instruction reordering but has instructions added to componsate for the different control flow (looping) to support the workitems in a workgroup logic -- as was described in Section \ref{sec:intermediate-representation}.
 There is no difference in traces between OpenMP and OpenACC traces because it uses the same OpenARC compiler toolchain.
 
 <!--
@@ -714,7 +708,7 @@ Thus we can use example to illustrate how AIWC metrics highlight discrepencies b
 Two separate loops in the `Fan2` function were consolidated into one, to mirror how the task is performed in the OpenCL and CUDA implementations of the algorithm.
 -->
 
-# Conclusions and Future Work
+# Conclusions and Future Work{#sec:conclusion}
 
 
 This work extends the applicabilty of AIWC by supporting multiple languages and have demonstrated it's usefulness to evaluate the overhead and complexities of the OpenCL output from two source code translation tools.

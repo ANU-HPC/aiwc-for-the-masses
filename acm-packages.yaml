@@ -15,6 +15,7 @@ header-includes:
     - \usepackage{adjustbox}
     - \usepackage{etoolbox}
     - \usepackage{listings}
+    - \usepackage[htt]{hyphenat}
     - \lstset{basicstyle=\ttfamily,columns=fullflexible,frame=single, breaklines=true,postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space}}
     - \usepackage{multicol}
     - \usepackage[noend,ruled]{algorithm2e}
@@ -32,5 +33,5 @@ include-before:
     - \newcommand{\@maketitle}{\@title}{\color{\@titlecolor}\@title}{}{}
     - \newtoggle{ACM-BUILD}
     - \toggletrue{ACM-BUILD}
-      \makeatother
+    - \makeatother
 ---
